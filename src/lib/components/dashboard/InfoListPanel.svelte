@@ -7,22 +7,15 @@
 </script>
 
 {#each items as item (item.id)}
+	{@const Icon = item.icon === 'calendar' ? CalendarIcon : FileTextIcon}
 	<div
-		class="flex items-start gap-2.5 border-b border-(--dash-border) py-2.5 first:pt-0 last:border-b-0 last:pb-0"
+		class="flex items-start gap-2.5 border-b border-(--dash-border) py-2.5 leading-5 first:pt-0 last:border-b-0 last:pb-0"
 	>
-		<span
-			class="flex size-6.5 shrink-0 items-center justify-center rounded-md bg-(--brand-50) text-(--brand-600)"
-		>
-			{#if item.icon === 'calendar'}
-				<CalendarIcon class="size-3.25" />
-			{:else}
-				<FileTextIcon class="size-3.25" />
-			{/if}
-		</span>
+		<Icon class="mt-0.5 size-4 shrink-0 text-(--brand-600)" />
 		<div class="flex-1">
-			<p class="text-[12.5px] font-bold text-(--navy-950)">{item.title}</p>
-			<p class="mt-0.5 text-[11.5px] text-[#8b95a8]">{item.subtitle}</p>
+			<p class="text-[12.5px] font-bold text-black">{item.title}</p>
+			<p class="mt-0.5 text-[11.5px] text-black">{item.subtitle}</p>
 		</div>
-		<span class="shrink-0 text-[10.5px] whitespace-nowrap text-[#a9b0bd]">{item.date}</span>
+		<span class="shrink-0 text-[10.5px] whitespace-nowrap text-black">{item.date}</span>
 	</div>
 {/each}
