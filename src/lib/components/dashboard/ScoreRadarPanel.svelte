@@ -53,11 +53,11 @@
 			<line x1={CX} y1={CY} x2={point.x} y2={point.y} stroke="var(--dash-border)" />
 		{/each}
 
-		<polygon points={avgPolygon} fill="rgb(210 75 107 / 15%)" stroke="#d24b6b" stroke-width="1.6" />
+		<polygon points={avgPolygon} fill="rgb(210 75 107 / 15%)" stroke="#D05759" stroke-width="1.6" />
 		<polygon
 			points={userPolygon}
 			fill="rgb(30 79 160 / 18%)"
-			stroke="var(--brand-500)"
+			stroke="#007CF0"
 			stroke-width="2"
 		/>
 
@@ -81,17 +81,17 @@
 		{/each}
 	</svg>
 
-	<div class="mt-2 flex items-center justify-center gap-5 text-[11.5px] text-[#55607a]">
+	<div class="-mt-4 flex items-center justify-center gap-5 text-[11.5px] text-[#55607a]">
 		<span>
-			<span class="mr-1.5 inline-block size-2 rounded-full bg-(--brand-500)"></span>Skor Anda
+			<span class="mr-1.5 inline-block size-2 rounded-full bg-[#007CF0]"></span>Skor Anda
 		</span>
 		<span>
-			<span class="mr-1.5 inline-block size-2 rounded-full bg-[#d24b6b]"></span>Rata-rata Peserta
+			<span class="mr-1.5 inline-block size-2 rounded-full bg-[#D05759]"></span>Rata-rata Peserta
 		</span>
 	</div>
 </div>
 
-<div class="my-4 rounded-xl border border-[#d8e5f8] bg-(--brand-50) p-3 text-center">
+<div class="my-4 rounded-lg bg-[#E6F2FE]/40 p-3 text-center">
 	<p class="text-sm font-extrabold text-(--brand-600)">
 		Skor Akhir: {summary.score} ({summary.level})
 	</p>

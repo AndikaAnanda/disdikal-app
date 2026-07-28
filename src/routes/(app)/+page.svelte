@@ -88,7 +88,7 @@
 				<Card.Header>
 					<Card.Title class={panelTitle}>ANALISIS SKOR ALCPT</Card.Title>
 				</Card.Header>
-				<Card.Content>
+				<Card.Content class="-mt-7">
 					<ScoreRadarPanel scores={alcptScores} summary={alcptSummary} />
 				</Card.Content>
 			</Card.Root>
