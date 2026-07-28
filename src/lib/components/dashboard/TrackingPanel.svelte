@@ -46,8 +46,8 @@
 		{#if i > 0}
 			<div
 				class={cn(
-					'mt-4.75 h-0.5 flex-1',
-					steps[i - 1].status === 'done' ? 'bg-(--brand-500)' : 'bg-[#dfe3ec]'
+					'mt-4.75 -mx-7 h-0.5 flex-1 rounded-full',
+					steps[i - 1].status === 'done' ? 'bg-[#00478A]' : 'bg-[#dfe3ec]'
 				)}
 			></div>
 		{/if}
@@ -59,13 +59,13 @@
 				)}
 			>
 				<span
-					class="size-4.25 bg-current mask-contain mask-center mask-no-repeat"
+					class="size-5 bg-current mask-contain mask-center mask-no-repeat"
 					style="mask-image: url({icon})"
 				></span>
 			</div>
-			<div class="mb-0.5 text-[11px] text-[#9aa2b1]">{step.label}</div>
+			<div class="mb-0.5 font-medium text-[10px] text-black">{step.label}</div>
 			<div class="mb-2 min-h-8 text-xs leading-tight font-bold text-(--navy-950)">{step.title}</div>
-			<Badge class={cn('border-transparent text-[10.5px] font-bold', pillClass[step.status])}>
+			<Badge class={cn('border-transparent text-xs font-bold', pillClass[step.status])}>
 				{statusLabel[step.status]}
 			</Badge>
 		</div>
