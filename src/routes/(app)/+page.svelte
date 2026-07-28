@@ -26,8 +26,8 @@
 	} from '$lib/dashboard-data';
 
 	const panel = 'mb-4.5 rounded-[14px] border border-(--dash-border) bg-white shadow-none ring-0';
-	const panelTitle = 'font-bold text-black';
-	const seeAll = 'flex items-center gap-1 text-[12.5px] font-bold text-(--brand-600)';
+	const panelTitle = 'font-bold text-black text-[14px]';
+	const seeAll = 'flex items-center gap-1 text-[12.5px] font-bold text-[#007CF0] hover:text-[#2457b3] cursor-pointer';
 </script>
 
 <svelte:head><title>Layanan Disdikal — Dashboard</title></svelte:head>
@@ -55,7 +55,7 @@
 				</Card.Header>
 				<Card.Content>
 					<TrackingPanel steps={trackingSteps} />
-					<h3 class="mt-6 mb-4 {panelTitle}">Riwayat Pengajuan Terakhir</h3>
+					<h3 class="mt-6 mb-4 font-bold text-base  {panelTitle}">Riwayat Pengajuan Terakhir</h3>
 					<HistoryTable rows={historyRows} />
 				</Card.Content>
 			</Card.Root>

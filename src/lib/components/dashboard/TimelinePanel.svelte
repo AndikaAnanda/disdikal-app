@@ -7,16 +7,18 @@
 
 {#each groups as group, i (group.date)}
 	<div class={i > 0 ? 'mt-4 border-t border-(--dash-border) pt-4' : ''}>
-		<p class="mb-2.5 text-[12.5px] font-bold text-(--navy-950)">{group.date}</p>
+		<p class="mb-2.5 text-[12px] font-medium text-black">{group.date}</p>
 		{#each group.entries as entry (entry.time + entry.text)}
-			<div class="mb-2.5 flex items-start gap-2.5">
+			<div class="mb-2.5 flex items-start gap-2.5 leading-5">
 				<span
-					class="mt-px flex size-4.5 shrink-0 items-center justify-center rounded-full bg-(--accent-green-50) text-(--accent-green)"
+					class="mt-px flex size-4.5 shrink-0 items-center justify-center rounded-full bg-[#03AA00] text-white"
 				>
-					<CheckIcon class="size-2.5" />
+					<CheckIcon class="size-3.5" />
 				</span>
-				<span class="min-w-10 shrink-0 text-xs font-bold text-(--navy-950)">{entry.time}</span>
-				<span class="text-[12.5px] text-[#55607a]">{entry.text}</span>
+				<span class="min-w-10 shrink-0 text-xs leading-5 font-bold text-black">
+					{entry.time}
+				</span>
+				<span class="text-[12.5px] leading-5 text-black">{entry.text}</span>
 			</div>
 		{/each}
 	</div>
