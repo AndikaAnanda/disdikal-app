@@ -11,7 +11,7 @@
 	<div
 		class="flex items-start gap-2.5 border-b border-(--dash-border) py-2.5 leading-5 first:pt-0 last:border-b-0 last:pb-0"
 	>
-		<Icon class="mt-0.5 size-4 shrink-0 text-(--brand-600)" />
+		<Icon class="mt-0.5 size-4 shrink-0 text-[#01296E]" />
 		<div class="flex-1">
 			<p class="text-[12.5px] font-bold text-black">{item.title}</p>
 			<p class="mt-0.5 text-[11.5px] text-black">{item.subtitle}</p>
