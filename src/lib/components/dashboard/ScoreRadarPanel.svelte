@@ -54,12 +54,7 @@
 		{/each}
 
 		<polygon points={avgPolygon} fill="rgb(210 75 107 / 15%)" stroke="#D05759" stroke-width="1.6" />
-		<polygon
-			points={userPolygon}
-			fill="rgb(30 79 160 / 18%)"
-			stroke="#007CF0"
-			stroke-width="2"
-		/>
+		<polygon points={userPolygon} fill="rgb(30 79 160 / 18%)" stroke="#007CF0" stroke-width="2" />
 
 		{#each labels as label (label.axis)}
 			<text

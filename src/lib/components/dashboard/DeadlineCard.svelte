@@ -33,7 +33,7 @@
 						<div class="text-[17px] leading-none font-extrabold text-[#FE7605]">
 							{box.num}
 						</div>
-						<div class="mt-0.5 text-[10px] text-black]">{box.label}</div>
+						<div class="text-black] mt-0.5 text-[10px]">{box.label}</div>
 					</div>
 				{/each}
 			</div>

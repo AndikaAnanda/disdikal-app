@@ -26,10 +26,7 @@
 	const icon = $derived(icons[stat.id] ?? iconInput);
 </script>
 
-<Card.Root
-	size="sm"
-	class="rounded-[14px] bg-white shadow-none ring-0"
->
+<Card.Root size="sm" class="rounded-[14px] bg-white shadow-none ring-0">
 	<Card.Content class="flex items-start gap-3">
 		<span
 			class={cn(

@@ -31,7 +31,7 @@
 				class="mb-3 flex flex-wrap divide-x divide-white/20 rounded-xl bg-white/20 px-4 py-3 backdrop-blur-md"
 			>
 				{#each info as item (item.id)}
-					<div class="flex items-center gap-1.5 text-[12.5px] px-3">
+					<div class="flex items-center gap-1.5 px-3 text-[12.5px]">
 						<span
 							class="size-3.5 shrink-0 self-start bg-current mask-contain mask-center mask-no-repeat"
 							style="mask-image: url({infoIcon})"
@@ -49,7 +49,7 @@
 					{user.statusLabel}
 				</Badge>
 			</div>
-			<p class="mt-2.5 font-bold text-[12px] text-white">Last Login: {user.lastLogin}</p>
+			<p class="mt-2.5 text-[12px] font-bold text-white">Last Login: {user.lastLogin}</p>
 		</div>
 	</div>
 
@@ -62,12 +62,11 @@
 
 		background-image:
 			url('../../assets/bg/dashboard-profile-card-bg.png'),
-			linear-gradient(115deg, #01296E 0%, #1a4694 55%, #2a5cb0 100%);
+			linear-gradient(115deg, #01296e 0%, #1a4694 55%, #2a5cb0 100%);
 		background-repeat: no-repeat;
 		background-position: center;
 		background-size: cover;
 	}
-
 
 	@media (min-width: 48rem) {
 		.hero-card {

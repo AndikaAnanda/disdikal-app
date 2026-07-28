@@ -30,6 +30,6 @@
 	/* conic-gradient digerakkan custom property --pct dari inline style.
 	   Tidak ada utility Tailwind maupun komponen ring di shadcn/Bits UI. */
 	.progress-ring {
-		background: conic-gradient(#54A7F5 0 var(--pct), #ffffff var(--pct) 100%);
+		background: conic-gradient(#54a7f5 0 var(--pct), #ffffff var(--pct) 100%);
 	}
 </style>

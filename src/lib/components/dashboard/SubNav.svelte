@@ -52,9 +52,7 @@
 				{:else}
 					<!-- Route tujuan belum dibuat, jadi non-navigable. -->
 					<span class={cn(tabBase, tabIdle, 'cursor-default')} aria-disabled="true">
-						<span
-							class={cn(iconMask, 'text-[#9aa2b1]')}
-							style="mask-image: url({icons[tab.id]})"
+						<span class={cn(iconMask, 'text-[#9aa2b1]')} style="mask-image: url({icons[tab.id]})"
 						></span>
 						{tab.label}
 					</span>
