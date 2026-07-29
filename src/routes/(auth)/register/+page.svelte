@@ -11,7 +11,7 @@
 <svelte:head><title>Layanan Disdikal — Pendaftaran Akun</title></svelte:head>
 
 <form method="POST" use:enhance class="pb-12">
-	<div class="grid items-start gap-6 max-[1080px]:grid-cols-1 min-[1081px]:grid-cols-[1.65fr_1fr]">
+	<div class="grid items-start gap-6 max-lg:grid-cols-1 lg:grid-cols-[1.65fr_1fr] lg:gap-8">
 		<div class="flex flex-col gap-6">
 			<RegisterBanner />
 			<RegisterFormCard {form} />

@@ -27,21 +27,21 @@
 </script>
 
 <Card.Root size="sm" class="rounded-[14px] bg-white shadow-none ring-0">
-	<Card.Content class="flex items-start gap-3">
+	<Card.Content class="flex items-start gap-2.5 sm:gap-3">
 		<span
 			class={cn(
-				'flex size-11.25 shrink-0 items-center justify-center rounded-[10px] text-white',
+				'flex size-9 shrink-0 items-center justify-center rounded-[10px] text-white sm:size-11.25',
 				accentBg[stat.accent]
 			)}
 		>
 			<span
-				class="size-8 bg-current mask-contain mask-center mask-no-repeat"
+				class="size-6.5 bg-current mask-contain mask-center mask-no-repeat sm:size-8"
 				style="mask-image: url({icon})"
 			></span>
 		</span>
-		<div class="text-black">
+		<div class="min-w-0 text-black">
 			<p class="text-xs font-bold">{stat.label}</p>
-			<p class="my-0.5 text-[18px] font-bold">{stat.value}</p>
+			<p class="my-0.5 text-base font-bold wrap-break-word sm:text-[18px]">{stat.value}</p>
 			<p class="text-[12px]">{stat.subLabel}</p>
 		</div>
 	</Card.Content>

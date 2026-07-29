@@ -17,7 +17,11 @@
 	</div>
 
 	<main class="flex-1 bg-linear-to-b from-(--brand-50) to-[#f5f8fd]">
-		<div class="mx-auto px-10 pt-14 {isRegisterPage ? 'max-w-420' : 'max-w-360'}">
+		<div
+			class="mx-auto px-4 pt-8 sm:px-6 sm:pt-10 lg:px-10 lg:pt-14 {isRegisterPage
+				? 'max-w-420'
+				: 'max-w-360'}"
+		>
 			{@render children()}
 		</div>
 	</main>

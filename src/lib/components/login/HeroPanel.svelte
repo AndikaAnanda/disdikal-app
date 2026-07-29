@@ -26,24 +26,30 @@
 </script>
 
 <div>
-	<p class="mb-1 text-2xl font-medium text-[#01296E]">Selamat datang di</p>
-	<h1 class="mb-5 text-[50px] leading-[1.1] font-bold tracking-tight text-[#01296E]">
+	<p class="mb-1 text-lg font-medium text-[#01296E] sm:text-xl lg:text-2xl">Selamat datang di</p>
+	<h1
+		class="mb-4 text-[32px] leading-[1.15] font-bold tracking-tight text-[#01296E] sm:mb-5 sm:text-[38px] lg:text-[50px] lg:leading-[1.1]"
+	>
 		Layanan Disdikal
 	</h1>
-	<p class="mb-8 max-w-140 text-[18px] leading-relaxed text-[#343434]">
+	<p
+		class="mb-6 max-w-140 text-sm leading-relaxed text-[#343434] sm:mb-8 sm:text-base lg:text-[18px]"
+	>
 		Platform digital terintegrasi untuk mendukung pengelolaan pendidikan, pengembangan kompetensi,
 		dan manajemen data personel di lingkungan Dinas Pendidikan TNI Angkatan Laut
 	</p>
 
-	<div class="mb-9 flex flex-col gap-6">
+	<div class="mb-6 flex flex-col gap-5 sm:mb-9 sm:gap-6">
 		{#each features as feature (feature.id)}
-			<div class="flex items-start gap-4">
-				<span class="flex size-16.25 shrink-0 items-center justify-center rounded-sm bg-[#E6F2FE]">
-					<img src={feature.icon} alt="" class="size-8.75 object-contain" />
+			<div class="flex items-start gap-3 sm:gap-4">
+				<span
+					class="flex size-12 shrink-0 items-center justify-center rounded-sm bg-[#E6F2FE] sm:size-14 lg:size-16.25"
+				>
+					<img src={feature.icon} alt="" class="size-6.5 object-contain sm:size-7.5 lg:size-8.75" />
 				</span>
 				<div>
-					<p class="mb-1 text-[18px] font-bold text-[#0058AA]">{feature.title}</p>
-					<p class="max-w-80 text-base leading-normal text-[#343434]">{feature.text}</p>
+					<p class="mb-1 text-base font-bold text-[#0058AA] sm:text-[18px]">{feature.title}</p>
+					<p class="max-w-80 text-sm leading-normal text-[#343434] sm:text-base">{feature.text}</p>
 				</div>
 			</div>
 		{/each}

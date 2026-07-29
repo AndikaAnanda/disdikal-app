@@ -33,26 +33,29 @@
 
 <svelte:head><title>Layanan Disdikal — Dashboard</title></svelte:head>
 
-<div class="mx-auto max-w-[1880px] px-5">
-	<div class="mb-4.5 grid gap-4.5 max-[1100px]:grid-cols-1 min-[1101px]:grid-cols-[2.9fr_1fr_1fr]">
-		<HeroCard user={currentUser} />
+<div class="mx-auto max-w-[1880px] px-3 sm:px-4 lg:px-5">
+	<div
+		class="mb-4.5 grid grid-cols-1 gap-4.5 min-[700px]:grid-cols-2 min-[1301px]:grid-cols-[2.9fr_1fr_1fr]"
+	>
+		<div class="grid min-[700px]:col-span-2 min-[1301px]:col-span-1">
+			<HeroCard user={currentUser} />
+		</div>
 		<AnnouncementCard {announcement} />
 		<DeadlineCard deadline={uploadDeadline} />
 	</div>
 
-	<div
-		class="grid items-stretch gap-4.5 max-[1300px]:grid-cols-1 min-[1301px]:grid-cols-[3.2fr_1fr]"
-	>
+	<div class="grid grid-cols-1 items-stretch gap-4.5 min-[1301px]:grid-cols-[3.2fr_1fr]">
 		<div class="@container flex flex-col">
-			<div class="mb-4.5 grid gap-4 @max-[1100px]:grid-cols-2 @min-[1101px]:grid-cols-5">
+			<!-- Ambang 940px sengaja di bawah lebar kolom ini saat grid induk pecah
+			     jadi 2 (~947px). Ambang di atas itu bikin stat row justru mengecil
+			     ke 2 kolom saat layar melebar melewati 1300px. -->
+			<div class="mb-4.5 grid grid-cols-2 gap-4 @min-[560px]:grid-cols-3 @min-[940px]:grid-cols-5">
 				{#each stats as stat (stat.id)}
 					<StatCard {stat} />
 				{/each}
 			</div>
 
-			<div
-				class="grid flex-1 items-stretch gap-4.5 @max-[900px]:grid-cols-1 @min-[901px]:grid-cols-[2.2fr_1fr]"
-			>
+			<div class="grid flex-1 grid-cols-1 items-stretch gap-4.5 @min-[901px]:grid-cols-[2.2fr_1fr]">
 				<div class="flex flex-col">
 					<Card.Root class="{panel} flex-1">
 						<Card.Header>

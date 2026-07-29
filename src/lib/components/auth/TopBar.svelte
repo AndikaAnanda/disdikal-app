@@ -26,8 +26,10 @@
 </script>
 
 <div class="bg-[#01296E] text-sm font-medium text-white">
-	<div class="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-4 px-10 py-3">
-		<div class="flex flex-wrap items-center gap-6 text-[#d7deed]">
+	<div
+		class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10"
+	>
+		<div class="hidden flex-wrap items-center gap-6 text-[#d7deed] md:flex">
 			<span class="flex items-center gap-2">
 				<MailIcon class="size-4" />support@tnial.com
 			</span>

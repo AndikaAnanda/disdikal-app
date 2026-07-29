@@ -40,34 +40,40 @@
 	};
 </script>
 
-<div class="flex items-start">
-	{#each steps as step, i (step.id)}
-		{@const icon = icons[step.id] ?? iconPerson}
-		{#if i > 0}
-			<div
-				class={cn(
-					'-mx-7 mt-4.75 h-0.5 flex-1 rounded-full',
-					steps[i - 1].status === 'done' ? 'bg-[#00478A]' : 'bg-[#dfe3ec]'
-				)}
-			></div>
-		{/if}
-		<div class="flex w-30 shrink-0 flex-col items-center text-center">
-			<div
-				class={cn(
-					'mb-2.5 flex size-10 items-center justify-center rounded-full border-2',
-					circleClass[step.status]
-				)}
-			>
-				<span
-					class="size-5 bg-current mask-contain mask-center mask-no-repeat"
-					style="mask-image: url({icon})"
-				></span>
+<!-- Card induk punya overflow-hidden, jadi tanpa wrapper ini step terakhir
+     terpotong permanen tanpa scrollbar apa pun saat layar sempit. -->
+<div class="overflow-x-auto pb-1">
+	<div class="flex min-w-140 items-start">
+		{#each steps as step, i (step.id)}
+			{@const icon = icons[step.id] ?? iconPerson}
+			{#if i > 0}
+				<div
+					class={cn(
+						'-mx-7 mt-4.75 h-0.5 flex-1 rounded-full',
+						steps[i - 1].status === 'done' ? 'bg-[#00478A]' : 'bg-[#dfe3ec]'
+					)}
+				></div>
+			{/if}
+			<div class="flex w-30 shrink-0 flex-col items-center text-center">
+				<div
+					class={cn(
+						'mb-2.5 flex size-10 items-center justify-center rounded-full border-2',
+						circleClass[step.status]
+					)}
+				>
+					<span
+						class="size-5 bg-current mask-contain mask-center mask-no-repeat"
+						style="mask-image: url({icon})"
+					></span>
+				</div>
+				<div class="mb-0.5 text-[10px] font-medium text-black">{step.label}</div>
+				<div class="mb-2 min-h-8 text-xs leading-tight font-bold text-(--navy-950)">
+					{step.title}
+				</div>
+				<Badge class={cn('border-transparent text-xs font-bold', pillClass[step.status])}>
+					{statusLabel[step.status]}
+				</Badge>
 			</div>
-			<div class="mb-0.5 text-[10px] font-medium text-black">{step.label}</div>
-			<div class="mb-2 min-h-8 text-xs leading-tight font-bold text-(--navy-950)">{step.title}</div>
-			<Badge class={cn('border-transparent text-xs font-bold', pillClass[step.status])}>
-				{statusLabel[step.status]}
-			</Badge>
-		</div>
-	{/each}
+		{/each}
+	</div>
 </div>

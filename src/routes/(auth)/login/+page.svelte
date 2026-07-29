@@ -8,7 +8,7 @@
 
 <svelte:head><title>Layanan Disdikal — Login</title></svelte:head>
 
-<div class="grid items-start gap-10 max-lg:grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
-	<HeroPanel />
-	<LoginCard {form} />
+<div class="grid items-start gap-6 max-lg:grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+	<div class="order-2 lg:order-1"><HeroPanel /></div>
+	<div class="order-1 lg:order-2"><LoginCard {form} /></div>
 </div>

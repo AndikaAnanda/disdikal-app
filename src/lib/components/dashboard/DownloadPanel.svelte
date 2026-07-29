@@ -10,9 +10,11 @@
 	<div
 		class="flex items-center justify-between gap-2.5 border-b border-(--dash-border) py-2.5 first:pt-0 last:border-b-0 last:pb-0"
 	>
-		<div class="flex items-center gap-2.5">
+		<div class="flex min-w-0 flex-1 items-center gap-2.5">
 			<FileTextIcon class="size-5.5 shrink-0 text-(--accent-red)" />
-			<span class="text-xs font-semibold text-[#33394a]">{item.fileName}</span>
+			<span class="truncate text-xs font-semibold text-[#33394a]" title={item.fileName}>
+				{item.fileName}
+			</span>
 		</div>
 		<Button
 			size="sm"

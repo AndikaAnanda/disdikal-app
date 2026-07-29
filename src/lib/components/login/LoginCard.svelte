@@ -30,12 +30,12 @@
 </script>
 
 <div
-	class="mx-auto mb-10 w-full max-w-162.5 rounded-[20px] border border-[#C0C0C0] bg-white p-10 lg:mr-0 lg:ml-auto"
+	class="mx-auto mb-6 w-full max-w-162.5 rounded-[20px] border border-[#C0C0C0] bg-white p-6 sm:mb-10 sm:p-8 lg:mr-0 lg:ml-auto lg:p-10"
 >
 	<div
-		class="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-(--brand-100) text-(--brand-600)"
+		class="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-(--brand-100) text-(--brand-600) sm:size-16"
 	>
-		<LockIcon class="size-7" />
+		<LockIcon class="size-6 sm:size-7" />
 	</div>
 	<h2 class="mb-1.5 text-center text-[24px] font-bold text-[#01296E]">Masuk ke Akun Anda</h2>
 	<p class="mb-7 text-center font-medium text-[#01296E]">
@@ -123,7 +123,7 @@
 		</div>
 
 		<div
-			class="flex items-center justify-between gap-3 rounded-[14px] border border-[#01296E] bg-[#f8fafc] p-4"
+			class="flex flex-col items-stretch gap-3 rounded-[14px] border border-[#01296E] bg-[#f8fafc] p-4 sm:flex-row sm:items-center sm:justify-between"
 		>
 			<div class="flex items-center gap-3">
 				<span
@@ -139,7 +139,7 @@
 			<Button
 				variant="outline"
 				href={resolve('/register')}
-				class="h-auto shrink-0 gap-1.5 rounded-lg border-[#01296E] bg-white px-4 py-2.25 text-sm font-semibold whitespace-nowrap text-(--auth-navy-900) hover:bg-(--brand-50) hover:text-(--auth-navy-900)"
+				class="h-auto w-full shrink-0 justify-center gap-1.5 rounded-lg border-[#01296E] bg-white px-4 py-2.25 text-sm font-semibold text-(--auth-navy-900) hover:bg-(--brand-50) hover:text-(--auth-navy-900) sm:w-auto"
 			>
 				Daftar Akun
 				<ArrowRightIcon class="size-3.5" />

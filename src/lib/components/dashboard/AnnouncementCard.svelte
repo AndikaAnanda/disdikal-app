@@ -8,12 +8,14 @@
 </script>
 
 <Card.Root
-	class="flex-row gap-4 rounded-[14px] border border-[#007CF0] bg-[#F5F7FE] px-7 py-6.5 shadow-none ring-0"
+	class="flex-row gap-4 rounded-[14px] border border-[#007CF0] bg-[#F5F7FE] px-5 py-5 shadow-none ring-0 sm:px-7 sm:py-6.5"
 >
 	<MegaphoneIcon class="size-8.75 shrink-0 self-start text-[#4263E9]" />
 
-	<div class="flex flex-1 flex-col gap-3">
-		<Card.Title class="px-0 text-[18px] font-bold text-[#4263E9]">Pengumuman</Card.Title>
+	<div class="flex min-w-0 flex-1 flex-col gap-3">
+		<Card.Title class="px-0 text-base font-bold text-[#4263E9] sm:text-[18px]"
+			>Pengumuman</Card.Title
+		>
 
 		<Card.Content class="px-0 text-[14px]">
 			<p class="leading-snug font-bold text-black">{announcement.title}</p>

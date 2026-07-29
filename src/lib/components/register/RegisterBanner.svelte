@@ -3,15 +3,19 @@
 </script>
 
 <div
-	class="register-banner relative flex items-center gap-5 overflow-hidden rounded-2xl px-8 py-6"
+	class="register-banner relative flex flex-col items-start gap-4 overflow-hidden rounded-2xl px-5 py-5 sm:flex-row sm:items-center sm:gap-5 sm:px-8 sm:py-6"
 >
-	<img src={registerIcon} alt="" class="relative z-2 size-21.25 shrink-0 object-contain" />
+	<img
+		src={registerIcon}
+		alt=""
+		class="relative z-2 size-14 shrink-0 object-contain sm:size-21.25"
+	/>
 
 	<div class="relative z-2">
-		<h1 class="mb-2 text-[24px] leading-tight font-bold text-[#01296E]">
-			Pendaftaran Akun<br />Akademi Angkatan Laut
+		<h1 class="mb-1.5 text-lg leading-tight font-bold text-[#01296E] sm:mb-2 sm:text-[24px]">
+			Pendaftaran Akun Akademi Angkatan Laut
 		</h1>
-		<p class="max-w-140 text-[14px] font-medium leading-relaxed text-[#343434]">
+		<p class="max-w-140 text-xs leading-relaxed font-medium text-[#343434] sm:text-[14px]">
 			Lengkapi data diri Anda dengan benar. Setelah diverifikasi oleh admin, akun Anda akan aktif
 			dan digunakan untuk proses pendaftaran Akademi TNI Angkatan Laut
 		</p>

@@ -11,28 +11,36 @@
 	let { user }: { user: UserProfile } = $props();
 </script>
 
-<header class="bg-[#01296E] px-12.5 py-5 text-white">
-	<div class="mx-auto flex max-w-[1880px] items-center justify-between gap-6 px-5">
-		<div class="flex shrink-0 items-center gap-2.5">
-			<img src={logoDisdikal} alt="Logo Dinas Pendidikan TNI AL" class="size-10 object-contain" />
-			<div>
-				<p class="text-[12px] tracking-[0.03em] text-white">MARKAS BESAR ANGKATAN LAUT</p>
-				<p class="text-[20px] font-extrabold tracking-tight">DINAS PENDIDIKAN</p>
+<header class="bg-[#01296E] px-4 py-3 text-white sm:px-6 sm:py-4 lg:px-12.5 lg:py-5">
+	<div class="mx-auto flex max-w-[1880px] items-center justify-between gap-3 sm:gap-6 lg:px-5">
+		<div class="flex min-w-0 items-center gap-2.5">
+			<img
+				src={logoDisdikal}
+				alt="Logo Dinas Pendidikan TNI AL"
+				class="size-8 shrink-0 object-contain sm:size-10"
+			/>
+			<div class="min-w-0">
+				<p class="hidden text-[12px] tracking-[0.03em] text-white sm:block">
+					MARKAS BESAR ANGKATAN LAUT
+				</p>
+				<p class="truncate text-sm font-extrabold tracking-tight sm:text-base lg:text-[20px]">
+					DINAS PENDIDIKAN
+				</p>
 			</div>
 		</div>
 
-		<div class="hidden flex-1 items-center gap-6.5 text-[14px] text-white lg:flex">
-			<span class="flex items-center gap-2">
-				<MailIcon class="size-4" />{user.email}
+		<div class="hidden min-w-0 flex-1 items-center gap-6.5 text-[14px] text-white lg:flex">
+			<span class="flex min-w-0 items-center gap-2">
+				<MailIcon class="size-4 shrink-0" /><span class="truncate">{user.email}</span>
 			</span>
-			<span class="flex items-center gap-2">
+			<span class="flex shrink-0 items-center gap-2">
 				<ClockIcon class="size-4" />{user.workingHours}
 			</span>
 		</div>
 
-		<div class="flex shrink-0 items-center gap-5.5">
+		<div class="flex shrink-0 items-center gap-3 sm:gap-5.5">
 			<div class="relative text-white">
-				<BellIcon class="size-7.5" />
+				<BellIcon class="size-6 sm:size-7.5" />
 				<Badge
 					class="absolute -top-1.5 -right-1.5 size-4 border-2 border-(--navy-950) bg-(--accent-red) p-0 text-[10px] font-bold text-white"
 				>
@@ -40,15 +48,15 @@
 				</Badge>
 			</div>
 			<div class="flex items-center gap-2.5">
-				<Avatar.Root class="size-8.75">
+				<Avatar.Root class="size-8 sm:size-8.75">
 					<Avatar.Image src="https://github.com/shadcn.png" alt={user.shortName} />
 					<Avatar.Fallback>CN</Avatar.Fallback>
 				</Avatar.Root>
-				<div>
-					<p class="text-[16px] leading-tight font-bold">{user.shortName}</p>
-					<p class="text-[14px] text-white">{user.role}</p>
+				<div class="hidden sm:block">
+					<p class="text-sm leading-tight font-bold lg:text-[16px]">{user.shortName}</p>
+					<p class="text-xs text-white lg:text-[14px]">{user.role}</p>
 				</div>
-				<ChevronDownIcon class="size-5 text-white" />
+				<ChevronDownIcon class="hidden size-5 text-white sm:block" />
 			</div>
 		</div>
 	</div>
