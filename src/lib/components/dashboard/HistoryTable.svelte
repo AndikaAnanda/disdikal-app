@@ -22,7 +22,9 @@
 </script>
 
 <div class="overflow-x-auto">
-	<table class="w-full border-collapse text-[12.5px]">
+	<!-- min-w menjaga kolom tetap terbaca: tanpa itu browser memampatkan sel jadi
+	     satu kata per baris alih-alih memunculkan scrollbar. -->
+	<table class="w-full min-w-170 border-collapse text-[12.5px]">
 		<thead>
 			<tr class="bg-(--navy-900) text-white">
 				{#each headers as header (header)}

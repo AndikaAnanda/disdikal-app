@@ -5,15 +5,15 @@
 	let { percent, remaining }: { percent: number; remaining: string } = $props();
 </script>
 
-<div class="relative z-2 shrink-0 text-right">
+<div class="relative z-2 shrink-0 text-left md:text-right">
 	<p class="mb-0.5 text-[16px] font-bold">Kelengkapan Profile</p>
 	<p class="mb-2.5 text-[12px] text-white">{remaining}</p>
 	<div
-		class="progress-ring mb-3 ml-auto flex size-24 items-center justify-center rounded-full"
+		class="progress-ring mb-3 flex size-20 items-center justify-center rounded-full sm:size-24 md:ml-auto"
 		style="--pct: {percent}%"
 	>
 		<div
-			class="flex size-18.5 items-center justify-center rounded-full bg-[#12327a] text-[19px] font-extrabold"
+			class="flex size-15.5 items-center justify-center rounded-full bg-[#12327a] text-base font-extrabold sm:size-18.5 sm:text-[19px]"
 		>
 			{percent}%
 		</div>

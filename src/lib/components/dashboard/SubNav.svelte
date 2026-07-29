@@ -25,7 +25,7 @@
 	};
 
 	const tabBase =
-		'flex items-center gap-1.75 border-b-2 border-transparent pb-1 text-[16px] whitespace-nowrap no-underline';
+		'flex shrink-0 items-center gap-1.75 border-b-2 border-transparent pb-1 text-sm whitespace-nowrap no-underline sm:text-[16px]';
 	const tabActive = 'border-(--brand-600) font-bold text-(--brand-600)';
 	const tabIdle = 'text-[#55709E]';
 
@@ -33,10 +33,16 @@
 	const iconMask = 'size-4 shrink-0 bg-current mask-contain mask-center mask-no-repeat';
 </script>
 
-<div class="border-b border-(--dash-border) bg-white px-12.5 py-5">
-	<div class="mx-auto flex max-w-[1880px] flex-wrap items-center justify-between gap-4 px-5">
-		<h1 class="text-[20px] font-bold text-(--navy-950)">{title}</h1>
-		<nav class="flex flex-wrap items-center gap-6.5">
+<div class="border-b border-(--dash-border) bg-white px-4 py-3 sm:px-6 sm:py-4 lg:px-12.5 lg:py-5">
+	<div
+		class="mx-auto flex max-w-[1880px] flex-wrap items-center justify-between gap-3 sm:gap-4 lg:px-5"
+	>
+		<h1 class="text-base font-bold text-(--navy-950) sm:text-lg lg:text-[20px]">{title}</h1>
+		<!-- Di bawah lg tab di-scroll horizontal, bukan di-wrap: 8 tab nowrap akan
+		     menumpuk jadi 7-8 baris dan chrome ini sticky, jadi memakan layar. -->
+		<nav
+			class="flex w-full min-w-0 scrollbar-none items-center gap-5 overflow-x-auto pb-1 sm:gap-6.5 lg:w-auto lg:flex-wrap lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden"
+		>
 			{#each tabs as tab (tab.id)}
 				{#if tab.id === 'home'}
 					<a
