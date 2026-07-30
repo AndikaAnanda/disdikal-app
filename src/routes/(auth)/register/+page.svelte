@@ -10,7 +10,9 @@
 
 <svelte:head><title>Layanan Disdikal — Pendaftaran Akun</title></svelte:head>
 
-<form method="POST" use:enhance class="pb-12">
+<!-- enctype wajib: form ini punya <input type="file"> (unggah foto), dan
+     use:enhance melempar error sebelum submit kalau atribut ini tidak ada. -->
+<form method="POST" enctype="multipart/form-data" use:enhance class="pb-12">
 	<div class="grid items-start gap-6 max-lg:grid-cols-1 lg:grid-cols-[1.65fr_1fr] lg:gap-8">
 		<div class="flex flex-col gap-6">
 			<RegisterBanner />

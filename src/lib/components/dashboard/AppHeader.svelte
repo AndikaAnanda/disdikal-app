@@ -2,7 +2,10 @@
 	import BellIcon from '@lucide/svelte/icons/bell';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import ClockIcon from '@lucide/svelte/icons/clock';
+	import LogOutIcon from '@lucide/svelte/icons/log-out';
 	import MailIcon from '@lucide/svelte/icons/mail';
+	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Badge } from '$lib/components/ui/badge';
 	import logoDisdikal from '$lib/assets/logo-disdikal.png';
@@ -58,6 +61,11 @@
 				</div>
 				<ChevronDownIcon class="hidden size-5 text-white sm:block" />
 			</div>
+			<form method="POST" action={resolve('/logout')} use:enhance class="flex">
+				<button type="submit" aria-label="Keluar" class="text-white/80 hover:text-white">
+					<LogOutIcon class="size-4.5 sm:size-5" />
+				</button>
+			</form>
 		</div>
 	</div>
 </header>
