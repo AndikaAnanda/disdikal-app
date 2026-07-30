@@ -6,48 +6,24 @@
 	import MapPinIcon from '@lucide/svelte/icons/map-pin';
 	import UsersIcon from '@lucide/svelte/icons/users';
 	import VenusAndMarsIcon from '@lucide/svelte/icons/venus-and-mars';
+	import type { SuperForm } from 'sveltekit-superforms';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import * as Select from '$lib/components/ui/select';
+	import { GENDERS, RELIGIONS, type RegisterInput } from '$lib/schemas/register';
 
-	type DataDiriForm = {
-		values?: {
-			nomorPeserta?: string;
-			nik?: string;
-			namaLengkap?: string;
-			jenisKelamin?: string;
-			tanggalLahir?: string;
-			tempatLahir?: string;
-			agama?: string;
-		};
-		errors?: {
-			nomorPeserta?: string[];
-			nik?: string[];
-			namaLengkap?: string[];
-			jenisKelamin?: string[];
-			tanggalLahir?: string[];
-			tempatLahir?: string[];
-			agama?: string[];
-		};
-	} | null;
+	let { superform }: { superform: SuperForm<RegisterInput> } = $props();
 
-	let { form }: { form: DataDiriForm } = $props();
+	const { form, errors } = superform;
 
-	const genders = [
-		{ value: 'laki-laki', label: 'Laki-laki' },
-		{ value: 'perempuan', label: 'Perempuan' }
-	];
-	const religions = ['Islam', 'Kristen Protestan', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'];
+	const genderLabel = $derived(GENDERS.find((g) => g.value === $form.jenisKelamin)?.label);
 
-	let jenisKelamin = $state('');
-	let agama = $state('');
-
-	$effect(() => {
-		if (form?.values?.jenisKelamin) jenisKelamin = form.values.jenisKelamin;
-		if (form?.values?.agama) agama = form.values.agama;
-	});
-
-	const genderLabel = $derived(genders.find((g) => g.value === jenisKelamin)?.label);
+	// Lapisan UX saja; validasi sebenarnya tetap di registerSchema.
+	// type="number" dihindari: masih menerima e/+/-/. dan mengabaikan maxlength.
+	function onlyDigits(event: Event) {
+		const el = event.currentTarget as HTMLInputElement;
+		el.value = el.value.replace(/\D/g, '');
+	}
 
 	const inputBase =
 		'h-auto rounded-lg border-(--auth-border) py-2.75 pl-10 text-sm text-[#01296E] placeholder:text-[#01296E] focus:border-(--brand-600) focus:ring-(--brand-600)';
@@ -76,14 +52,16 @@
 				<Input
 					id="nomorPeserta"
 					name="nomorPeserta"
+					inputmode="numeric"
+					oninput={onlyDigits}
 					placeholder="Masukkan nomor peserta Anda"
-					value={form?.values?.nomorPeserta ?? ''}
-					aria-invalid={form?.errors?.nomorPeserta ? 'true' : undefined}
+					bind:value={$form.nomorPeserta}
+					aria-invalid={$errors.nomorPeserta ? 'true' : undefined}
 					class={inputBase}
 				/>
 			</div>
-			{#if form?.errors?.nomorPeserta}
-				<p class="text-xs text-destructive">{form.errors.nomorPeserta[0]}</p>
+			{#if $errors.nomorPeserta}
+				<p class="text-xs text-destructive">{$errors.nomorPeserta[0]}</p>
 			{/if}
 		</div>
 
@@ -95,14 +73,16 @@
 					id="nik"
 					name="nik"
 					inputmode="numeric"
+					maxlength={16}
+					oninput={onlyDigits}
 					placeholder="Masukkan NIK Anda"
-					value={form?.values?.nik ?? ''}
-					aria-invalid={form?.errors?.nik ? 'true' : undefined}
+					bind:value={$form.nik}
+					aria-invalid={$errors.nik ? 'true' : undefined}
 					class={inputBase}
 				/>
 			</div>
-			{#if form?.errors?.nik}
-				<p class="text-xs text-destructive">{form.errors.nik[0]}</p>
+			{#if $errors.nik}
+				<p class="text-xs text-destructive">{$errors.nik[0]}</p>
 			{/if}
 		</div>
 
@@ -116,23 +96,23 @@
 					id="namaLengkap"
 					name="namaLengkap"
 					placeholder="Masukkan nama lengkap Anda"
-					value={form?.values?.namaLengkap ?? ''}
-					aria-invalid={form?.errors?.namaLengkap ? 'true' : undefined}
+					bind:value={$form.namaLengkap}
+					aria-invalid={$errors.namaLengkap ? 'true' : undefined}
 					class={inputBase}
 				/>
 			</div>
-			{#if form?.errors?.namaLengkap}
-				<p class="text-xs text-destructive">{form.errors.namaLengkap[0]}</p>
+			{#if $errors.namaLengkap}
+				<p class="text-xs text-destructive">{$errors.namaLengkap[0]}</p>
 			{/if}
 		</div>
 
 		<div class="space-y-1.5">
 			<Label for="jenisKelamin">Jenis Kelamin<span class="text-destructive">*</span></Label>
-			<Select.Root type="single" name="jenisKelamin" bind:value={jenisKelamin}>
+			<Select.Root type="single" name="jenisKelamin" bind:value={$form.jenisKelamin}>
 				<Select.Trigger
 					id="jenisKelamin"
 					class={triggerBase}
-					aria-invalid={form?.errors?.jenisKelamin ? 'true' : undefined}
+					aria-invalid={$errors.jenisKelamin ? 'true' : undefined}
 				>
 					<span class="flex flex-1 items-center gap-3.5 text-left text-[#01296E]">
 						<VenusAndMarsIcon class="size-4 shrink-0 " />
@@ -140,13 +120,13 @@
 					</span>
 				</Select.Trigger>
 				<Select.Content>
-					{#each genders as gender (gender.value)}
+					{#each GENDERS as gender (gender.value)}
 						<Select.Item value={gender.value} label={gender.label}>{gender.label}</Select.Item>
 					{/each}
 				</Select.Content>
 			</Select.Root>
-			{#if form?.errors?.jenisKelamin}
-				<p class="text-xs text-destructive">{form.errors.jenisKelamin[0]}</p>
+			{#if $errors.jenisKelamin}
+				<p class="text-xs text-destructive">{$errors.jenisKelamin[0]}</p>
 			{/if}
 		</div>
 
@@ -158,13 +138,13 @@
 					id="tanggalLahir"
 					name="tanggalLahir"
 					type="date"
-					value={form?.values?.tanggalLahir ?? ''}
-					aria-invalid={form?.errors?.tanggalLahir ? 'true' : undefined}
+					bind:value={$form.tanggalLahir}
+					aria-invalid={$errors.tanggalLahir ? 'true' : undefined}
 					class={inputBase}
 				/>
 			</div>
-			{#if form?.errors?.tanggalLahir}
-				<p class="text-xs text-destructive">{form.errors.tanggalLahir[0]}</p>
+			{#if $errors.tanggalLahir}
+				<p class="text-xs text-destructive">{$errors.tanggalLahir[0]}</p>
 			{/if}
 		</div>
 
@@ -176,37 +156,37 @@
 					id="tempatLahir"
 					name="tempatLahir"
 					placeholder="Masukkan tempat lahir Anda"
-					value={form?.values?.tempatLahir ?? ''}
-					aria-invalid={form?.errors?.tempatLahir ? 'true' : undefined}
+					bind:value={$form.tempatLahir}
+					aria-invalid={$errors.tempatLahir ? 'true' : undefined}
 					class={inputBase}
 				/>
 			</div>
-			{#if form?.errors?.tempatLahir}
-				<p class="text-xs text-destructive">{form.errors.tempatLahir[0]}</p>
+			{#if $errors.tempatLahir}
+				<p class="text-xs text-destructive">{$errors.tempatLahir[0]}</p>
 			{/if}
 		</div>
 
 		<div class="space-y-1.5">
 			<Label for="agama">Agama<span class="text-destructive">*</span></Label>
-			<Select.Root type="single" name="agama" bind:value={agama}>
+			<Select.Root type="single" name="agama" bind:value={$form.agama}>
 				<Select.Trigger
 					id="agama"
 					class={triggerBase}
-					aria-invalid={form?.errors?.agama ? 'true' : undefined}
+					aria-invalid={$errors.agama ? 'true' : undefined}
 				>
 					<span class="flex flex-1 items-center gap-3.5 text-left text-[#01296E]">
 						<LandmarkIcon class="size-4 shrink-0 text-[#01296E]" />
-						{agama || 'Pilih agama Anda'}
+						{$form.agama || 'Pilih agama Anda'}
 					</span>
 				</Select.Trigger>
 				<Select.Content>
-					{#each religions as religion (religion)}
+					{#each RELIGIONS as religion (religion)}
 						<Select.Item value={religion} label={religion}>{religion}</Select.Item>
 					{/each}
 				</Select.Content>
 			</Select.Root>
-			{#if form?.errors?.agama}
-				<p class="text-xs text-destructive">{form.errors.agama[0]}</p>
+			{#if $errors.agama}
+				<p class="text-xs text-destructive">{$errors.agama[0]}</p>
 			{/if}
 		</div>
 

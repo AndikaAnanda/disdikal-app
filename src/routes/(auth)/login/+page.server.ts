@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { z } from 'zod';
+import { setError, superValidate } from 'sveltekit-superforms/server';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { resolve } from '$app/paths';
 import { db } from '$lib/server/db';
 import { user } from '$lib/server/db/schema';
@@ -12,33 +13,33 @@ import {
 	SHORT_SESSION_DURATION_MS
 } from '$lib/server/auth/session';
 import { setSessionCookie } from '$lib/server/auth/cookies';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async () => {
+	return { form: await superValidate(zod4(loginSchema)) };
+};
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await event.request.formData();
-		const email = String(form.get('email') ?? '');
-		const remember = form.get('remember') === 'on';
+		const form = await superValidate(event.request, zod4(loginSchema));
+		if (!form.valid) return fail(400, { form });
 
-		const parsed = loginSchema.safeParse({ email, password: form.get('password') });
-		if (!parsed.success) {
-			return fail(400, { values: { email }, errors: z.flattenError(parsed.error).fieldErrors });
-		}
-
+		// Pesan generik di field password saja, supaya tidak membocorkan
+		// apakah email-nya terdaftar.
 		const invalidCredentials = () =>
-			fail(400, { values: { email }, errors: { password: ['Email atau password salah'] } });
+			fail(400, { form: setError(form, 'password', 'Email atau password salah') });
 
 		const [existing] = await db
 			.select()
 			.from(user)
-			.where(eq(user.email, parsed.data.email))
+			.where(eq(user.email, form.data.email))
 			.limit(1);
 		if (!existing) return invalidCredentials();
 
-		const validPassword = await verifyPassword(parsed.data.password, existing.passwordHash);
+		const validPassword = await verifyPassword(form.data.password, existing.passwordHash);
 		if (!validPassword) return invalidCredentials();
 
-		const durationMs = remember ? LONG_SESSION_DURATION_MS : SHORT_SESSION_DURATION_MS;
+		const durationMs = form.data.remember ? LONG_SESSION_DURATION_MS : SHORT_SESSION_DURATION_MS;
 		const { token, expiresAt } = await createSession(existing.id, durationMs);
 		setSessionCookie(event, token, expiresAt);
 

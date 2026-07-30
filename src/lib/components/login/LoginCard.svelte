@@ -7,20 +7,18 @@
 	import LogInIcon from '@lucide/svelte/icons/log-in';
 	import UserIcon from '@lucide/svelte/icons/user';
 	import UserPlusIcon from '@lucide/svelte/icons/user-plus';
-	import { enhance } from '$app/forms';
+	import type { SuperForm } from 'sveltekit-superforms';
 	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { Separator } from '$lib/components/ui/separator';
+	import type { LoginInput } from '$lib/schemas/login';
 
-	type LoginForm = {
-		values?: { email?: string };
-		errors?: { email?: string[]; password?: string[] };
-	} | null;
+	let { superform }: { superform: SuperForm<LoginInput> } = $props();
 
-	let { form }: { form: LoginForm } = $props();
+	const { form, errors, enhance } = superform;
 
 	let showPassword = $state(false);
 
@@ -53,13 +51,13 @@
 					type="email"
 					autocomplete="email"
 					placeholder="Masukkan Email"
-					value={form?.values?.email ?? ''}
-					aria-invalid={form?.errors?.email ? 'true' : undefined}
+					bind:value={$form.email}
+					aria-invalid={$errors.email ? 'true' : undefined}
 					class={inputBase}
 				/>
 			</div>
-			{#if form?.errors?.email}
-				<p class="text-xs text-destructive">{form.errors.email[0]}</p>
+			{#if $errors.email}
+				<p class="text-xs text-destructive">{$errors.email[0]}</p>
 			{/if}
 		</div>
 
@@ -76,7 +74,8 @@
 					type={showPassword ? 'text' : 'password'}
 					autocomplete="current-password"
 					placeholder="Masukkan Password"
-					aria-invalid={form?.errors?.password ? 'true' : undefined}
+					bind:value={$form.password}
+					aria-invalid={$errors.password ? 'true' : undefined}
 					class="{inputBase} pr-10"
 				/>
 				<button
@@ -92,14 +91,14 @@
 					{/if}
 				</button>
 			</div>
-			{#if form?.errors?.password}
-				<p class="text-xs text-destructive">{form.errors.password[0]}</p>
+			{#if $errors.password}
+				<p class="text-xs text-destructive">{$errors.password[0]}</p>
 			{/if}
 		</div>
 
 		<div class="mb-6 flex items-center justify-between text-sm">
 			<div class="flex items-center gap-2">
-				<Checkbox id="remember" name="remember" />
+				<Checkbox id="remember" name="remember" bind:checked={$form.remember} />
 				<Label for="remember" class="font-normal text-[#4a5164]">Ingat saya</Label>
 			</div>
 			<span class="flex items-center gap-1.5 text-(--brand-600)" aria-disabled="true">

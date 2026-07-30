@@ -6,20 +6,14 @@
 	import MailIcon from '@lucide/svelte/icons/mail';
 	import PhoneIcon from '@lucide/svelte/icons/phone';
 	import ShieldCheckIcon from '@lucide/svelte/icons/shield-check';
+	import type { SuperForm } from 'sveltekit-superforms';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
+	import type { RegisterInput } from '$lib/schemas/register';
 
-	type InformasiAkunForm = {
-		values?: { email?: string; noHp?: string };
-		errors?: {
-			email?: string[];
-			noHp?: string[];
-			password?: string[];
-			confirmPassword?: string[];
-		};
-	} | null;
+	let { superform }: { superform: SuperForm<RegisterInput> } = $props();
 
-	let { form }: { form: InformasiAkunForm } = $props();
+	const { form, errors } = superform;
 
 	let showPassword = $state(false);
 	let showConfirmPassword = $state(false);
@@ -58,13 +52,13 @@
 					type="email"
 					autocomplete="email"
 					placeholder="Masukkan email aktif Anda"
-					value={form?.values?.email ?? ''}
-					aria-invalid={form?.errors?.email ? 'true' : undefined}
+					bind:value={$form.email}
+					aria-invalid={$errors.email ? 'true' : undefined}
 					class={inputBase}
 				/>
 			</div>
-			{#if form?.errors?.email}
-				<p class="text-xs text-destructive">{form.errors.email[0]}</p>
+			{#if $errors.email}
+				<p class="text-xs text-destructive">{$errors.email[0]}</p>
 			{/if}
 		</div>
 
@@ -77,13 +71,13 @@
 					name="noHp"
 					inputmode="tel"
 					placeholder="Masukkan nomor handphone aktif"
-					value={form?.values?.noHp ?? ''}
-					aria-invalid={form?.errors?.noHp ? 'true' : undefined}
+					bind:value={$form.noHp}
+					aria-invalid={$errors.noHp ? 'true' : undefined}
 					class={inputBase}
 				/>
 			</div>
-			{#if form?.errors?.noHp}
-				<p class="text-xs text-destructive">{form.errors.noHp[0]}</p>
+			{#if $errors.noHp}
+				<p class="text-xs text-destructive">{$errors.noHp[0]}</p>
 			{/if}
 		</div>
 
@@ -97,7 +91,8 @@
 					type={showPassword ? 'text' : 'password'}
 					autocomplete="new-password"
 					placeholder="Buat Password"
-					aria-invalid={form?.errors?.password ? 'true' : undefined}
+					bind:value={$form.password}
+					aria-invalid={$errors.password ? 'true' : undefined}
 					class="{inputBase} pr-10"
 				/>
 				<button
@@ -113,8 +108,8 @@
 					{/if}
 				</button>
 			</div>
-			{#if form?.errors?.password}
-				<p class="text-xs text-destructive">{form.errors.password[0]}</p>
+			{#if $errors.password}
+				<p class="text-xs text-destructive">{$errors.password[0]}</p>
 			{/if}
 		</div>
 
@@ -130,7 +125,8 @@
 					type={showConfirmPassword ? 'text' : 'password'}
 					autocomplete="new-password"
 					placeholder="Ulangi password Anda"
-					aria-invalid={form?.errors?.confirmPassword ? 'true' : undefined}
+					bind:value={$form.confirmPassword}
+					aria-invalid={$errors.confirmPassword ? 'true' : undefined}
 					class="{inputBase} pr-10"
 				/>
 				<button
@@ -146,8 +142,8 @@
 					{/if}
 				</button>
 			</div>
-			{#if form?.errors?.confirmPassword}
-				<p class="text-xs text-destructive">{form.errors.confirmPassword[0]}</p>
+			{#if $errors.confirmPassword}
+				<p class="text-xs text-destructive">{$errors.confirmPassword[0]}</p>
 			{/if}
 		</div>
 	</div>

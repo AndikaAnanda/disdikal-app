@@ -4,24 +4,20 @@
 	import SendIcon from '@lucide/svelte/icons/send';
 	import ShieldCheckIcon from '@lucide/svelte/icons/shield-check';
 	import UserIcon from '@lucide/svelte/icons/user';
+	import { fileProxy, type SuperForm } from 'sveltekit-superforms';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Label } from '$lib/components/ui/label';
+	import type { RegisterInput } from '$lib/schemas/register';
 
-	type SidebarForm = {
-		errors?: { agreement?: string[] };
-	} | null;
+	let { superform }: { superform: SuperForm<RegisterInput> } = $props();
 
-	let { form }: { form: SidebarForm } = $props();
+	const { form, errors } = superform;
+	const foto = fileProxy(superform, 'foto');
 
 	let fileInput = $state<HTMLInputElement | null>(null);
-	let fileName = $state('');
-
-	function onFileChange(event: Event) {
-		const input = event.currentTarget as HTMLInputElement;
-		fileName = input.files?.[0]?.name ?? '';
-	}
+	const fileName = $derived($form.foto?.name ?? '');
 
 	const ketentuan = [
 		'Foto terbaru dan jelas',
@@ -75,12 +71,15 @@
 		</button>
 		<input
 			bind:this={fileInput}
-			onchange={onFileChange}
+			bind:files={$foto}
 			type="file"
 			accept="image/png,image/jpeg"
 			name="foto"
 			class="hidden"
 		/>
+		{#if $errors.foto}
+			<p class="-mt-3 mb-4.5 text-xs text-destructive">{$errors.foto}</p>
+		{/if}
 
 		<div class="mb-4.5 rounded-xl border border-(--auth-border) bg-[#f8fafc] p-3.5 sm:p-4.5">
 			<p class="mb-2.5 text-sm font-bold text-[#007CF0]">Ketentuan Foto:</p>
@@ -99,14 +98,15 @@
 				id="agreement"
 				name="agreement"
 				class="mt-1"
-				aria-invalid={form?.errors?.agreement ? 'true' : undefined}
+				bind:checked={$form.agreement}
+				aria-invalid={$errors.agreement ? 'true' : undefined}
 			/>
 			<Label for="agreement" class="text-base leading-normal font-medium text-[#343434]">
 				Saya menyatakan bahwa data yang saya berikan adalah benar dan dapat dipertanggungjawabkan
 			</Label>
 		</div>
-		{#if form?.errors?.agreement}
-			<p class="-mt-3 mb-4.5 text-xs text-destructive">{form.errors.agreement[0]}</p>
+		{#if $errors.agreement}
+			<p class="-mt-3 mb-4.5 text-xs text-destructive">{$errors.agreement}</p>
 		{/if}
 
 		<div

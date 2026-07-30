@@ -1,6 +1,21 @@
 import { z } from 'zod';
 
-const RELIGIONS = ['Islam', 'Kristen Protestan', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'] as const;
+export const RELIGIONS = [
+	'Islam',
+	'Kristen Protestan',
+	'Katolik',
+	'Hindu',
+	'Buddha',
+	'Konghucu'
+] as const;
+
+export const GENDERS = [
+	{ value: 'laki-laki', label: 'Laki-laki' },
+	{ value: 'perempuan', label: 'Perempuan' }
+] as const;
+
+const MAX_FOTO_BYTES = 2 * 1024 * 1024;
+const FOTO_MIME = ['image/jpeg', 'image/png'];
 
 function isAtLeast17(birthDate: Date) {
 	const today = new Date();
@@ -18,19 +33,27 @@ export const registerSchema = z
 			.string()
 			.trim()
 			.min(1, 'Nomor peserta wajib diisi')
-			.regex(/^[A-Za-z0-9-]+$/, 'Nomor peserta hanya boleh huruf, angka, dan tanda hubung'),
+			.regex(/^\d+$/, 'Nomor peserta hanya boleh angka'),
 		nik: z.string().regex(/^\d{16}$/, 'NIK harus 16 digit angka'),
 		namaLengkap: z
 			.string()
 			.trim()
 			.min(3, 'Nama lengkap minimal 3 karakter')
 			.regex(/^[A-Za-z\s.']+$/, 'Nama hanya boleh huruf dan spasi'),
-		jenisKelamin: z.enum(['laki-laki', 'perempuan'], { message: 'Pilih jenis kelamin' }),
-		tanggalLahir: z.coerce
-			.date({ message: 'Tanggal lahir tidak valid' })
-			.refine(isAtLeast17, 'Usia minimal 17 tahun untuk mendaftar'),
+		// String kosong jadi anggota pertama supaya default-nya '' dan Select
+		// tetap menampilkan placeholder, bukan langsung memilih opsi pertama.
+		jenisKelamin: z
+			.enum(['', 'laki-laki', 'perempuan'])
+			.refine((v) => v !== '', 'Pilih jenis kelamin'),
+		// String, bukan z.coerce.date(): <input type="date"> mengirim 'YYYY-MM-DD'
+		// dan tipe Date tidak bisa direpresentasikan di JSON Schema.
+		tanggalLahir: z
+			.string()
+			.min(1, 'Tanggal lahir wajib diisi')
+			.refine((v) => !Number.isNaN(new Date(v).getTime()), 'Tanggal lahir tidak valid')
+			.refine((v) => isAtLeast17(new Date(v)), 'Usia minimal 17 tahun untuk mendaftar'),
 		tempatLahir: z.string().trim().min(1, 'Tempat lahir wajib diisi'),
-		agama: z.enum(RELIGIONS, { message: 'Pilih agama' }),
+		agama: z.enum(['', ...RELIGIONS]).refine((v) => v !== '', 'Pilih agama'),
 		email: z.string().trim().min(1, 'Email wajib diisi').email('Format email tidak valid'),
 		noHp: z
 			.string()
@@ -44,7 +67,12 @@ export const registerSchema = z
 			.regex(/[A-Z]/, 'Password harus mengandung huruf besar')
 			.regex(/[^A-Za-z0-9]/, 'Password harus mengandung simbol'),
 		confirmPassword: z.string(),
-		agreement: z.literal('on', { message: 'Anda harus menyetujui pernyataan ini' })
+		agreement: z.boolean().refine((v) => v === true, 'Anda harus menyetujui pernyataan ini'),
+		foto: z
+			.instanceof(File)
+			.refine((f) => FOTO_MIME.includes(f.type), 'Foto harus berformat JPG atau PNG')
+			.refine((f) => f.size <= MAX_FOTO_BYTES, 'Ukuran foto maksimal 2 MB')
+			.optional()
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		message: 'Konfirmasi password tidak cocok',

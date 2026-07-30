@@ -1,17 +1,19 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { z } from 'zod';
 import postgres from 'postgres';
+import { setError, superValidate, withFiles } from 'sveltekit-superforms/server';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { resolve } from '$app/paths';
 import { db } from '$lib/server/db';
 import { user } from '$lib/server/db/schema';
 import { registerSchema } from '$lib/schemas/register';
 import { hashPassword } from '$lib/server/auth/password';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 const UNIQUE_VIOLATION_CODE = '23505';
 
 type UniqueField = 'email' | 'nik' | 'nomorPeserta';
 
+// Nama constraint mengikuti pola otomatis Drizzle: `${table}_${column}_unique`.
 const UNIQUE_CONSTRAINT_FIELDS: Record<string, UniqueField> = {
 	user_email_unique: 'email',
 	user_nik_unique: 'nik',
@@ -24,42 +26,20 @@ const UNIQUE_ERROR_MESSAGES: Record<UniqueField, string> = {
 	nomorPeserta: 'Nomor peserta sudah terdaftar'
 };
 
+// unrepresentable: 'any' wajib — z.instanceof(File) tidak punya padanan
+// di JSON Schema dan adapter akan melempar error tanpa opsi ini.
+const adapter = zod4(registerSchema, { config: { unrepresentable: 'any' } });
+
+export const load: PageServerLoad = async () => {
+	return { form: await superValidate(adapter) };
+};
+
 export const actions: Actions = {
 	default: async ({ request }) => {
-		const form = await request.formData();
-		const values = {
-			nomorPeserta: String(form.get('nomorPeserta') ?? ''),
-			nik: String(form.get('nik') ?? ''),
-			namaLengkap: String(form.get('namaLengkap') ?? ''),
-			jenisKelamin: form.get('jenisKelamin'),
-			tanggalLahir: form.get('tanggalLahir'),
-			tempatLahir: String(form.get('tempatLahir') ?? ''),
-			agama: form.get('agama'),
-			email: String(form.get('email') ?? ''),
-			noHp: String(form.get('noHp') ?? ''),
-			password: form.get('password'),
-			confirmPassword: form.get('confirmPassword'),
-			agreement: form.get('agreement')
-		};
-		const parsed = registerSchema.safeParse(values);
+		const form = await superValidate(request, adapter, { allowFiles: true });
+		if (!form.valid) return fail(400, withFiles({ form }));
 
-		const fieldValues = {
-			nomorPeserta: values.nomorPeserta,
-			nik: values.nik,
-			namaLengkap: values.namaLengkap,
-			jenisKelamin: String(values.jenisKelamin ?? ''),
-			tanggalLahir: String(values.tanggalLahir ?? ''),
-			tempatLahir: values.tempatLahir,
-			agama: String(values.agama ?? ''),
-			email: values.email,
-			noHp: values.noHp
-		};
-
-		if (!parsed.success) {
-			return fail(400, { values: fieldValues, errors: z.flattenError(parsed.error).fieldErrors });
-		}
-
-		// confirmPassword dan agreement hanya gate submit-time, bukan kolom DB.
+		// confirmPassword, agreement, dan foto bukan kolom DB.
 		const {
 			nomorPeserta,
 			nik,
@@ -71,7 +51,7 @@ export const actions: Actions = {
 			email,
 			noHp,
 			password
-		} = parsed.data;
+		} = form.data;
 		const passwordHash = await hashPassword(password);
 
 		try {
@@ -80,7 +60,7 @@ export const actions: Actions = {
 				nik,
 				namaLengkap,
 				jenisKelamin,
-				tanggalLahir,
+				tanggalLahir: new Date(tanggalLahir),
 				tempatLahir,
 				agama,
 				email,
@@ -95,10 +75,7 @@ export const actions: Actions = {
 					? UNIQUE_CONSTRAINT_FIELDS[err.constraint_name]
 					: undefined;
 				if (field) {
-					return fail(400, {
-						values: fieldValues,
-						errors: { [field]: [UNIQUE_ERROR_MESSAGES[field]] }
-					});
+					return fail(400, withFiles({ form: setError(form, field, UNIQUE_ERROR_MESSAGES[field]) }));
 				}
 			}
 			throw err;
