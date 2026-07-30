@@ -24,7 +24,7 @@
 
 	let showPassword = $state(false);
 
-	const inputBase = 'h-auto rounded-lg border-(--auth-border) py-2.75 pl-10 text-sm';
+	const inputBase = 'h-auto font-medium rounded-lg border-[#55709E] py-2.75 pl-10 text-sm';
 	const iconLeft =
 		'pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[#01296E]';
 </script>
@@ -44,7 +44,7 @@
 
 	<form method="POST" use:enhance>
 		<div class="mb-5 space-y-1.5">
-			<Label for="email" class="text-sm font-medium text-[#01296E]">Email</Label>
+			<Label for="email" class="text-base font-medium text-[#01296E]">Email</Label>
 			<div class="relative">
 				<UserIcon class={iconLeft} />
 				<Input
@@ -65,8 +65,8 @@
 
 		<div class="mb-5 space-y-1.5">
 			<div class="flex items-center justify-between">
-				<Label for="password" class="text-sm font-medium text-[#33394a]">Password</Label>
-				<span class="text-sm text-(--brand-600)" aria-disabled="true">Lupa password?</span>
+				<Label for="password" class="text-base font-medium text-[#01296E]">Password</Label>
+				<span class="text-sm font-bold text-[#01296E]" aria-disabled="true">Lupa password?</span>
 			</div>
 			<div class="relative">
 				<LockIcon class={iconLeft} />
@@ -110,7 +110,7 @@
 
 		<Button
 			type="submit"
-			class="h-auto w-full gap-2 rounded-lg bg-[#01296E] py-3.25 text-[15px] font-semibold text-white hover:bg-[#0a1a40]"
+			class="h-auto w-full cursor-pointer gap-2 rounded-lg bg-[#01296E] py-3.25 text-[15px] font-semibold text-white hover:bg-[#0a1a40]"
 		>
 			<LogInIcon class="size-4" />
 			Login

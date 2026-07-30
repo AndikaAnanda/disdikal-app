@@ -8,6 +8,7 @@
 	let { children } = $props();
 
 	const isRegisterPage = $derived(page.url.pathname === resolve('/register'));
+	const isLoginPage = $derived(page.url.pathname === resolve('/login'));
 </script>
 
 <div class="auth-shell flex min-h-screen flex-col bg-white text-(--auth-text)">
@@ -16,7 +17,9 @@
 		<LogoBar />
 	</div>
 
-	<main class="flex-1 bg-linear-to-b from-(--brand-50) to-[#f5f8fd]">
+	<main
+		class="flex-1 bg-linear-to-b from-(--brand-50) to-[#f5f8fd] {isLoginPage ? 'login-bg' : ''}"
+	>
 		<div
 			class="mx-auto px-4 pt-8 sm:px-6 sm:pt-10 lg:px-10 lg:pt-14 {isRegisterPage
 				? 'max-w-420'
@@ -42,5 +45,23 @@
 		--auth-border: #e2e6ee;
 		--auth-text: #1e2433;
 		--auth-muted: #6b7688;
+	}
+
+	/* Gradient ditulis ulang di sini karena background-image dari
+	   bg-linear-to-b tertimpa oleh rule ini (style scoped Svelte tidak
+	   ber-@layer, jadi mengalahkan utilities Tailwind).
+	   100% auto + anchor bawah dipilih, bukan cover: isi ilustrasinya
+	   menumpuk di bawah dan atasnya kosong, jadi cover akan meng-crop
+	   figurnya secara horizontal di viewport yang tinggi. */
+	.login-bg {
+		background-image:
+			url('../../lib/assets/bg/login-bg.png'), linear-gradient(to bottom, var(--brand-50), #f5f8fd);
+		background-repeat: no-repeat;
+		background-position:
+			bottom center,
+			center;
+		background-size:
+			100% auto,
+			cover;
 	}
 </style>

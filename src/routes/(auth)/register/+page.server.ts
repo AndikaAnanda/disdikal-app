@@ -12,7 +12,6 @@ const UNIQUE_VIOLATION_CODE = '23505';
 
 type UniqueField = 'email' | 'nik' | 'nomorPeserta';
 
-// Nama constraint mengikuti pola otomatis Drizzle: `${table}_${column}_unique`.
 const UNIQUE_CONSTRAINT_FIELDS: Record<string, UniqueField> = {
 	user_email_unique: 'email',
 	user_nik_unique: 'nik',

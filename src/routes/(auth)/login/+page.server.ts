@@ -25,8 +25,6 @@ export const actions: Actions = {
 			return fail(400, { values: { email }, errors: z.flattenError(parsed.error).fieldErrors });
 		}
 
-		// Pesan generik di field password saja, supaya tidak membocorkan
-		// apakah email-nya terdaftar.
 		const invalidCredentials = () =>
 			fail(400, { values: { email }, errors: { password: ['Email atau password salah'] } });
 

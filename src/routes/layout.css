@@ -127,3 +127,24 @@
 		@apply font-sans;
 	}
 }
+
+/* Chrome/Edge melukis background autofill lewat UA style ber-!important
+   (input:-internal-autofill-selected), yang tidak bisa dikalahkan
+   background-color dari author -- !important sekalipun. box-shadow inset
+   satu-satunya jalan karena properti itu tidak disentuh aturan UA tsb.
+   Sengaja di luar @layer: utility Tailwind (shadow-xs, ring-*) berada di
+   layer utilities yang mengalahkan @layer base apa pun specificity-nya.
+   Ganti warnanya lewat --input-autofill-bg / --input-autofill-text. */
+input:autofill,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	/* --tw-ring-shadow diteruskan supaya ring focus tetap tampil saat autofill;
+	   tanpa ini box-shadow di sini menimpa ring dari utility Tailwind. */
+	box-shadow:
+		inset 0 0 0 1000px var(--input-autofill-bg, #ffffff),
+		var(--tw-ring-shadow, 0 0 #0000);
+	-webkit-text-fill-color: var(--input-autofill-text, #01296e);
+	caret-color: var(--input-autofill-text, #01296e);
+}
