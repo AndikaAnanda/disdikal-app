@@ -18,6 +18,8 @@
 
 	let { superform }: { superform: SuperForm<LoginInput> } = $props();
 
+	// Instance superform dibuat sekali di halaman dan tidak pernah diganti.
+	// svelte-ignore state_referenced_locally
 	const { form, errors, enhance } = superform;
 
 	let showPassword = $state(false);

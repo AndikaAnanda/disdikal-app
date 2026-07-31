@@ -1,36 +1,48 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import AuthFooter from '$lib/components/auth/AuthFooter.svelte';
 	import LogoBar from '$lib/components/auth/LogoBar.svelte';
 	import TopBar from '$lib/components/auth/TopBar.svelte';
+	import { AuthStore } from '$lib/stores';
 
 	let { children } = $props();
 
 	const isRegisterPage = $derived(page.url.pathname === resolve('/register'));
 	const isLoginPage = $derived(page.url.pathname === resolve('/login'));
+
+	// Yang sudah login tidak perlu melihat form login/register.
+	function redirectToDashboard(): string {
+		goto(resolve('/'));
+		return '';
+	}
 </script>
 
-<div class="auth-shell flex min-h-screen flex-col bg-white text-(--auth-text)">
-	<div class="sticky top-0 z-40">
-		<TopBar />
-		<LogoBar />
-	</div>
-
-	<main
-		class="flex-1 bg-linear-to-b from-(--brand-50) to-[#f5f8fd] {isLoginPage ? 'login-bg' : ''}"
-	>
-		<div
-			class="mx-auto px-4 pt-8 sm:px-6 sm:pt-10 lg:px-10 lg:pt-14 {isRegisterPage
-				? 'max-w-420'
-				: 'max-w-360'}"
-		>
-			{@render children()}
+{#if AuthStore.ready && AuthStore.isAuthenticated}
+	{redirectToDashboard()}
+{:else}
+	<div class="auth-shell flex min-h-screen flex-col bg-white text-(--auth-text)">
+		<div class="sticky top-0 z-40">
+			<TopBar />
+			<LogoBar />
 		</div>
-	</main>
 
-	<AuthFooter />
-</div>
+		<main
+			class="flex-1 bg-linear-to-b from-(--brand-50) to-[#f5f8fd] {isLoginPage ? 'login-bg' : ''}"
+		>
+			<div
+				class="mx-auto px-4 pt-8 sm:px-6 sm:pt-10 lg:px-10 lg:pt-14 {isRegisterPage
+					? 'max-w-420'
+					: 'max-w-360'}"
+			>
+				{@render children()}
+			</div>
+		</main>
+
+		<AuthFooter />
+	</div>
+{/if}
 
 <style>
 	/* Token khas halaman auth, sengaja scoped seperti .dashboard-shell

@@ -4,14 +4,21 @@
 	import ClockIcon from '@lucide/svelte/icons/clock';
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
 	import MailIcon from '@lucide/svelte/icons/mail';
-	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { logout } from '$lib/api';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Badge } from '$lib/components/ui/badge';
 	import logoDisdikal from '$lib/assets/logo-disdikal.png';
 	import type { UserProfile } from '$lib/dashboard-data';
 
 	let { user }: { user: UserProfile } = $props();
+
+	async function onLogout() {
+		// Selalu membersihkan sesi lokal, walau panggilan ke backend gagal.
+		await logout();
+		goto(resolve('/login'));
+	}
 </script>
 
 <header class="bg-[#01296E] px-4 py-3 text-white sm:px-6 sm:py-4 lg:px-12.5 lg:py-5">
@@ -61,11 +68,14 @@
 				</div>
 				<ChevronDownIcon class="hidden size-5 text-white sm:block" />
 			</div>
-			<form method="POST" action={resolve('/logout')} use:enhance class="flex">
-				<button type="submit" aria-label="Keluar" class="text-white/80 hover:text-white">
-					<LogOutIcon class="size-4.5 sm:size-5" />
-				</button>
-			</form>
+			<button
+				type="button"
+				onclick={onLogout}
+				aria-label="Keluar"
+				class="flex text-white/80 hover:text-white"
+			>
+				<LogOutIcon class="size-4.5 sm:size-5" />
+			</button>
 		</div>
 	</div>
 </header>

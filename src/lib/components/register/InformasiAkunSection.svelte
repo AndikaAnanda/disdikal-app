@@ -13,6 +13,7 @@
 
 	let { superform }: { superform: SuperForm<RegisterInput> } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const { form, errors } = superform;
 
 	let showPassword = $state(false);

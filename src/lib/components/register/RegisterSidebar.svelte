@@ -13,7 +13,9 @@
 
 	let { superform }: { superform: SuperForm<RegisterInput> } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const { form, errors } = superform;
+	// svelte-ignore state_referenced_locally
 	const foto = fileProxy(superform, 'foto');
 
 	let fileInput = $state<HTMLInputElement | null>(null);

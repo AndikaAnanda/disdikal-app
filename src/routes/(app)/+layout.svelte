@@ -1,11 +1,24 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import AppHeader from '$lib/components/dashboard/AppHeader.svelte';
 	import SubNav from '$lib/components/dashboard/SubNav.svelte';
+	import { isBackendConfigured } from '$lib/config';
+	import { AuthStore } from '$lib/stores';
 	import { currentUser, subNavTabs } from '$lib/dashboard-data';
 
 	let { children } = $props();
+
+	// Gerbang dev: selama PUBLIC_BASE_API_URL kosong (backend belum ada) login
+	// mustahil, jadi dashboard dibiarkan terbuka supaya tetap bisa dikembangkan.
+	// Begitu env-nya diisi, guard asli aktif sendiri tanpa mengubah kode.
+	const allowed = $derived(!isBackendConfigured || AuthStore.isAuthenticated);
+
+	function redirectToLogin(): string {
+		goto(resolve('/login'));
+		return '';
+	}
 
 	const home = resolve('/');
 	const tabs = $derived(
@@ -16,16 +29,26 @@
 	const title = $derived(page.url.pathname === home ? 'Dashboard' : 'Layanan');
 </script>
 
-<div class="dashboard-shell min-h-screen bg-[#f2f4f8] text-(--dash-text)">
-	<!-- AppHeader + SubNav menempel sebagai satu unit; keduanya punya background
-	     solid, jadi konten tidak menembus saat di-scroll. z-40 sengaja di bawah
-	     overlay shadcn (z-50) supaya dropdown Select dan Dialog tetap di atasnya. -->
-	<div class="sticky top-0 z-40">
-		<AppHeader user={currentUser} />
-		<SubNav {tabs} {title} />
+{#if !AuthStore.ready}
+	<div class="grid min-h-screen place-items-center bg-[#f2f4f8]">
+		<div
+			class="size-6 animate-spin rounded-full border-2 border-[#c3d1e8] border-t-[#0071DA]"
+		></div>
 	</div>
-	<main class="py-5 pb-10">{@render children()}</main>
-</div>
+{:else if allowed}
+	<div class="dashboard-shell min-h-screen bg-[#f2f4f8] text-(--dash-text)">
+		<!-- AppHeader + SubNav menempel sebagai satu unit; keduanya punya background
+		     solid, jadi konten tidak menembus saat di-scroll. z-40 sengaja di bawah
+		     overlay shadcn (z-50) supaya dropdown Select dan Dialog tetap di atasnya. -->
+		<div class="sticky top-0 z-40">
+			<AppHeader user={currentUser} />
+			<SubNav {tabs} {title} />
+		</div>
+		<main class="py-5 pb-10">{@render children()}</main>
+	</div>
+{:else}
+	{redirectToLogin()}
+{/if}
 
 <style>
 	/* Definisi token warna khas dashboard. Sengaja scoped ke .dashboard-shell,

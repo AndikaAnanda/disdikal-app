@@ -14,6 +14,7 @@
 
 	let { superform }: { superform: SuperForm<RegisterInput> } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const { form, errors } = superform;
 
 	const genderLabel = $derived(GENDERS.find((g) => g.value === $form.jenisKelamin)?.label);
