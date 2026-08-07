@@ -35,20 +35,20 @@
 
 <div class="mx-auto max-w-[1880px] px-3 sm:px-4 lg:px-5">
 	<div
-		class="mb-4.5 grid grid-cols-1 gap-4.5 min-[700px]:grid-cols-2 min-[1301px]:grid-cols-[2.9fr_1fr_1fr]"
+		class="mb-4.5 grid grid-cols-1 gap-4.5 min-[700px]:grid-cols-2 min-[1600px]:grid-cols-[2.9fr_1fr_1fr]"
 	>
-		<div class="grid min-[700px]:col-span-2 min-[1301px]:col-span-1">
+		<div class="grid min-[700px]:col-span-2 min-[1600px]:col-span-1">
 			<HeroCard user={currentUser} />
 		</div>
 		<AnnouncementCard {announcement} />
 		<DeadlineCard deadline={uploadDeadline} />
 	</div>
 
-	<div class="grid grid-cols-1 items-stretch gap-4.5 min-[1301px]:grid-cols-[3.2fr_1fr]">
+	<div class="grid grid-cols-1 items-stretch gap-4.5 min-[1600px]:grid-cols-[3.2fr_1fr]">
 		<div class="@container flex flex-col">
-			<!-- Ambang 940px sengaja di bawah lebar kolom ini saat grid induk pecah
-			     jadi 2 (~947px). Ambang di atas itu bikin stat row justru mengecil
-			     ke 2 kolom saat layar melebar melewati 1300px. -->
+			<!-- Ambang 1600px: di bawah itu halaman tetap 1 kolom karena kolom kiri
+			     hasil split tidak cukup lebar untuk min-w tabel riwayat (680px) di
+			     lebar laptop 14". Ambang container di bawah relatif ke kolom ini. -->
 			<div class="mb-4.5 grid grid-cols-2 gap-4 @min-[560px]:grid-cols-3 @min-[940px]:grid-cols-5">
 				{#each stats as stat (stat.id)}
 					<StatCard {stat} />

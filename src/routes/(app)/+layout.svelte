@@ -6,7 +6,7 @@
 	import SubNav from '$lib/components/dashboard/SubNav.svelte';
 	import { isBackendConfigured } from '$lib/config';
 	import { AuthStore } from '$lib/stores';
-	import { currentUser, subNavTabs } from '$lib/dashboard-data';
+	import { currentUser, subNavTabs, type NavTabId } from '$lib/dashboard-data';
 
 	let { children } = $props();
 
@@ -21,12 +21,32 @@
 	}
 
 	const home = resolve('/');
+	const profil = resolve('/profil');
+	const dokumen = resolve('/dokumen');
+	const tesBahasa = resolve('/tes-bahasa-inggris');
+	const tutorialKamera = resolve('/tes-bahasa-inggris/tutorial');
+	const tesListening = resolve('/tes-bahasa-inggris/tes');
+	// /dokumen adalah sub-halaman Profil: tidak punya tab sendiri, tapi ikut
+	// menyalakan tab "Profil Saya" dan memakai judul yang sama.
+	const routedTabs: Partial<Record<NavTabId, string[]>> = {
+		home: [home],
+		profil: [profil, dokumen],
+		'tes-bahasa': [tesBahasa, tutorialKamera, tesListening]
+	};
 	const tabs = $derived(
 		subNavTabs.map((tab) =>
-			tab.id === 'home' ? { ...tab, active: page.url.pathname === home } : tab
+			routedTabs[tab.id] ? { ...tab, active: routedTabs[tab.id]!.includes(page.url.pathname) } : tab
 		)
 	);
-	const title = $derived(page.url.pathname === home ? 'Dashboard' : 'Layanan');
+	const pageTitles: Record<string, string> = {
+		[home]: 'Dashboard',
+		[profil]: 'Profil Saya',
+		[dokumen]: 'Profil Saya',
+		[tesBahasa]: 'Tes Bahasa Inggris',
+		[tutorialKamera]: 'Tes Bahasa Inggris',
+		[tesListening]: 'Listening Comprehension'
+	};
+	const title = $derived(pageTitles[page.url.pathname] ?? 'Layanan');
 </script>
 
 {#if !AuthStore.ready}

@@ -52,8 +52,8 @@ export interface NavTab {
 }
 
 /**
- * Hanya tab `home` yang punya route asli; sisanya dirender sebagai placeholder
- * `href="#"` di SubNav sampai halamannya dibuat.
+ * Baru tab `home` dan `profil` yang punya route asli; sisanya dirender sebagai
+ * placeholder non-navigable di SubNav sampai halamannya dibuat.
  */
 export const subNavTabs: NavTab[] = [
 	{ id: 'home', label: 'Home', active: true },

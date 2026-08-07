@@ -33,6 +33,14 @@
 	const iconMask = 'size-4 shrink-0 bg-current mask-contain mask-center mask-no-repeat';
 </script>
 
+{#snippet tabInner(tab: NavTab)}
+	<span
+		class={cn(iconMask, tab.active ? 'text-(--brand-600)' : 'text-[#9aa2b1]')}
+		style="mask-image: url({icons[tab.id]})"
+	></span>
+	{tab.label}
+{/snippet}
+
 <div class="border-b border-(--dash-border) bg-white px-4 py-3 sm:px-6 sm:py-4 lg:px-12.5 lg:py-5">
 	<div
 		class="mx-auto flex max-w-[1880px] flex-wrap items-center justify-between gap-3 sm:gap-4 lg:px-5"
@@ -44,23 +52,23 @@
 			class="flex w-full min-w-0 scrollbar-none items-center gap-5 overflow-x-auto pb-1 sm:gap-6.5 lg:w-auto lg:flex-wrap lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden"
 		>
 			{#each tabs as tab (tab.id)}
+				{@const linkClass = cn(
+					tabBase,
+					tab.active ? tabActive : `${tabIdle} hover:text-(--brand-600)`
+				)}
+				<!-- resolve() harus muncul langsung di href (lint
+				     svelte/no-navigation-without-resolve), jadi tiap route dicabangkan
+				     eksplisit; isi tab dibagi lewat snippet supaya tidak terduplikasi. -->
 				{#if tab.id === 'home'}
-					<a
-						href={resolve('/')}
-						class={cn(tabBase, tab.active ? tabActive : `${tabIdle} hover:text-(--brand-600)`)}
-					>
-						<span
-							class={cn(iconMask, tab.active ? 'text-(--brand-600)' : 'text-[#9aa2b1]')}
-							style="mask-image: url({icons[tab.id]})"
-						></span>
-						{tab.label}
-					</a>
+					<a href={resolve('/')} class={linkClass}>{@render tabInner(tab)}</a>
+				{:else if tab.id === 'profil'}
+					<a href={resolve('/profil')} class={linkClass}>{@render tabInner(tab)}</a>
+				{:else if tab.id === 'tes-bahasa'}
+					<a href={resolve('/tes-bahasa-inggris')} class={linkClass}>{@render tabInner(tab)}</a>
 				{:else}
 					<!-- Route tujuan belum dibuat, jadi non-navigable. -->
 					<span class={cn(tabBase, tabIdle, 'cursor-default')} aria-disabled="true">
-						<span class={cn(iconMask, 'text-[#9aa2b1]')} style="mask-image: url({icons[tab.id]})"
-						></span>
-						{tab.label}
+						{@render tabInner(tab)}
 					</span>
 				{/if}
 			{/each}
