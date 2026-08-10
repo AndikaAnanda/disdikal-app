@@ -25,28 +25,34 @@
 	];
 </script>
 
-<div class="bg-[#01296E] text-sm font-medium text-white">
+<div class="bg-(--navy-950) text-xs text-(--auth-bar-text)">
 	<div
-		class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10"
+		class="flex flex-wrap items-center justify-between gap-4.5 px-[clamp(18px,3vw,48px)] py-1.75"
 	>
-		<div class="hidden flex-wrap items-center gap-6 text-[#d7deed] md:flex">
-			<span class="flex items-center gap-2">
-				<MailIcon class="size-4" />support@tnial.com
+		<div class="hidden flex-wrap items-center gap-6.5 md:flex">
+			<span class="inline-flex items-center gap-2">
+				<MailIcon class="size-3.75 text-(--auth-bar-icon)" strokeWidth={1.8} />support@tnial.com
 			</span>
-			<span class="flex items-center gap-2">
-				<ClockIcon class="size-4" />Working: 8.00am - 5.00pm
+			<span class="inline-flex items-center gap-2">
+				<ClockIcon class="size-3.75 text-(--auth-bar-icon)" strokeWidth={1.8} />Working: 8.00am -
+				5.00pm
 			</span>
 		</div>
 
-		<div class="flex items-center gap-8">
-			<div class="hidden items-center gap-6 text-[#d7deed] sm:flex">
+		<div class="flex items-center gap-5.5">
+			<div class="hidden items-center gap-5.5 sm:flex">
 				{#each navLinks as link (link)}
 					<span aria-disabled="true">{link}</span>
 				{/each}
 			</div>
-			<div class="flex items-center gap-4">
+			<div class="flex items-center gap-3.5 pl-2">
 				{#each socials as social (social.name)}
-					<svg viewBox="0 0 24 24" class="size-4 fill-current" role="img" aria-label={social.name}>
+					<svg
+						viewBox="0 0 24 24"
+						class="size-3.75 fill-current"
+						role="img"
+						aria-label={social.name}
+					>
 						<path d={social.path} />
 					</svg>
 				{/each}

@@ -22,7 +22,7 @@
 	]);
 </script>
 
-<div class="rounded-[14px] border border-(--dash-border) bg-white px-5 py-5 sm:px-6.5 sm:py-5.5">
+<div class="rounded-[14px] bg-white px-5 py-5 sm:px-6.5 sm:py-5.5">
 	<div class="mb-5 flex items-center justify-between gap-3">
 		<div class="flex items-center gap-2.5">
 			<UserIcon class="size-4.5 text-(--brand-600)" />

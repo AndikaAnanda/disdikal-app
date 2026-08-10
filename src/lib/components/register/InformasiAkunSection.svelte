@@ -1,14 +1,12 @@
 <script lang="ts">
-	import CircleCheckIcon from '@lucide/svelte/icons/circle-check';
+	import CheckIcon from '@lucide/svelte/icons/check';
 	import EyeIcon from '@lucide/svelte/icons/eye';
 	import EyeOffIcon from '@lucide/svelte/icons/eye-off';
 	import LockIcon from '@lucide/svelte/icons/lock';
 	import MailIcon from '@lucide/svelte/icons/mail';
 	import PhoneIcon from '@lucide/svelte/icons/phone';
-	import ShieldCheckIcon from '@lucide/svelte/icons/shield-check';
 	import type { SuperForm } from 'sveltekit-superforms';
-	import { Input } from '$lib/components/ui/input';
-	import { Label } from '$lib/components/ui/label';
+	import AuthField from '$lib/components/auth/AuthField.svelte';
 	import type { RegisterInput } from '$lib/schemas/register';
 
 	let { superform }: { superform: SuperForm<RegisterInput> } = $props();
@@ -19,146 +17,129 @@
 	let showPassword = $state(false);
 	let showConfirmPassword = $state(false);
 
-	const passwordHints = [
-		'Minimal 8 karakter',
-		'Mengandung angka',
-		'Mengandung huruf besar dan kecil',
-		'Mengandung simbol (contoh: @ # $ % ^ & *)'
-	];
-
-	const inputBase =
-		'h-auto rounded-lg border-(--auth-border) py-2.75 pl-10 text-[#01296E] placeholder:text-[#01296E] focus:border-(--brand-600) focus:ring-(--brand-600)';
-	const iconLeft =
-		'pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[#01296E]';
+	// Dihitung ulang tiap ketikan supaya tiap kriteria memantulkan password yang
+	// sedang diisi; versi sebelumnya selalu hijau apa pun isinya.
+	const rules = $derived([
+		{ label: 'Minimal 8 karakter', ok: $form.password.length >= 8 },
+		{ label: 'Mengandung angka', ok: /[0-9]/.test($form.password) },
+		{
+			label: 'Mengandung huruf besar dan kecil',
+			ok: /[a-z]/.test($form.password) && /[A-Z]/.test($form.password)
+		},
+		{ label: 'Mengandung simbol (contoh: @ # $ % ^ & *)', ok: /[^A-Za-z0-9]/.test($form.password) }
+	]);
 </script>
 
-<div class="rounded-2xl bg-white p-5 sm:p-7">
-	<div class="mb-5 flex items-center gap-2.5">
-		<span
-			class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-(--brand-100) text-(--brand-600)"
-		>
-			<MailIcon class="size-4" />
+{#snippet requiredMark()}
+	<span class="text-destructive">*</span>
+{/snippet}
+
+<div class="rounded-2xl border border-(--auth-border) bg-white px-6 py-5.5">
+	<div class="mb-5 flex items-center gap-2.75">
+		<span class="flex size-7.5 shrink-0 items-center justify-center rounded-[9px] bg-(--brand-100)">
+			<LockIcon class="size-4 text-(--brand-500)" strokeWidth={1.9} />
 		</span>
-		<h2 class="text-[17px] font-bold text-(--navy-950)">Informasi Akun</h2>
+		<h2 class="text-[16px] font-semibold text-(--navy-950)">Informasi Akun</h2>
 	</div>
 
-	<div class="grid gap-x-7 gap-y-5 sm:grid-cols-2">
-		<div class="space-y-1.5">
-			<Label for="email">Email Aktif<span class="ml-0.5 text-destructive">*</span></Label>
-			<div class="relative">
-				<MailIcon class={iconLeft} />
-				<Input
-					id="email"
-					name="email"
-					type="email"
-					autocomplete="email"
-					placeholder="Masukkan email aktif Anda"
-					bind:value={$form.email}
-					aria-invalid={$errors.email ? 'true' : undefined}
-					class={inputBase}
-				/>
-			</div>
-			{#if $errors.email}
-				<p class="text-xs text-destructive">{$errors.email[0]}</p>
-			{/if}
-		</div>
+	<div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+		<AuthField
+			id="email"
+			label="Email Aktif"
+			icon={MailIcon}
+			type="email"
+			autocomplete="email"
+			placeholder="Masukkan email aktif Anda"
+			bind:value={$form.email}
+			error={$errors.email?.[0]}
+			valid={$form.email.includes('@') && !$errors.email}
+			labelRight={requiredMark}
+		/>
 
-		<div class="space-y-1.5">
-			<Label for="noHp">Nomor Handphone Aktif<span class="ml-0.5 text-destructive">*</span></Label>
-			<div class="relative">
-				<PhoneIcon class={iconLeft} />
-				<Input
-					id="noHp"
-					name="noHp"
-					inputmode="tel"
-					placeholder="Masukkan nomor handphone aktif"
-					bind:value={$form.noHp}
-					aria-invalid={$errors.noHp ? 'true' : undefined}
-					class={inputBase}
-				/>
-			</div>
-			{#if $errors.noHp}
-				<p class="text-xs text-destructive">{$errors.noHp[0]}</p>
-			{/if}
-		</div>
+		<AuthField
+			id="noHp"
+			label="Nomor Handphone Aktif"
+			icon={PhoneIcon}
+			inputmode="tel"
+			placeholder="Masukkan nomor handphone aktif"
+			bind:value={$form.noHp}
+			error={$errors.noHp?.[0]}
+			valid={!!$form.noHp && !$errors.noHp}
+			labelRight={requiredMark}
+		/>
 
-		<div class="space-y-1.5">
-			<Label for="password">Password<span class="ml-0.5 text-destructive">*</span></Label>
-			<div class="relative">
-				<LockIcon class={iconLeft} />
-				<Input
-					id="password"
-					name="password"
-					type={showPassword ? 'text' : 'password'}
-					autocomplete="new-password"
-					placeholder="Buat Password"
-					bind:value={$form.password}
-					aria-invalid={$errors.password ? 'true' : undefined}
-					class="{inputBase} pr-10"
-				/>
+		<AuthField
+			id="password"
+			label="Password"
+			icon={LockIcon}
+			type={showPassword ? 'text' : 'password'}
+			autocomplete="new-password"
+			placeholder="Buat Password"
+			bind:value={$form.password}
+			error={$errors.password?.[0]}
+			labelRight={requiredMark}
+		>
+			{#snippet trailing()}
 				<button
 					type="button"
 					onclick={() => (showPassword = !showPassword)}
 					aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
-					class="absolute top-1/2 right-3 -translate-y-1/2 text-[#9aa2b1] hover:text-(--brand-600)"
+					class="flex shrink-0 cursor-pointer text-(--auth-muted)"
 				>
 					{#if showPassword}
-						<EyeOffIcon class="size-4" />
+						<EyeOffIcon class="size-4.5" strokeWidth={1.8} />
 					{:else}
-						<EyeIcon class="size-4" />
+						<EyeIcon class="size-4.5" strokeWidth={1.8} />
 					{/if}
 				</button>
-			</div>
-			{#if $errors.password}
-				<p class="text-xs text-destructive">{$errors.password[0]}</p>
-			{/if}
-		</div>
+			{/snippet}
+		</AuthField>
 
-		<div class="space-y-1.5">
-			<Label for="confirmPassword"
-				>Konfirmasi Password<span class="ml-0.5 text-destructive">*</span></Label
-			>
-			<div class="relative">
-				<LockIcon class={iconLeft} />
-				<Input
-					id="confirmPassword"
-					name="confirmPassword"
-					type={showConfirmPassword ? 'text' : 'password'}
-					autocomplete="new-password"
-					placeholder="Ulangi password Anda"
-					bind:value={$form.confirmPassword}
-					aria-invalid={$errors.confirmPassword ? 'true' : undefined}
-					class="{inputBase} pr-10"
-				/>
+		<AuthField
+			id="confirmPassword"
+			label="Konfirmasi Password"
+			icon={LockIcon}
+			type={showConfirmPassword ? 'text' : 'password'}
+			autocomplete="new-password"
+			placeholder="Ulangi password Anda"
+			bind:value={$form.confirmPassword}
+			error={$errors.confirmPassword?.[0]}
+			labelRight={requiredMark}
+		>
+			{#snippet trailing()}
 				<button
 					type="button"
 					onclick={() => (showConfirmPassword = !showConfirmPassword)}
 					aria-label={showConfirmPassword ? 'Sembunyikan password' : 'Tampilkan password'}
-					class="absolute top-1/2 right-3 -translate-y-1/2 text-[#9aa2b1] hover:text-(--brand-600)"
+					class="flex shrink-0 cursor-pointer text-(--auth-muted)"
 				>
 					{#if showConfirmPassword}
-						<EyeOffIcon class="size-4" />
+						<EyeOffIcon class="size-4.5" strokeWidth={1.8} />
 					{:else}
-						<EyeIcon class="size-4" />
+						<EyeIcon class="size-4.5" strokeWidth={1.8} />
 					{/if}
 				</button>
-			</div>
-			{#if $errors.confirmPassword}
-				<p class="text-xs text-destructive">{$errors.confirmPassword[0]}</p>
-			{/if}
-		</div>
+			{/snippet}
+		</AuthField>
 	</div>
 
-	<div class="mt-4 rounded-[10px] bg-[#F7F9FE] p-3.5 sm:p-4.5">
-		<div class="mb-2.5 flex items-center gap-2 text-sm font-bold text-[#007CF0]">
-			<ShieldCheckIcon class="size-4" />
+	<div class="mt-4.5 rounded-xl border border-(--auth-cta-border) bg-(--reg-panel-bg) px-4.5 py-4">
+		<div class="mb-2.75 flex items-center gap-2.25 text-[13px] font-semibold text-(--brand-500)">
+			<LockIcon class="size-4" strokeWidth={1.9} />
 			Password harus memenuhi kriteria berikut:
 		</div>
-		<div class="grid gap-x-6 gap-y-2 sm:grid-cols-2">
-			{#each passwordHints as hint (hint)}
-				<div class="flex items-center gap-2 text-[13px] text-[#47546b]">
-					<CircleCheckIcon class="size-3.5 shrink-0 text-[#2f9e5f]" />
-					{hint}
+		<div class="grid grid-cols-1 gap-x-5.5 gap-y-2.25 sm:grid-cols-2">
+			{#each rules as rule (rule.label)}
+				<div
+					class="flex items-center gap-2.25 text-[12.5px] {rule.ok
+						? 'font-semibold text-(--auth-success)'
+						: 'text-(--auth-muted)'}"
+				>
+					<CheckIcon
+						class="size-3.5 shrink-0 {rule.ok ? 'text-(--auth-success)' : 'text-(--reg-idle)'}"
+						strokeWidth={3}
+					/>
+					{rule.label}
 				</div>
 			{/each}
 		</div>

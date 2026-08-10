@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { getErrorMessage, login } from '$lib/api';
+	import loginBg from '$lib/assets/bg/login-bg.png';
 	import HeroPanel from '$lib/components/login/HeroPanel.svelte';
 	import LoginCard from '$lib/components/login/LoginCard.svelte';
 	import { loginSchema } from '$lib/schemas/login';
@@ -30,7 +31,19 @@
 
 <svelte:head><title>Layanan Disdikal — Login</title></svelte:head>
 
-<div class="grid items-start gap-6 max-lg:grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-	<div class="order-2 lg:order-1"><HeroPanel /></div>
-	<div class="order-1 lg:order-2"><LoginCard {superform} /></div>
+<!-- Band full-bleed: ilustrasi dipasang sebagai <img> ber-object-position, bukan
+     background-image, supaya titik crop-nya bisa diatur tanpa rule scoped. -->
+<div
+	class="relative grid flex-1 grid-cols-[repeat(auto-fit,minmax(340px,1fr))] items-center gap-6.5 bg-(--auth-band-bg) px-[clamp(18px,3vw,48px)] py-[clamp(18px,2.4vw,34px)]"
+>
+	<img
+		src={loginBg}
+		alt=""
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-0 size-full object-cover object-[center_45%]"
+	/>
+	<div class="relative z-1 self-start"><HeroPanel /></div>
+	<div class="relative z-1 flex items-center justify-center self-stretch">
+		<LoginCard {superform} />
+	</div>
 </div>

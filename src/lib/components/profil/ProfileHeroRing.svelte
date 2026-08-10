@@ -9,19 +9,19 @@
 <div class="relative z-2 shrink-0 text-left md:text-center">
 	<CompletionRing
 		{percent}
-		fill="#ffffff"
-		track="rgb(255 255 255 / 0.25)"
-		class="mb-3.5 size-26 sm:size-32.5 md:mx-auto"
-		innerClass="size-21 gap-1 px-2 sm:size-26"
+		fill="#007CF0"
+		track="#F4F4F4"
+		class="mb-3.5 size-26 sm:size-45 md:mx-auto"
+		innerClass="size-21 gap-1 px-2 sm:size-35"
 	>
-		<span class="text-[24px] leading-none font-extrabold">{percent}%</span>
-		<span class="max-w-20 text-center text-[10px] leading-tight text-[#cfe0ff]">
+		<span class="text-[28px] leading-none font-bold">{percent}%</span>
+		<span class="max-w-20 text-center text-[12px] leading-tight font-medium text-white">
 			Kelengkapan Profil
 		</span>
 	</CompletionRing>
 	<!-- Flow "lengkapi profil" belum ada, jadi tombol sengaja tanpa href/onclick. -->
 	<Button
-		class="h-auto gap-2 rounded-lg border border-white/40 bg-white/15 px-4.5 py-2.5 text-[13px] font-bold text-white hover:bg-white/25"
+		class="h-auto cursor-pointer gap-2 rounded-lg border border-[#007CF0] bg-white/15 px-4.5 py-2.5 text-[13px] font-bold text-white hover:bg-white/25"
 	>
 		Lengkapi Profile
 		<ArrowRightIcon class="size-3.5" />

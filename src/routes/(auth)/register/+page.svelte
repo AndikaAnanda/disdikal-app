@@ -4,18 +4,21 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { getErrorMessage, register } from '$lib/api';
-	import RegisterBanner from '$lib/components/register/RegisterBanner.svelte';
-	import RegisterFormCard from '$lib/components/register/RegisterFormCard.svelte';
-	import RegisterSidebar from '$lib/components/register/RegisterSidebar.svelte';
+	import RegisterWizard, { FIELD_STEP } from '$lib/components/register/RegisterWizard.svelte';
 	import { registerSchema } from '$lib/schemas/register';
 
 	// unrepresentable: 'any' wajib — z.instanceof(File) tidak punya padanan di
 	// JSON Schema dan adapter akan melempar error tanpa opsi ini.
 	const adapter = zod4(registerSchema, { config: { unrepresentable: 'any' } });
 
+	let step = $state(0);
+
 	const superform = superForm(defaults(adapter), {
 		SPA: true,
 		validators: zod4Client(registerSchema),
+		// Field yang error bisa berada di step yang sedang tidak dirender, jadi
+		// fokus otomatis dimatikan dan navigasinya diurus onUpdated di bawah.
+		autoFocusOnError: false,
 		onUpdate: async ({ form }) => {
 			if (!form.valid) return;
 			// confirmPassword dan agreement hanya gate submit-time, bukan payload API.
@@ -26,6 +29,14 @@
 			} catch (err) {
 				setError(form, 'email', getErrorMessage(err, 'Pendaftaran gagal. Coba lagi.'));
 			}
+		},
+		onUpdated: ({ form }) => {
+			if (form.valid) return;
+			const steps = Object.keys(form.errors)
+				.filter((key) => key in FIELD_STEP)
+				.map((key) => FIELD_STEP[key]);
+			// Step terendah dipilih supaya user memperbaiki dari yang paling awal.
+			if (steps.length) step = Math.min(...steps);
 		}
 	});
 
@@ -36,12 +47,6 @@
 
 <!-- enctype tetap: form ini punya <input type="file"> (unggah foto), dan
      enhance melempar error sebelum submit kalau atribut ini tidak ada. -->
-<form method="POST" enctype="multipart/form-data" use:enhance class="pb-12">
-	<div class="grid items-start gap-6 max-lg:grid-cols-1 lg:grid-cols-[1.65fr_1fr] lg:gap-8">
-		<div class="flex flex-col gap-6">
-			<RegisterBanner />
-			<RegisterFormCard {superform} />
-		</div>
-		<RegisterSidebar {superform} />
-	</div>
+<form method="POST" enctype="multipart/form-data" use:enhance>
+	<RegisterWizard {superform} bind:step />
 </form>

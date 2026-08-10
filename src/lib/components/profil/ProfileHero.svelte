@@ -24,30 +24,32 @@
 	>
 		<div class="relative shrink-0">
 			<Avatar.Root
-				class="size-24 border-[3px] border-white/65 shadow-[0_6px_18px_rgb(0_0_0/25%)] sm:size-32 lg:size-32.5"
+				class="size-24 border-[3px] shadow-[0_6px_18px_rgb(0_0_0/25%)] sm:size-32 lg:size-50"
 			>
 				<Avatar.Image src="https://github.com/shadcn.png" alt={hero.name} />
 				<Avatar.Fallback>PN</Avatar.Fallback>
 			</Avatar.Root>
 			<span
-				class="absolute right-0.5 bottom-0.5 flex size-8 items-center justify-center rounded-full border-[3px] border-[#0d2a63] bg-(--brand-500) text-white"
+				class="absolute right-0.5 bottom-0.5 flex size-11.25 items-center justify-center rounded-full bg-white text-blue-500"
 			>
-				<CameraIcon class="size-3.5" />
+				<CameraIcon class="size-[32px]" />
 			</span>
 		</div>
 
-		<div class="min-w-0">
-			<Badge class="mb-2.5 border-white/35 bg-white/20 px-3.5 py-1 text-xs text-white">
+		<div class="flex min-w-0 flex-col gap-5">
+			<Badge
+				class="bg-linear-to-b from-[#007CF0] to-[#00478A] bg-origin-border px-3.5 py-3 text-sm font-medium text-white"
+			>
 				{hero.badgeLabel}
 			</Badge>
-			<p class="mb-3 text-base font-bold sm:text-lg lg:text-[20px]">{hero.name}</p>
+			<p class="text-base font-bold sm:text-lg lg:text-[20px]">{hero.name}</p>
 			<!-- divide-x hanya dipakai saat satu baris; kalau membungkus, border kiri
 			     muncul di awal tiap baris baru dan posisinya salah. -->
 			<div
-				class="mb-3 grid grid-cols-2 gap-x-4 gap-y-2 rounded-xl bg-white/20 px-4 py-3 backdrop-blur-md lg:flex lg:flex-wrap lg:gap-0 lg:divide-x lg:divide-white/20"
+				class="grid grid-cols-2 gap-x-4 gap-y-2 rounded-xl bg-white/10 px-4 py-3 backdrop-blur-md lg:flex lg:flex-wrap lg:gap-0 lg:divide-x lg:divide-white/20"
 			>
 				{#each info as item (item.id)}
-					<div class="flex min-w-0 items-center gap-1.5 text-[12.5px] lg:px-3">
+					<div class="flex min-w-0 items-center gap-1.5 px-8 text-[12.5px] lg:py-4">
 						<span
 							class="size-3.5 shrink-0 self-start bg-current mask-contain mask-center mask-no-repeat"
 							style="mask-image: url({infoIcon})"
@@ -77,7 +79,7 @@
 		--hero-bg-width: 126%;
 
 		background-image:
-			url('../../assets/bg/dashboard-profile-card-bg.png'),
+			url('../../assets/bg/profil-bg.png'),
 			linear-gradient(115deg, #01296e 0%, #1a4694 55%, #2a5cb0 100%);
 		background-repeat: no-repeat;
 		background-position: center;

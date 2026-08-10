@@ -1,7 +1,9 @@
 <script lang="ts">
-	import InfoIcon from '@lucide/svelte/icons/info';
+	import { resolve } from '$app/paths';
+	import InfoNoticeBar from '$lib/components/shared/InfoNoticeBar.svelte';
 	import MaskIcon from '$lib/components/shared/MaskIcon.svelte';
 	import { iconPlayCircle, iconTimeLine } from '$lib/components/tes-bahasa/icons';
+	import { iconInfoRounded } from '$lib/components/tes-listening/icons';
 	import DaftarBagianSidebar from '$lib/components/tes-listening/DaftarBagianSidebar.svelte';
 	import InformasiTesStrip from '$lib/components/tes-listening/InformasiTesStrip.svelte';
 	import PersiapanGrid from '$lib/components/tes-listening/PersiapanGrid.svelte';
@@ -45,15 +47,16 @@
 			<InformasiTesStrip data={infoTesBox} items={infoStrip} />
 			<PersiapanGrid intro={persiapanIntro} cards={persiapanCards} />
 
-			<div class="flex items-center gap-2 rounded-[8px] bg-[#F7F9FE] px-3 py-2">
-				<InfoIcon class="size-4.5 shrink-0 text-[#007CF0]" />
-				<p class="text-[12px] text-[#007CF0]">{finalNotice}</p>
-			</div>
+			<InfoNoticeBar
+				icon={iconInfoRounded}
+				text={finalNotice}
+				class="py-2"
+				iconClass="text-[#007CF0]"
+			/>
 
-			<!-- Halaman pengerjaan soal belum ada, jadi tombol sengaja tanpa
-			     href/onclick. -->
 			<div class="flex flex-col items-center gap-2">
 				<Button
+					href={resolve('/tes-bahasa-inggris/tes/listening')}
 					class="h-12 w-full gap-3 rounded-[8px] bg-[#01296E] text-[16px] font-bold text-[#EBEBEB] hover:bg-[#0058AA]"
 				>
 					<MaskIcon src={iconPlayCircle} class="size-7" />

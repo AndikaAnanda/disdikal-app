@@ -26,12 +26,22 @@
 	const tesBahasa = resolve('/tes-bahasa-inggris');
 	const tutorialKamera = resolve('/tes-bahasa-inggris/tutorial');
 	const tesListening = resolve('/tes-bahasa-inggris/tes');
+	const listeningQuiz = resolve('/tes-bahasa-inggris/tes/listening');
+	const structureQuiz = resolve('/tes-bahasa-inggris/tes/structure');
+	const readingQuiz = resolve('/tes-bahasa-inggris/tes/reading');
 	// /dokumen adalah sub-halaman Profil: tidak punya tab sendiri, tapi ikut
 	// menyalakan tab "Profil Saya" dan memakai judul yang sama.
 	const routedTabs: Partial<Record<NavTabId, string[]>> = {
 		home: [home],
 		profil: [profil, dokumen],
-		'tes-bahasa': [tesBahasa, tutorialKamera, tesListening]
+		'tes-bahasa': [
+			tesBahasa,
+			tutorialKamera,
+			tesListening,
+			listeningQuiz,
+			structureQuiz,
+			readingQuiz
+		]
 	};
 	const tabs = $derived(
 		subNavTabs.map((tab) =>
@@ -44,7 +54,10 @@
 		[dokumen]: 'Profil Saya',
 		[tesBahasa]: 'Tes Bahasa Inggris',
 		[tutorialKamera]: 'Tes Bahasa Inggris',
-		[tesListening]: 'Listening Comprehension'
+		[tesListening]: 'Listening Comprehension',
+		[listeningQuiz]: 'Listening Comprehension',
+		[structureQuiz]: 'Structure & Written Expression',
+		[readingQuiz]: 'Reading Comprehension'
 	};
 	const title = $derived(pageTitles[page.url.pathname] ?? 'Layanan');
 </script>

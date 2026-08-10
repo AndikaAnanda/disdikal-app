@@ -7,7 +7,7 @@
 	let { items }: { items: DocumentItem[] } = $props();
 </script>
 
-<div class="rounded-[14px] border border-(--dash-border) bg-white px-5 py-5 sm:px-6.5 sm:py-5.5">
+<div class="rounded-[14px] bg-white px-5 py-5 sm:px-6.5 sm:py-5.5">
 	<div class="mb-5 flex items-center gap-2.5">
 		<FolderIcon class="size-4.5 text-(--brand-600)" />
 		<h2 class="text-[15.5px] font-bold text-(--navy-950)">Dokumen</h2>
@@ -15,7 +15,7 @@
 
 	<!-- Separator antar dokumen dipasang sebagai border-left mulai item kedua;
 	     elemen <hr> terpisah tidak ikut hilang saat item membungkus ke baris baru. -->
-	<div class="mb-6 grid grid-cols-1 gap-y-4 sm:grid-cols-2 lg:flex lg:flex-wrap lg:gap-y-3">
+	<div class="mb-6 grid grid-cols-1 gap-y-4 sm:grid-cols-2 lg:flex lg:justify-between lg:gap-y-3">
 		{#each items as item (item.id)}
 			<div
 				class="flex items-center gap-3 lg:border-l lg:border-(--dash-border) lg:px-6 lg:first:border-l-0 lg:first:pl-0"
