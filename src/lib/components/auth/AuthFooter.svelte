@@ -6,6 +6,6 @@
 			</span>
 			Jl. Hang Tuah No. 1, Kebayoran Baru, Jakarta Selatan 12120
 		</p>
-		<p class="self-end">&copy; 2026 Disdikal TNI AL. All rights reserved</p>
+		<p class="self-center">&copy; 2026 Disdikal TNI AL. All rights reserved</p>
 	</div>
 </div>

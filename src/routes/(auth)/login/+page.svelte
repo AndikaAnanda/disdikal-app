@@ -43,7 +43,7 @@
 		class="pointer-events-none absolute inset-0 size-full object-cover object-[center_45%]"
 	/>
 	<div class="relative z-1 self-start"><HeroPanel /></div>
-	<div class="relative z-1 flex items-center justify-center self-stretch">
+	<div class="relative z-1 flex items-center justify-end self-stretch">
 		<LoginCard {superform} />
 	</div>
 </div>

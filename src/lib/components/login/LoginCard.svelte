@@ -118,13 +118,13 @@
 		<Button
 			type="submit"
 			disabled={!$form.email || !$form.password || $submitting}
-			class="h-auto w-full cursor-pointer gap-2.5 rounded-[12px] bg-(--navy-950) py-3.75 text-[15.5px] font-semibold text-white hover:bg-(--brand-600) disabled:cursor-not-allowed disabled:bg-(--auth-disabled-bg) disabled:text-(--auth-disabled-text) disabled:opacity-100"
+			class="h-auto w-full cursor-pointer gap-2.5 mb-8 rounded-[12px] bg-(--navy-950) py-3.75 text-[15.5px] font-semibold text-white hover:bg-(--brand-600) disabled:cursor-not-allowed disabled:bg-(--auth-disabled-bg) disabled:text-(--auth-disabled-text) disabled:opacity-100"
 		>
 			<LogInIcon class="size-4.5" strokeWidth={1.9} />
 			Login
 		</Button>
 
-		<div class="my-4 mb-3 flex items-center gap-3.5">
+		<!-- <div class="my-4 mb-3 flex items-center gap-3.5">
 			<Separator class="flex-1 bg-(--auth-border)" />
 			<span class="text-[12.5px] whitespace-nowrap text-(--auth-disabled-text)">
 				atau masuk sebagai
@@ -132,7 +132,7 @@
 			<Separator class="flex-1 bg-(--auth-border)" />
 		</div>
 
-		<RoleSelector />
+		<RoleSelector /> -->
 
 		<div
 			class="flex flex-nowrap items-center justify-between gap-3.5 rounded-[12px] border border-(--auth-cta-border) bg-(--auth-cta-bg) px-3 py-2.5"
