@@ -13,10 +13,6 @@ declare module 'axios' {
 	}
 }
 
-// The shared axios instance. baseURL is the backend host only — the API version
-// is written inline on each endpoint path (/v1/...) so an individual endpoint can
-// be moved to /v2 independently. Import this directly and call
-// `api.get<HttpResponse<T>>('/v1/...')`, or use the typed helpers in api/endpoints.ts.
 export const api = axios.create({
 	baseURL: config.apiBaseUrl,
 	headers: {
@@ -31,9 +27,6 @@ api.interceptors.request.use((cfg) => {
 	return cfg;
 });
 
-// Response interceptor: on 401, refresh the access token once and retry the
-// original request. The refresh call uses the bare `axios` (not this instance) so
-// it bypasses these interceptors and cannot recurse.
 api.interceptors.response.use(
 	(res) => res,
 	async (error) => {

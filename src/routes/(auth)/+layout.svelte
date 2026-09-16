@@ -3,8 +3,7 @@
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import AuthFooter from '$lib/components/auth/AuthFooter.svelte';
-	import LogoBar from '$lib/components/auth/LogoBar.svelte';
-	import TopBar from '$lib/components/auth/TopBar.svelte';
+	import AuthNavbar from '$lib/components/auth/AuthNavbar.svelte';
 	import { AuthStore } from '$lib/stores';
 
 	let { children } = $props();
@@ -24,8 +23,7 @@
 {:else}
 	<div class="auth-shell flex min-h-screen flex-col bg-(--auth-bg) text-(--auth-text)">
 		<div class="sticky top-0 z-40">
-			<TopBar />
-			<LogoBar />
+			<AuthNavbar />
 		</div>
 
 		<main class="flex flex-1 flex-col {isLoginPage ? '' : 'bg-(--auth-bg)'}">
@@ -52,6 +50,9 @@
 	   ulang token bernama sama untuk dirinya sendiri. */
 	.auth-shell {
 		--navy-950: #0a2c6b;
+		--auth-nav-from: #061c4d;
+		--auth-nav-to: #0d3579;
+		--auth-accent: #ffa554;
 		--brand-50: #eaf2fe;
 		--brand-100: #e8f1fe;
 		--brand-500: #1671e8;
@@ -66,6 +67,9 @@
 		--auth-bar-text: #c8d8f2;
 		--auth-bar-icon: #9cbbec;
 		--field-border: #e1e8f4;
+		/* Login meng-override --field-icon di root card-nya; register memakai default. */
+		--field-icon: var(--brand-500);
+		--auth-captcha-bg: var(--navy-950);
 		--field-border-ok: #bfe6cd;
 		--field-bg-ok: #fafefb;
 		--auth-success: #16a34a;

@@ -25,6 +25,8 @@
 		labelRight,
 		trailing,
 		class: className,
+		labelClass,
+		inputClass,
 		...restProps
 	}: {
 		id: string;
@@ -38,12 +40,14 @@
 		labelRight?: Snippet;
 		trailing?: Snippet;
 		class?: string;
+		labelClass?: string;
+		inputClass?: string;
 	} & Omit<HTMLInputAttributes, 'id' | 'name' | 'type' | 'value' | 'class' | 'files'> = $props();
 </script>
 
 <div class={className}>
 	<div class="mb-1.75 flex items-center justify-between gap-3">
-		<Label for={id} class="text-sm font-medium text-(--auth-text)">{label}</Label>
+		<Label for={id} class={cn('text-sm font-medium text-(--auth-text)', labelClass)}>{label}</Label>
 		{@render labelRight?.()}
 	</div>
 
@@ -58,14 +62,17 @@
 				: 'border-(--field-border) bg-white'
 		)}
 	>
-		<Icon class="size-4.5 shrink-0 text-(--brand-500)" strokeWidth={1.8} />
+		<Icon class="size-4.5 shrink-0 text-(--field-icon)" strokeWidth={1.8} />
 		<Input
 			{id}
 			{name}
 			{type}
 			bind:value
 			aria-invalid={error ? 'true' : undefined}
-			class="h-auto rounded-none border-0 bg-transparent p-0 py-3 text-sm shadow-none placeholder:text-(--auth-muted) focus-visible:border-0 focus-visible:ring-0 aria-invalid:border-0 aria-invalid:ring-0 md:text-sm"
+			class={cn(
+				'h-auto rounded-none border-0 bg-transparent p-0 py-3 text-sm shadow-none placeholder:text-(--auth-muted) focus-visible:border-0 focus-visible:ring-0 aria-invalid:border-0 aria-invalid:ring-0 md:text-sm',
+				inputClass
+			)}
 			{...restProps}
 		/>
 		{@render trailing?.()}

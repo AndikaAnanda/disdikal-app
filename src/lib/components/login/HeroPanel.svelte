@@ -26,7 +26,7 @@
 </script>
 
 <div>
-	<p class="mb-0.5 text-[19px] text-(--navy-950)">Selamat datang di</p>
+	<p class="mb-0.5 text-[16px] text-(--navy-950) sm:text-[19px]">Selamat datang di</p>
 	<h1 class="mb-2.5 text-[clamp(26px,3vw,38px)] leading-[1.15] font-bold text-(--navy-950)">
 		Layanan Disdikal
 	</h1>
