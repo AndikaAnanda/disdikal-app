@@ -39,10 +39,8 @@
 	const emailValid = $derived($form.email.includes('@') && !$errors.email);
 </script>
 
-<!-- --field-icon di-override di sini saja: register tetap memakai ikon biru
-     dari default token di .auth-shell. -->
 <div
-	class="w-full max-w-120 overflow-hidden rounded-2xl border border-(--auth-border) bg-white shadow-[0_18px_46px_rgba(10,44,107,0.08)] [--field-icon:#55709e]"
+	class="w-full max-w-120 overflow-hidden rounded-2xl border border-(--auth-border) bg-white shadow-[0_18px_46px_rgba(10,44,107,0.08)]"
 >
 	<div
 		class="flex items-center gap-3.5 border-b-2 border-(--auth-accent) bg-(--navy-950) px-4 py-4 sm:px-5 sm:py-4.5"
@@ -71,8 +69,6 @@
 			bind:value={$form.email}
 			error={$errors.email?.[0]}
 			valid={emailValid}
-			labelClass="text-[12.5px]"
-			inputClass="py-2.5"
 		>
 			{#snippet trailing()}
 				{#if emailValid}
@@ -94,8 +90,6 @@
 			placeholder="Masukkan Password"
 			bind:value={$form.password}
 			error={$errors.password?.[0]}
-			labelClass="text-[12.5px]"
-			inputClass="py-2.5"
 			class="mt-3.5"
 		>
 			{#snippet labelRight()}

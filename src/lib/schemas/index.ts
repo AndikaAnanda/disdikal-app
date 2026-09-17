@@ -1,2 +1,2 @@
 export { loginSchema, type LoginInput } from './login';
-export { registerSchema, GENDERS, RELIGIONS, type RegisterInput } from './register';
+export { registerSchema, GENDERS, PENDIDIKAN, type RegisterInput } from './register';

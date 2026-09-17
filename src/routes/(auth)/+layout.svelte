@@ -10,6 +10,8 @@
 
 	const isRegisterPage = $derived(page.url.pathname === resolve('/register'));
 	const isLoginPage = $derived(page.url.pathname === resolve('/login'));
+	// Login dan register menggambar band/background full-bleed sendiri.
+	const isBarePage = $derived(isLoginPage || isRegisterPage);
 
 	// Yang sudah login tidak perlu melihat form login/register.
 	function redirectToDashboard(): string {
@@ -26,13 +28,11 @@
 			<AuthNavbar />
 		</div>
 
-		<main class="flex flex-1 flex-col {isLoginPage ? '' : 'bg-(--auth-bg)'}">
+		<main class="flex flex-1 flex-col bg-(--auth-bg)">
 			<div
-				class={isLoginPage
+				class={isBarePage
 					? 'flex flex-1 flex-col'
-					: `mx-auto w-full px-4 pt-8 sm:px-6 sm:pt-10 lg:px-10 lg:pt-14 ${
-							isRegisterPage ? 'max-w-260' : 'max-w-360'
-						}`}
+					: 'mx-auto w-full max-w-360 px-4 pt-8 sm:px-6 sm:pt-10 lg:px-10 lg:pt-14'}
 			>
 				{@render children()}
 			</div>
@@ -67,8 +67,7 @@
 		--auth-bar-text: #c8d8f2;
 		--auth-bar-icon: #9cbbec;
 		--field-border: #e1e8f4;
-		/* Login meng-override --field-icon di root card-nya; register memakai default. */
-		--field-icon: var(--brand-500);
+		--field-icon: #55709e;
 		--auth-captcha-bg: var(--navy-950);
 		--field-border-ok: #bfe6cd;
 		--field-bg-ok: #fafefb;
@@ -83,15 +82,11 @@
 		--input-autofill-text: #17233a;
 
 		/* Khusus wizard register */
-		--reg-amber: #e8a317;
 		--reg-idle: #c7d2e3;
-		--reg-idle-text: #b6c2d6;
 		--reg-panel-bg: #f5f9ff;
-		--reg-doc-warn-border: #f3c77e;
-		--reg-doc-warn-bg: #fef4e6;
-		--reg-doc-warn-text: #b45309;
 		--reg-doc-ok-bg: #e9f8ef;
 		--reg-foto-border: #93baf0;
-		--reg-agree-bg: #edf7f1;
+		--reg-otp-border: #cbd8ec;
+		--reg-card-shadow: 0 18px 50px rgba(10, 44, 107, 0.14);
 	}
 </style>

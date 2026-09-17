@@ -1,63 +1,83 @@
 <script lang="ts">
 	import CheckIcon from '@lucide/svelte/icons/check';
-	import FileIcon from '@lucide/svelte/icons/file';
-	import ShieldIcon from '@lucide/svelte/icons/shield';
-	import UploadIcon from '@lucide/svelte/icons/upload';
 
 	let { step, onJump }: { step: number; onJump: (index: number) => void } = $props();
 
 	const steps = [
-		{ label: 'BIODATA', icon: FileIcon },
-		{ label: 'BUAT AKUN', icon: CheckIcon },
-		{ label: 'DOKUMEN', icon: UploadIcon },
-		{ label: 'VERIFIKASI LANUD', icon: ShieldIcon }
+		{ title: 'Data Diri', sub: 'Identitas diri' },
+		{ title: 'Foto Profil & Dokumen', sub: 'Unggah pas foto dan dokumen' },
+		{ title: 'Buat Akun', sub: 'Email dan kata sandi' },
+		{ title: 'Verifikasi', sub: 'Kode dari email Anda' }
 	];
 
+	type Status = 'done' | 'current' | 'todo';
+
 	// Pewarnaan murni dekoratif dan tidak mengunci navigasi, jadi status cukup
-	// diturunkan dari index — bukan dari kelengkapan field seperti di proto.
-	function colorOf(index: number) {
-		if (index < step) return 'var(--brand-500)';
-		if (index === step) return 'var(--reg-amber)';
-		return 'var(--reg-idle)';
+	// diturunkan dari index — bukan dari kelengkapan field.
+	function statusOf(index: number): Status {
+		if (index < step) return 'done';
+		if (index === step) return 'current';
+		return 'todo';
 	}
 
-	function noteOf(index: number) {
-		if (index < step) return 'Selesai';
-		if (index === step) return 'Sedang diisi';
-		return 'Belum';
-	}
+	const circle: Record<Status, string> = {
+		done: 'bg-(--auth-success) text-white',
+		current: 'bg-(--navy-950) text-white',
+		todo: 'bg-(--auth-tile-idle) text-(--auth-disabled-text)'
+	};
+	// Konektor diwarnai mengikuti step yang dituju, bukan yang ditinggalkan.
+	const line: Record<Status, string> = {
+		done: 'bg-(--auth-success)',
+		current: 'bg-(--brand-500)',
+		todo: 'bg-(--reg-idle)'
+	};
+	const title: Record<Status, string> = {
+		done: 'text-(--auth-success)',
+		current: 'text-(--navy-950)',
+		todo: 'text-(--auth-disabled-text)'
+	};
+	const sub: Record<Status, string> = {
+		done: 'text-(--auth-success)',
+		current: 'text-(--brand-500)',
+		todo: 'text-(--auth-muted)'
+	};
 </script>
 
-<div class="rounded-2xl border border-(--auth-border) bg-white px-[clamp(20px,3vw,40px)] py-5.5">
-	<div class="flex items-start">
-		{#each steps as item, index (item.label)}
-			{@const Icon = item.icon}
-			{@const color = colorOf(index)}
-			<div class="relative flex flex-1 flex-col items-center text-center">
-				{#if index > 0}
-					<div
-						class="absolute top-5.25 right-1/2 h-[2.5px] w-full"
-						style="background: {colorOf(index - 1)}"
-					></div>
-				{/if}
-				<button
-					type="button"
-					onclick={() => onJump(index)}
-					aria-current={index === step ? 'step' : undefined}
-					class="relative z-1 flex size-11 cursor-pointer items-center justify-center rounded-full border-[2.5px] bg-white"
-					style="color: {color}; border-color: {color}"
-				>
-					<Icon class="size-4.25" />
-				</button>
-				<p
-					class="mt-2.5 text-[13px] font-bold tracking-[0.8px] {index > step
-						? 'text-(--reg-idle-text)'
-						: 'text-(--navy-950)'}"
-				>
-					{item.label}
+<div>
+	<div class="grid grid-cols-[1fr_1fr_1fr_auto] items-start">
+		{#each steps as item, index (item.title)}
+			{@const status = statusOf(index)}
+			<div class="flex flex-col items-start">
+				<div class="flex w-full items-center">
+					<button
+						type="button"
+						onclick={() => onJump(index)}
+						aria-current={status === 'current' ? 'step' : undefined}
+						aria-label="Langkah {index + 1}: {item.title}"
+						class="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full text-[12.5px] font-semibold {circle[
+							status
+						]}"
+					>
+						{#if status === 'done'}
+							<CheckIcon class="size-3.5" strokeWidth={3} />
+						{:else}
+							{index + 1}
+						{/if}
+					</button>
+					{#if index < steps.length - 1}
+						<div class="mx-2 h-0.5 flex-1 rounded-full {line[statusOf(index + 1)]}"></div>
+					{/if}
+				</div>
+				<p class="mt-2 hidden text-[13px] leading-tight font-semibold sm:block {title[status]}">
+					{item.title}
 				</p>
-				<p class="mt-0.5 text-xs" style="color: {color}">{noteOf(index)}</p>
+				<p class="mt-0.5 hidden text-[11px] sm:block {sub[status]}">{item.sub}</p>
 			</div>
 		{/each}
 	</div>
+
+	<p class="mt-2.5 text-[12.5px] text-(--auth-muted) sm:hidden">
+		Langkah {step + 1} dari {steps.length} ·
+		<span class="font-semibold text-(--navy-950)">{steps[step].title}</span>
+	</p>
 </div>

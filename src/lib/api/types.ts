@@ -31,18 +31,26 @@ export interface LoginResponse {
 	user: User;
 }
 
-// Mirrors registerSchema minus the submit-time-only fields (confirmPassword,
-// agreement). `foto` is sent as multipart when present.
+// Mirrors registerSchema minus the submit-time-only field (confirmPassword).
+// File fields are sent as multipart when any of them is present.
 export interface RegisterRequest {
-	nomorPeserta: string;
-	nik: string;
 	namaLengkap: string;
-	jenisKelamin: string;
+	nik: string;
 	tanggalLahir: string;
-	tempatLahir: string;
-	agama: string;
-	email: string;
+	jenisKelamin: string;
+	pendidikanTerakhir: string;
+	jurusan: string;
+	provinsi: string;
+	kabupatenKota: string;
+	alamat: string;
 	noHp: string;
+	email: string;
+	namaPengguna: string;
 	password: string;
+	kodeVerifikasi: string;
 	foto?: File;
+	ktp?: File;
+	ijazah?: File;
+	transkrip?: File;
+	suratSehat?: File;
 }

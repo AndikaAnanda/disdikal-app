@@ -1,11 +1,9 @@
 <script lang="ts">
-	import SendIcon from '@lucide/svelte/icons/send';
-	import ShieldIcon from '@lucide/svelte/icons/shield';
-	import ShieldCheckIcon from '@lucide/svelte/icons/shield-check';
+	import ClockIcon from '@lucide/svelte/icons/clock';
 	import type { SuperForm } from 'sveltekit-superforms';
+	import OtpInput from './OtpInput.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { cn } from '$lib/utils';
+	import { Label } from '$lib/components/ui/label';
 	import type { RegisterInput } from '$lib/schemas/register';
 
 	let { superform }: { superform: SuperForm<RegisterInput> } = $props();
@@ -13,76 +11,65 @@
 	// svelte-ignore state_referenced_locally
 	const { form, errors } = superform;
 
-	function toggleAgreement() {
-		$form.agreement = !$form.agreement;
-	}
+	const RESEND_MS = 60_000;
 
-	function onAgreementKeydown(event: KeyboardEvent) {
-		if (event.key !== 'Enter' && event.key !== ' ') return;
-		event.preventDefault();
-		toggleAgreement();
+	// Berbasis deadline, bukan decrement per tick, supaya tetap akurat saat tab
+	// di-throttle browser. Komponen hanya dirender saat step ini aktif, jadi
+	// mount == "kode dikirim" dan unmount membersihkan interval.
+	let expiresAt = $state(Date.now() + RESEND_MS);
+	let now = $state(Date.now());
+	const seconds = $derived(Math.max(0, Math.ceil((expiresAt - now) / 1000)));
+
+	$effect(() => {
+		const id = setInterval(() => (now = Date.now()), 1000);
+		return () => clearInterval(id);
+	});
+
+	function resend() {
+		// TODO: panggil endpoint kirim-ulang OTP (belum tersedia di backend).
+		expiresAt = Date.now() + RESEND_MS;
+		now = Date.now();
 	}
 </script>
 
-<div class="rounded-2xl border border-(--auth-border) bg-white px-6 py-5.5">
-	<div class="mb-1 flex items-center gap-2.75">
-		<span class="flex size-7.5 shrink-0 items-center justify-center rounded-[9px] bg-(--brand-100)">
-			<ShieldIcon class="size-4 text-(--brand-500)" strokeWidth={1.9} />
-		</span>
-		<h2 class="text-[16px] font-semibold text-(--navy-950)">Pernyataan &amp; Verifikasi Lanud</h2>
-	</div>
-
-	<!-- Seluruh kartu jadi target klik; Checkbox di dalamnya murni visual
-	     (tabindex -1) supaya tidak ada dua stop tab untuk satu kontrol. -->
-	<div
-		role="button"
-		tabindex="0"
-		aria-pressed={$form.agreement}
-		onclick={toggleAgreement}
-		onkeydown={onAgreementKeydown}
-		class={cn(
-			'mt-4 flex cursor-pointer items-start gap-3 rounded-xl border px-4 py-3.75',
-			$form.agreement
-				? 'border-(--field-border-ok) bg-(--reg-agree-bg)'
-				: 'border-(--field-border) bg-white'
-		)}
-	>
-		<!-- size-3! wajib penting: indicator bawaan memasang [&>svg]:size-3.5 dengan
-		     specificity sama, jadi pemenangnya bergantung urutan sumber utility. -->
-		<Checkbox
-			checked={$form.agreement}
-			tabindex={-1}
-			aria-hidden="true"
-			class="mt-0.5 size-4.75 rounded-[5px] border-[1.5px] border-(--auth-outline-border) bg-white shadow-none data-checked:border-(--auth-success) data-checked:bg-(--auth-success) data-checked:text-white [&_svg]:size-3!"
-		/>
-		<span class="text-[13px] leading-[1.6] text-(--auth-text)">
-			Saya menyatakan bahwa data yang saya berikan adalah benar dan dapat dipertanggungjawabkan
-		</span>
-	</div>
-	{#if $errors.agreement}
-		<p class="mt-1.5 text-xs text-destructive">{$errors.agreement}</p>
+<div>
+	<Label class="mb-2 block text-[12px] font-medium text-(--auth-text)">Kode Verifikasi</Label>
+	<OtpInput
+		bind:value={$form.kodeVerifikasi}
+		name="kodeVerifikasi"
+		invalid={!!$errors.kodeVerifikasi}
+	/>
+	{#if $errors.kodeVerifikasi}
+		<p class="mt-1.5 text-xs text-destructive">{$errors.kodeVerifikasi[0]}</p>
 	{/if}
+	<p class="mt-2 text-[11.5px] text-(--auth-muted)">
+		6 digit dikirim ke
+		<span class="font-medium text-(--brand-500)">{$form.email || 'email Anda'}</span>. Belum masuk?
+		periksa folder spam
+	</p>
 
 	<div
-		class="mt-4 flex items-start gap-3.25 rounded-xl border border-(--auth-cta-border) bg-(--reg-panel-bg) px-4.5 py-4"
+		class="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-(--auth-cta-border) bg-(--reg-panel-bg) px-4 py-3.5"
 	>
-		<span class="flex size-8.5 shrink-0 items-center justify-center rounded-full bg-(--brand-500)">
-			<ShieldCheckIcon class="size-4.5 text-white" strokeWidth={1.8} />
+		<span
+			class="flex size-8.5 shrink-0 items-center justify-center rounded-full bg-(--brand-100) text-(--brand-500)"
+		>
+			<ClockIcon class="size-4" strokeWidth={1.9} />
 		</span>
-		<div>
-			<p class="mb-1 text-[13.5px] font-semibold text-(--navy-950)">Verifikasi Admin</p>
-			<p class="text-[12.5px] leading-[1.6] text-(--auth-subtext)">
-				Setelah Anda mengirimkan pendaftaran, data akan diverifikasi oleh admin. Akun Anda akan
-				aktif jika data dinyatakan sesuai dan valid
+		<div class="min-w-0 flex-1">
+			<p class="text-[13px] font-semibold text-(--navy-950)">
+				{seconds > 0 ? `Kode berlaku ${seconds} detik lagi` : 'Kode kedaluwarsa'}
 			</p>
+			<p class="mt-0.5 text-[11px] text-(--auth-muted)">Masukkan 6 digit sebelum waktunya habis.</p>
 		</div>
+		<Button
+			type="button"
+			variant="outline"
+			disabled={seconds > 0}
+			onclick={resend}
+			class="h-auto cursor-pointer rounded-lg border-(--auth-outline-border) bg-white px-4 py-2.25 text-[12.5px] font-semibold text-(--navy-950) hover:bg-(--brand-50) hover:text-(--navy-950) disabled:cursor-not-allowed disabled:bg-(--auth-disabled-bg) disabled:text-(--auth-disabled-text) disabled:opacity-100"
+		>
+			Kirim ulang kode
+		</Button>
 	</div>
-
-	<Button
-		type="submit"
-		class="mt-4.5 h-auto w-full cursor-pointer gap-2.5 rounded-[11px] bg-(--brand-500) py-3.25 text-[14px] font-semibold text-white hover:bg-(--brand-600)"
-	>
-		<SendIcon class="size-4.25" strokeWidth={1.9} />
-		Kirim Pendaftaran
-	</Button>
 </div>

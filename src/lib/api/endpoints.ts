@@ -40,14 +40,16 @@ export async function logout(): Promise<void> {
 // apakah respons langsung memberi token atau user harus login ulang. Sengaja
 // diisolasi di satu fungsi supaya gampang disesuaikan saat kontraknya jadi.
 export async function register(req: RegisterRequest): Promise<void> {
-	const { foto, ...rest } = req;
-	if (!foto) {
-		await api.post('/v1/auth/register', rest, { skipAuthRefresh: true });
+	const hasFile = Object.values(req).some((v) => v instanceof File);
+	if (!hasFile) {
+		await api.post('/v1/auth/register', req, { skipAuthRefresh: true });
 		return;
 	}
 	const body = new FormData();
-	for (const [key, value] of Object.entries(rest)) body.append(key, value);
-	body.append('foto', foto);
+	for (const [key, value] of Object.entries(req)) {
+		if (value === undefined || value === null) continue;
+		body.append(key, value instanceof File ? value : String(value));
+	}
 	await api.post('/v1/auth/register', body, {
 		skipAuthRefresh: true,
 		headers: { 'Content-Type': 'multipart/form-data' }

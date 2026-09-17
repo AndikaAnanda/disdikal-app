@@ -47,7 +47,9 @@
 
 <div class={className}>
 	<div class="mb-1.75 flex items-center justify-between gap-3">
-		<Label for={id} class={cn('text-sm font-medium text-(--auth-text)', labelClass)}>{label}</Label>
+		<Label for={id} class={cn('text-[12px] font-medium text-(--auth-text)', labelClass)}>
+			{label}
+		</Label>
 		{@render labelRight?.()}
 	</div>
 
@@ -70,7 +72,7 @@
 			bind:value
 			aria-invalid={error ? 'true' : undefined}
 			class={cn(
-				'h-auto rounded-none border-0 bg-transparent p-0 py-3 text-sm shadow-none placeholder:text-(--auth-muted) focus-visible:border-0 focus-visible:ring-0 aria-invalid:border-0 aria-invalid:ring-0 md:text-sm',
+				'h-auto rounded-none border-0 bg-transparent p-0 py-2.5 text-sm shadow-none placeholder:text-(--auth-muted) focus-visible:border-0 focus-visible:ring-0 aria-invalid:border-0 aria-invalid:ring-0 md:text-sm',
 				inputClass
 			)}
 			{...restProps}

@@ -36,7 +36,7 @@
 
 <div class={className}>
 	<div class="mb-1.75">
-		<Label for="captcha" class="text-[12.5px] font-medium text-(--auth-text)">Kode Keamanan</Label>
+		<Label for="captcha" class="text-[12px] font-medium text-(--auth-text)">Kode Keamanan</Label>
 	</div>
 
 	<div class="flex items-stretch gap-2">
