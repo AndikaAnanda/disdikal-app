@@ -6,11 +6,9 @@ export interface UserProfile {
 	shortName: string;
 	role: string;
 	nrp: string;
+	pangkat: string;
 	satker: string;
-	programStudi: string;
-	gelar: string;
-	statusLabel: string;
-	lastLogin: string;
+	pendidikanTerakhir: string;
 	profileCompletionPct: number;
 	profileRemaining: string;
 	email: string;
@@ -23,27 +21,18 @@ export const currentUser: UserProfile = {
 	shortName: 'Pangidoan Nugroho',
 	role: 'Koarmada II',
 	nrp: '9175629002',
+	pangkat: 'Letnan Kolonel',
 	satker: 'Koarmada II',
-	programStudi: 'Gun Gelar (S2)',
-	gelar: 'M.Han',
-	statusLabel: 'Sedang Proses',
-	lastLogin: "06 Apr '26 - 13.00 WIB",
+	pendidikanTerakhir: 'S1 - Manajemen Pertahanan',
 	profileCompletionPct: 90,
-	profileRemaining: 'Sisa 1 Dokumen: SK Pangkat Terakhir',
+	profileRemaining: '2 data belum lengkap',
 	email: 'support@tnial.com',
 	workingHours: 'Working: 8.00am - 5.00pm',
 	unreadCount: 3
 };
 
 export type NavTabId =
-	| 'home'
-	| 'profil'
-	| 'pengajuan'
-	| 'tes-bahasa'
-	| 'riwayat'
-	| 'detail'
-	| 'download'
-	| 'perpustakaan';
+	'home' | 'profil' | 'pengajuan' | 'tes-bahasa' | 'riwayat' | 'download' | 'perpustakaan';
 
 export interface NavTab {
 	id: NavTabId;
@@ -52,8 +41,8 @@ export interface NavTab {
 }
 
 /**
- * Baru tab `home` dan `profil` yang punya route asli; sisanya dirender sebagai
- * placeholder non-navigable di SubNav sampai halamannya dibuat.
+ * Baru tab `home`, `profil`, dan `tes-bahasa` yang punya route asli; sisanya
+ * dirender sebagai placeholder non-navigable di SubNav sampai halamannya dibuat.
  */
 export const subNavTabs: NavTab[] = [
 	{ id: 'home', label: 'Home', active: true },
@@ -61,40 +50,38 @@ export const subNavTabs: NavTab[] = [
 	{ id: 'pengajuan', label: 'Pengajuan Layanan', active: false },
 	{ id: 'tes-bahasa', label: 'Tes Bahasa Inggris', active: false },
 	{ id: 'riwayat', label: 'Riwayat Pengajuan', active: false },
-	{ id: 'detail', label: 'Detail Pengajuan', active: false },
 	{ id: 'download', label: 'Download Hasil', active: false },
 	{ id: 'perpustakaan', label: 'Perpustakaan', active: false }
 ];
 
-export interface AnnouncementSummary {
+export interface ScheduleItem {
+	id: string;
+	day: string;
+	month: string;
 	title: string;
-	subLabel: string;
-	dateRange: string;
+	detail: string;
 }
 
-export const announcement: AnnouncementSummary = {
-	title: 'Pendaftaran Gelombang II Diktupa TA 2026 dibuka!',
-	subLabel: 'Periode pendaftaran',
-	dateRange: '15 April s.d 30 Mei 2026'
-};
+export const schedules: ScheduleItem[] = [
+	{
+		id: 'unggah',
+		day: '30',
+		month: 'Apr',
+		title: 'Batas Unggah Dokumen Gelombang II',
+		detail: '23.59 WIB · Gun Gelar 2026'
+	},
+	{
+		id: 'alcpt',
+		day: '06',
+		month: 'Mei',
+		title: 'Tes Bahasa Inggris (ALCPT)',
+		detail: '08.00 WIB · Ujian Online Disdikal'
+	}
+];
 
-export interface DeadlineInfo {
-	title: string;
-	subLabel: string;
-	days: string;
-	hours: string;
-	minutes: string;
-}
+export type StepStatus = 'done' | 'current' | 'pending';
 
-export const uploadDeadline: DeadlineInfo = {
-	title: 'Upload Dokumen',
-	subLabel: 'Batas akhir dokumen persyaratan',
-	days: '05',
-	hours: '12',
-	minutes: '45'
-};
-
-export type StatAccent = 'blue' | 'green' | 'yellow' | 'teal';
+export type StatAccent = 'blue' | 'green' | 'orange' | 'purple' | 'pink';
 
 export interface StatItem {
 	id: string;
@@ -108,7 +95,7 @@ export const stats: StatItem[] = [
 	{
 		id: 'total',
 		label: 'Total Pengajuan',
-		value: '12',
+		value: '164',
 		subLabel: 'Semua Layanan',
 		accent: 'blue'
 	},
@@ -124,215 +111,202 @@ export const stats: StatItem[] = [
 		label: 'Verifikasi Admin',
 		value: 'Diproses',
 		subLabel: 'Oleh Admin Disdikal',
-		accent: 'yellow'
+		accent: 'orange'
 	},
 	{
 		id: 'jadwal',
 		label: 'Jadwal Tes',
 		value: '12 April 2026',
 		subLabel: 'Tes ALCPT Online',
-		accent: 'teal'
+		accent: 'purple'
 	},
 	{
 		id: 'hasil',
 		label: 'Hasil Akhir',
 		value: 'Belum Ada',
 		subLabel: 'Menunggu Verifikasi',
-		accent: 'teal'
+		accent: 'pink'
 	}
 ];
 
-export type StepStatus = 'done' | 'current' | 'pending';
+export type HistoryStatus =
+	'Sedang Diproses' | 'Menunggu Verifikasi' | 'Disetujui' | 'Ditolak' | 'Perlu Revisi';
 
-export interface TrackingStep {
-	id: string;
-	label: string;
-	title: string;
-	status: StepStatus;
-}
-
-export const trackingSteps: TrackingStep[] = [
-	{ id: 'profil', label: 'Step 1', title: 'Lengkapi Profile', status: 'done' },
-	{
-		id: 'upload',
-		label: 'Step 2',
-		title: 'Upload Dokumen Persyaratan',
-		status: 'current'
-	},
-	{
-		id: 'ajukan',
-		label: 'Step 3',
-		title: 'Ajukan Layanan Pendidikan',
-		status: 'pending'
-	},
-	{ id: 'verifikasi', label: 'Step 4', title: 'Verifikasi & Tes', status: 'pending' },
-	{ id: 'hasil', label: 'Step 5', title: 'Hasil dan Selesai', status: 'pending' }
+export const HISTORY_STATUSES: HistoryStatus[] = [
+	'Sedang Diproses',
+	'Menunggu Verifikasi',
+	'Disetujui',
+	'Ditolak',
+	'Perlu Revisi'
 ];
-
-export type HistoryStatus = 'Selesai' | 'Validasi';
 
 export interface HistoryRow {
 	no: number;
+	noPengajuan: string;
 	jenisLayanan: string;
 	tanggal: string;
 	status: HistoryStatus;
 	keterangan: string;
-	berkas: string;
-	/** true kalau berkas masih perlu aksi unggah/perbaiki (pill biru). */
-	berkasAction: boolean;
+	verifikator: string;
+	updateDate: string;
+	updateTime: string;
 }
 
 export const historyRows: HistoryRow[] = [
 	{
 		no: 1,
-		jenisLayanan: 'Penggunaan Gelar (S2)',
+		noPengajuan: 'PDK-2026-001',
+		jenisLayanan: 'Pengajuan Gelar (S2)',
 		tanggal: '05 April 2026',
-		status: 'Validasi',
+		status: 'Sedang Diproses',
 		keterangan: 'Sedang penomoran SK di Subdis',
-		berkas: 'Lengkap',
-		berkasAction: false
+		verifikator: 'Admin A',
+		updateDate: '20 Juli 2026',
+		updateTime: '09.15 WIB'
 	},
 	{
 		no: 2,
+		noPengajuan: 'PDK-2026-002',
 		jenisLayanan: 'Update Data Pendidikan',
 		tanggal: '01 April 2026',
-		status: 'Selesai',
-		keterangan: 'Data profil berhasil diperbarui',
-		berkas: 'Lengkap',
-		berkasAction: false
+		status: 'Menunggu Verifikasi',
+		keterangan: 'Data profil berhasil diperbaharui',
+		verifikator: 'Admin A',
+		updateDate: '20 Juli 2026',
+		updateTime: '09.15 WIB'
 	},
 	{
 		no: 3,
+		noPengajuan: 'PDK-2026-003',
 		jenisLayanan: 'Patubel Dikpitek',
 		tanggal: '20 Maret 2026',
-		status: 'Selesai',
+		status: 'Disetujui',
 		keterangan: 'Sertifikat & SK telah diterbitkan',
-		berkas: 'Upload SK Jabatan',
-		berkasAction: true
+		verifikator: 'Admin A',
+		updateDate: '20 Juli 2026',
+		updateTime: '09.15 WIB'
 	},
 	{
 		no: 4,
+		noPengajuan: 'PDK-2026-004',
 		jenisLayanan: 'Duk Admin Sus Barjas',
 		tanggal: '15 Februari 2026',
-		status: 'Selesai',
+		status: 'Ditolak',
 		keterangan: 'Berkas administrasi perlu perbaikan',
-		berkas: 'Lengkap',
-		berkasAction: false
+		verifikator: 'Admin A',
+		updateDate: '20 Juli 2026',
+		updateTime: '09.15 WIB'
 	},
 	{
 		no: 5,
+		noPengajuan: 'PDK-2026-005',
 		jenisLayanan: 'Update Data Setprof',
 		tanggal: '25 Januari 2026',
-		status: 'Selesai',
+		status: 'Perlu Revisi',
 		keterangan: 'Verifikasi kepangkatan selesai',
-		berkas: 'Upload Sertifikat Kursus',
-		berkasAction: true
+		verifikator: 'Admin A',
+		updateDate: '20 Juli 2026',
+		updateTime: '09.15 WIB'
 	}
 ];
 
-export interface TimelineEntry {
-	time: string;
+export type ActivityTone = 'green' | 'orange' | 'blue';
+
+export interface ActivityItem {
+	id: string;
 	text: string;
+	time: string;
+	tone: ActivityTone;
 }
 
-export interface TimelineGroup {
-	date: string;
-	entries: TimelineEntry[];
-}
-
-export const timelineGroups: TimelineGroup[] = [
+export const activities: ActivityItem[] = [
 	{
-		date: 'Hari ini - 06 April 2026',
-		entries: [
-			{ time: '13:00', text: 'Admin menerima pengajuan layanan pendidikan Anda' },
-			{ time: '12:45', text: 'Dokumen SK Jabatan berhasil diupload' },
-			{ time: '09:30', text: 'Profil berhasil diperbaharui' }
-		]
+		id: 'a1',
+		text: 'Dokumen ijazah S2 diverifikasi Admin A',
+		time: 'Hari ini · 09:15 WIB',
+		tone: 'green'
 	},
 	{
-		date: 'Kemarin - 05 April 2026',
-		entries: [
-			{ time: '16:00', text: 'Tes ALCPT Online selesai dikerjakan' },
-			{ time: '16:00', text: 'Nilai Tes ALCPT: 85 (Advanced)' },
-			{ time: '10:15', text: 'Verifikasi dokumen oleh admin dimulai' }
-		]
+		id: 'a2',
+		text: 'Surat rekomendasi satuan perlu diunggah ulang',
+		time: 'Kemarin · 15:40 WIB',
+		tone: 'orange'
+	},
+	{
+		id: 'a3',
+		text: 'Dokumen ijazah S2 diverifikasi Admin A',
+		time: '12 April 2026 · 08:02 WIB',
+		tone: 'blue'
+	},
+	{
+		id: 'a4',
+		text: 'Dokumen ijazah S2 diverifikasi Admin A',
+		time: '10 April 2026 · 06:20 WIB',
+		tone: 'green'
+	},
+	{
+		id: 'a5',
+		text: 'Dokumen ijazah S2 diverifikasi Admin A',
+		time: '08 April 2026 · 11:25 WIB',
+		tone: 'green'
 	}
 ];
 
-export type InfoListIcon = 'calendar' | 'document';
+export type AnnouncementIcon = 'document' | 'exam' | 'upload' | 'check';
+export type AnnouncementTone = 'purple' | 'blue' | 'orange' | 'green';
 
-export interface InfoListItem {
+export interface AnnouncementItem {
 	id: string;
 	title: string;
 	subtitle: string;
 	date: string;
-	icon: InfoListIcon;
+	icon: AnnouncementIcon;
+	tone: AnnouncementTone;
 }
 
-export const infoItems: InfoListItem[] = [
+export const announcements: AnnouncementItem[] = [
 	{
-		id: 'diktupa',
-		title: 'Pendaftaran Seleksi Diktupa TA 2026:',
-		subtitle: '15 April sampai 30 Mei 2026',
+		id: 'ijazah',
+		title: 'Dokumen ijazah S2 diverifikasi Admin A',
+		subtitle: 'Periode 15 Apr sampai 30 Mei 2025',
 		date: '06 Apr 2026',
-		icon: 'calendar'
+		icon: 'document',
+		tone: 'purple'
 	},
 	{
 		id: 'alcpt',
 		title: 'Tes ALCPT Online (Mandiri)',
-		subtitle: 'Jadwal fleksibilitas sesuai akun',
+		subtitle: 'Jadwal fleksibel sesuai akun peserta',
 		date: '02 Apr 2026',
-		icon: 'calendar'
+		icon: 'exam',
+		tone: 'blue'
 	},
 	{
 		id: 'scan',
 		title: 'Upload scan dokumen asli wajib PDF',
-		subtitle: 'Berwarna (resolusi 300 DPI)',
+		subtitle: 'Berwarna, resolusi minimal 300 DPI',
 		date: '01 Apr 2026',
-		icon: 'document'
+		icon: 'upload',
+		tone: 'orange'
 	},
 	{
 		id: 'verifikasi',
-		title: 'Verifikasi Berkas: Admin Disdikal menyatakan',
-		subtitle: 'dokumen ID #GD-9918 LENGKAP',
+		title: 'Verifikasi berkas ID #GD-9918 lengkap',
+		subtitle: 'Admin Disdikal menyatakan dokumen lengkap',
 		date: '30 Mar 2026',
-		icon: 'document'
+		icon: 'check',
+		tone: 'green'
 	}
 ];
 
-export interface RadarScore {
-	axis: string;
-	userScore: number;
-	avgScore: number;
-}
-
-/** Mockup aslinya memberi label "Reading" dua kali; axis kelima diperbaiki jadi Structure. */
-export const alcptScores: RadarScore[] = [
-	{ axis: 'Grammar', userScore: 92, avgScore: 78 },
-	{ axis: 'Listening', userScore: 68, avgScore: 70 },
-	{ axis: 'Reading', userScore: 84, avgScore: 76 },
-	{ axis: 'Vocabulary', userScore: 80, avgScore: 74 },
-	{ axis: 'Structure', userScore: 84, avgScore: 72 }
-];
-
-export interface AlcptSummary {
-	score: number;
-	level: string;
-	testDate: string;
-}
-
-export const alcptSummary: AlcptSummary = {
-	score: 85,
-	level: 'Advanced',
-	testDate: '28 Mar 2026'
-};
-
-export interface DownloadItem {
+export interface AlcptSection {
 	id: string;
-	fileName: string;
+	label: string;
+	score: number;
 }
 
-export const downloadItems: DownloadItem[] = [
-	{ id: 'sertifikat-1', fileName: 'Sertifikat Gun Gelar Pangidoan_2026.pdf' },
-	{ id: 'sertifikat-2', fileName: 'SK Penggunaan Gelar Pangidoan_2026.pdf' }
+export const alcptSections: AlcptSection[] = [
+	{ id: 'listening', label: 'Listening Comprehension', score: 88 },
+	{ id: 'structure', label: 'Structure & Written Expression', score: 88 },
+	{ id: 'reading', label: 'Reading Comprehension', score: 88 }
 ];

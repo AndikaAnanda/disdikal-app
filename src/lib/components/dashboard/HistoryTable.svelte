@@ -1,35 +1,41 @@
 <script lang="ts">
+	import EyeIcon from '@lucide/svelte/icons/eye';
 	import { Badge } from '$lib/components/ui/badge';
+	import { Button } from '$lib/components/ui/button';
 	import type { HistoryRow, HistoryStatus } from '$lib/dashboard-data';
 
 	let { rows }: { rows: HistoryRow[] } = $props();
 
 	const statusBadge: Record<HistoryStatus, string> = {
-		Selesai: 'bg-(--accent-green-50) text-(--accent-green)',
-		Validasi: 'bg-(--brand-50) text-(--brand-600)'
+		'Sedang Diproses': 'bg-(--accent-blue-50) text-(--accent-blue)',
+		'Menunggu Verifikasi': 'bg-(--accent-purple-50) text-(--accent-purple)',
+		Disetujui: 'bg-(--accent-green-50) text-(--accent-green)',
+		Ditolak: 'bg-(--accent-red-50) text-(--accent-red)',
+		'Perlu Revisi': 'bg-(--accent-orange-50) text-(--accent-orange)'
 	};
 
 	const headers = [
 		'No',
+		'No Pengajuan',
 		'Jenis Layanan',
 		'Tanggal Pengajuan',
 		'Status',
 		'Keterangan',
-		'Berkas (Unggah/Perbaiki)'
+		'Verifikator',
+		'Tanggal Update',
+		'Aksi'
 	];
 
-	const cell = 'border-b border-(--dash-border) px-3.5 py-3';
+	const cell = 'border-b border-(--dash-border) px-3 py-3 align-middle text-(--dash-text)';
 </script>
 
 <div class="overflow-x-auto">
-	<!-- min-w menjaga kolom tetap terbaca: tanpa itu browser memampatkan sel jadi
-	     satu kata per baris alih-alih memunculkan scrollbar. -->
-	<table class="w-full min-w-170 border-collapse text-[12.5px]">
+	<table class="w-full min-w-240 border-collapse text-[11.5px]">
 		<thead>
-			<tr class="bg-(--navy-900) text-white">
+			<tr class="bg-(--navy-950) text-white">
 				{#each headers as header (header)}
 					<th
-						class="px-3.5 py-2.5 text-left text-xs font-semibold whitespace-nowrap first:rounded-l-lg last:rounded-r-lg"
+						class="px-3 py-3 text-left text-[11.5px] font-semibold whitespace-nowrap first:rounded-l-md last:rounded-r-md"
 					>
 						{header}
 					</th>
@@ -39,24 +45,35 @@
 		<tbody>
 			{#each rows as row (row.no)}
 				<tr class="last:[&>td]:border-b-0">
-					<td class="{cell} text-[#33394a]">{row.no}</td>
-					<td class="{cell} text-[#33394a]">{row.jenisLayanan}</td>
-					<td class="{cell} text-[#33394a]">{row.tanggal}</td>
+					<td class={cell}>{row.no}.</td>
+					<td class="{cell} whitespace-nowrap">{row.noPengajuan}</td>
+					<td class={cell}>{row.jenisLayanan}</td>
+					<td class="{cell} whitespace-nowrap">{row.tanggal}</td>
 					<td class={cell}>
-						<Badge class="border-transparent font-bold {statusBadge[row.status]}">
+						<Badge
+							class="rounded-md border-transparent px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap {statusBadge[
+								row.status
+							]}"
+						>
 							{row.status}
 						</Badge>
 					</td>
-					<td class="{cell} text-[#33394a]">{row.keterangan}</td>
+					<td class={cell}>{row.keterangan}</td>
+					<td class="{cell} whitespace-nowrap">{row.verifikator}</td>
+					<td class="{cell} whitespace-nowrap">
+						<span class="block">{row.updateDate}</span>
+						<span class="block text-[10px] text-(--dash-muted)">{row.updateTime}</span>
+					</td>
 					<td class={cell}>
-						<Badge
+						<Button
+							type="button"
 							variant="outline"
-							class={row.berkasAction
-								? 'border-(--brand-500) text-(--brand-600)'
-								: 'border-(--accent-green) text-(--accent-green)'}
+							aria-disabled="true"
+							class="h-auto cursor-pointer gap-1.5 rounded-md border-(--navy-950) bg-white px-3 py-1.5 text-[11px] font-semibold whitespace-nowrap text-(--navy-950) hover:bg-(--brand-50) hover:text-(--navy-950)"
 						>
-							{row.berkas}
-						</Badge>
+							Lihat Detail
+							<EyeIcon class="size-3.5" strokeWidth={2} />
+						</Button>
 					</td>
 				</tr>
 			{/each}

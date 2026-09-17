@@ -15,8 +15,6 @@
 
 	<p class="text-justify text-[12px] leading-[20px] text-[#343434]">{paragraf}</p>
 
-	<!-- Konektor dirender sebelum tiap langkah (i > 0), pola sama seperti
-	     TrackingPanel; overflow-x menjaga langkah terakhir tidak terpotong. -->
 	<div class="my-5 overflow-x-auto pb-1">
 		<div class="flex min-w-105 items-start">
 			{#each steps as step, i (step.id)}

@@ -3,8 +3,6 @@
 	import bannerIcon from '$lib/assets/register-icon.png';
 </script>
 
-<!-- Ilustrasi gedung ada di sisi kanan gambar, jadi teks dibatasi max-w agar
-     tidak menimpanya di layar lebar. -->
 <div
 	class="flex min-h-32 items-center gap-4 bg-(--brand-50) bg-cover bg-right px-5 py-5 sm:gap-5 sm:px-8"
 	style="background-image: url({bannerBg})"

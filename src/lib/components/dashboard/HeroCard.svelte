@@ -1,87 +1,82 @@
 <script lang="ts">
-	import ProfileCompletionRing from './ProfileCompletionRing.svelte';
+	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
+	import BriefcaseIcon from '@lucide/svelte/icons/briefcase';
+	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
+	import IdCardIcon from '@lucide/svelte/icons/id-card';
+	import MedalIcon from '@lucide/svelte/icons/medal';
+	import { Progress } from 'bits-ui';
+	import { resolve } from '$app/paths';
+	import heroBg from '$lib/assets/bg/card-dashboard.png';
 	import * as Avatar from '$lib/components/ui/avatar';
-	import { Badge } from '$lib/components/ui/badge';
-	import infoIcon from '$lib/assets/mdi_person-group.png';
+	import { Button } from '$lib/components/ui/button';
 	import type { UserProfile } from '$lib/dashboard-data';
 
 	let { user }: { user: UserProfile } = $props();
 
 	const info = $derived([
-		{ id: 'nrp', label: 'NRP', value: user.nrp },
-		{ id: 'satker', label: 'Satker', value: user.satker },
-		{ id: 'prodi', label: 'Program Studi', value: user.programStudi },
-		{ id: 'gelar', label: 'Gelar yang Ditetapkan', value: user.gelar }
+		{ id: 'nrp', icon: IdCardIcon, label: 'NRP', value: user.nrp },
+		{ id: 'pangkat', icon: MedalIcon, label: 'Pangkat', value: user.pangkat },
+		{ id: 'satker', icon: BriefcaseIcon, label: 'Satuan Kerja', value: user.satker },
+		{
+			id: 'pendidikan',
+			icon: GraduationCapIcon,
+			label: 'Pendidikan Terakhir',
+			value: user.pendidikanTerakhir
+		}
 	]);
 </script>
 
 <section
-	class="hero-card relative flex min-h-44 w-full flex-col items-start justify-between gap-5 overflow-hidden rounded-[14px] px-5 py-5 text-white sm:px-7.5 sm:py-6.5 md:flex-row md:items-center"
+	class="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-[10px] bg-(--navy-950) bg-cover bg-right bg-no-repeat px-5 py-4.5 text-white before:absolute before:inset-0 before:bg-linear-to-r before:from-(--navy-950)/75 before:to-transparent sm:px-6 md:before:hidden"
+	style="background-image: url({heroBg})"
 >
-	<div
-		class="relative z-2 flex min-w-0 flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-5.5"
-	>
-		<Avatar.Root
-			class="size-24 shrink-0 border-[3px] border-white/65 shadow-[0_6px_18px_rgb(0_0_0/25%)] sm:size-32 lg:size-37.5"
-		>
+	<div class="relative flex items-center gap-3">
+		<Avatar.Root class="size-10 shrink-0 border-2 border-white/70">
 			<Avatar.Image src="https://github.com/shadcn.png" alt={user.name} />
 			<Avatar.Fallback>CN</Avatar.Fallback>
 		</Avatar.Root>
-
 		<div class="min-w-0">
-			<p class="mb-0.5 text-[14px] font-bold text-white">Selamat Datang,</p>
-			<p class="mb-3 text-base font-bold sm:text-lg lg:text-[20px]">{user.name}!</p>
-			<!-- divide-x hanya dipakai saat satu baris; kalau membungkus, border kiri
-			     muncul di awal tiap baris baru dan posisinya salah. -->
-			<div
-				class="mb-3 grid grid-cols-2 gap-x-4 gap-y-2 rounded-xl bg-white/20 px-4 py-3 backdrop-blur-md lg:flex lg:flex-wrap lg:gap-0 lg:divide-x lg:divide-white/20"
-			>
-				{#each info as item (item.id)}
-					<div class="flex min-w-0 items-center gap-1.5 text-[12.5px] lg:px-3">
-						<span
-							class="size-3.5 shrink-0 self-start bg-current mask-contain mask-center mask-no-repeat"
-							style="mask-image: url({infoIcon})"
-						></span>
-						<span>
-							<span class="block text-[11px]">{item.label}</span>
-							<span class="font-bold">{item.value}</span>
-						</span>
-					</div>
-				{/each}
-			</div>
-			<div class="flex items-center gap-2.5 text-[14px] font-medium">
-				<span>Status Pengajuan:</span>
-				<Badge class="border-white/60 bg-white/95 text-xs text-(--accent-green)">
-					{user.statusLabel}
-				</Badge>
-			</div>
-			<p class="mt-2.5 text-[12px] font-bold text-white">Last Login: {user.lastLogin}</p>
+			<p class="text-[12px] text-white/90">Selamat Datang</p>
+			<p class="truncate text-[15px] font-bold sm:text-[16px]">{user.name}</p>
 		</div>
 	</div>
 
-	<ProfileCompletionRing percent={user.profileCompletionPct} remaining={user.profileRemaining} />
+	<div
+		class="relative grid grid-cols-2 gap-x-4 gap-y-2.5 rounded-lg bg-white/10 px-3 py-2.5 backdrop-blur-sm lg:flex lg:gap-0 lg:divide-x lg:divide-white/15"
+	>
+		{#each info as item (item.id)}
+			{@const Icon = item.icon}
+			<div class="flex min-w-0 items-start gap-2 lg:flex-1 lg:px-4 lg:first:pl-1 lg:last:pr-1">
+				<Icon class="mt-0.5 size-3.5 shrink-0 text-white/80" strokeWidth={1.9} />
+				<div class="min-w-0">
+					<p class="text-[10.5px] text-white/80">{item.label}</p>
+					<p class="truncate text-[12px] font-bold">{item.value}</p>
+				</div>
+			</div>
+		{/each}
+	</div>
+
+	<div class="relative flex flex-col items-start gap-2.5">
+		<p class="text-[12px] font-semibold text-white">
+			Kelengkapan Profil · {user.profileRemaining}
+		</p>
+		<Progress.Root
+			value={user.profileCompletionPct}
+			max={100}
+			aria-label="Kelengkapan profil"
+			class="h-1 w-full overflow-hidden rounded-full bg-white/25"
+		>
+			<span
+				class="block h-full rounded-full bg-(--dash-accent)"
+				style="width: {user.profileCompletionPct}%"
+			></span>
+		</Progress.Root>
+		<Button
+			href={resolve('/profil')}
+			class="h-auto cursor-pointer gap-1.5 rounded-md bg-white px-3 py-1.5 text-[11px] font-semibold text-(--navy-950) hover:bg-(--brand-50) hover:text-(--navy-950)"
+		>
+			Lengkapi Profile
+			<ArrowRightIcon class="size-3.25" strokeWidth={2.2} />
+		</Button>
+	</div>
 </section>
-
-<style>
-	.hero-card {
-		--hero-bg-width: 126%;
-
-		background-image:
-			url('../../assets/bg/dashboard-profile-card-bg.png'),
-			linear-gradient(115deg, #01296e 0%, #1a4694 55%, #2a5cb0 100%);
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: cover;
-	}
-
-	@media (min-width: 48rem) {
-		.hero-card {
-			background-position:
-				left center,
-				center;
-			background-size:
-				var(--hero-bg-width) auto,
-				cover;
-		}
-	}
-</style>

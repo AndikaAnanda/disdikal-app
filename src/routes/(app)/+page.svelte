@@ -1,121 +1,82 @@
 <script lang="ts">
 	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
-	import AnnouncementCard from '$lib/components/dashboard/AnnouncementCard.svelte';
-	import DeadlineCard from '$lib/components/dashboard/DeadlineCard.svelte';
-	import DownloadPanel from '$lib/components/dashboard/DownloadPanel.svelte';
+	import ActivityList from '$lib/components/dashboard/ActivityList.svelte';
+	import AnnouncementList from '$lib/components/dashboard/AnnouncementList.svelte';
 	import HeroCard from '$lib/components/dashboard/HeroCard.svelte';
+	import HistoryFilters from '$lib/components/dashboard/HistoryFilters.svelte';
 	import HistoryTable from '$lib/components/dashboard/HistoryTable.svelte';
-	import InfoListPanel from '$lib/components/dashboard/InfoListPanel.svelte';
-	import ScoreRadarPanel from '$lib/components/dashboard/ScoreRadarPanel.svelte';
+	import ScheduleCard from '$lib/components/dashboard/ScheduleCard.svelte';
+	import ScoreBars from '$lib/components/dashboard/ScoreBars.svelte';
 	import StatCard from '$lib/components/dashboard/StatCard.svelte';
-	import TimelinePanel from '$lib/components/dashboard/TimelinePanel.svelte';
-	import TrackingPanel from '$lib/components/dashboard/TrackingPanel.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import {
-		alcptScores,
-		alcptSummary,
-		announcement,
+		activities,
+		alcptSections,
+		announcements,
 		currentUser,
-		downloadItems,
 		historyRows,
-		infoItems,
-		stats,
-		timelineGroups,
-		trackingSteps,
-		uploadDeadline
+		schedules,
+		stats
 	} from '$lib/dashboard-data';
 
-	const panel = 'mb-4.5 rounded-[14px] border border-(--dash-border) bg-white shadow-none ring-0';
-	const panelTitle = 'font-bold text-black text-[14px]';
+	const panel = 'rounded-[10px] border border-(--dash-border) bg-white shadow-none ring-0';
+	const panelTitle = 'text-[13.5px] font-bold text-(--dash-text)';
 	const seeAll =
-		'flex items-center gap-1 text-[12.5px] font-bold text-[#007CF0] hover:text-[#2457b3] cursor-pointer';
+		'flex cursor-pointer items-center gap-1 text-[11.5px] font-semibold text-(--accent-blue) hover:text-(--brand-600)';
 </script>
 
 <svelte:head><title>Layanan Disdikal — Dashboard</title></svelte:head>
 
-<div class="mx-auto max-w-[1880px] px-3 sm:px-4 lg:px-5">
+<div class="mx-auto flex max-w-[1880px] flex-col gap-3.5 px-3 sm:px-4 lg:px-5">
 	<div
-		class="mb-4.5 grid grid-cols-1 gap-4.5 min-[700px]:grid-cols-2 min-[1600px]:grid-cols-[2.9fr_1fr_1fr]"
+		class="grid grid-cols-1 items-stretch gap-3.5 min-[1100px]:grid-cols-[minmax(0,3.5fr)_minmax(280px,1fr)]"
 	>
-		<div class="grid min-[700px]:col-span-2 min-[1600px]:col-span-1">
-			<HeroCard user={currentUser} />
-		</div>
-		<AnnouncementCard {announcement} />
-		<DeadlineCard deadline={uploadDeadline} />
+		<HeroCard user={currentUser} />
+		<ScheduleCard items={schedules} />
 	</div>
 
-	<div class="grid grid-cols-1 items-stretch gap-4.5 min-[1600px]:grid-cols-[3.2fr_1fr]">
-		<div class="@container flex flex-col">
-			<!-- Ambang 1600px: di bawah itu halaman tetap 1 kolom karena kolom kiri
-			     hasil split tidak cukup lebar untuk min-w tabel riwayat (680px) di
-			     lebar laptop 14". Ambang container di bawah relatif ke kolom ini. -->
-			<div class="mb-4.5 grid grid-cols-2 gap-4 @min-[560px]:grid-cols-3 @min-[940px]:grid-cols-5">
-				{#each stats as stat (stat.id)}
-					<StatCard {stat} />
-				{/each}
-			</div>
+	<div class="grid grid-cols-2 gap-3.5 min-[1100px]:grid-cols-5 sm:grid-cols-5">
+		{#each stats as stat (stat.id)}
+			<StatCard {stat} />
+		{/each}
+	</div>
 
-			<div class="grid flex-1 grid-cols-1 items-stretch gap-4.5 @min-[901px]:grid-cols-[2.2fr_1fr]">
-				<div class="flex flex-col">
-					<Card.Root class="{panel} flex-1">
-						<Card.Header>
-							<Card.Title class={panelTitle}>Tracking Pengajuan (Active)</Card.Title>
-						</Card.Header>
-						<Card.Content class="flex flex-col gap-8">
-							<TrackingPanel steps={trackingSteps} />
-							<div>
-								<h3 class="mt-6 mb-4 text-base font-bold {panelTitle}">
-									Riwayat Pengajuan Terakhir
-								</h3>
-								<HistoryTable rows={historyRows} />
-							</div>
-						</Card.Content>
-					</Card.Root>
-				</div>
+	<Card.Root class={panel}>
+		<Card.Header>
+			<Card.Title class={panelTitle}>Riwayat Pengajuan Terbaru</Card.Title>
+		</Card.Header>
+		<Card.Content class="flex flex-col gap-4">
+			<HistoryFilters />
+			<HistoryTable rows={historyRows} />
+		</Card.Content>
+	</Card.Root>
 
-				<div class="flex flex-col">
-					<Card.Root class={panel}>
-						<Card.Header>
-							<Card.Title class={panelTitle}>TIMELINE AKTIVITAS</Card.Title>
-							<Card.Action class={seeAll} aria-disabled="true">
-								Lihat Semua <ArrowRightIcon class="size-3" />
-							</Card.Action>
-						</Card.Header>
-						<Card.Content><TimelinePanel groups={timelineGroups} /></Card.Content>
-					</Card.Root>
+	<div class="grid grid-cols-1 gap-3.5 min-[1100px]:grid-cols-3 md:grid-cols-2 xl:grid-cols-3">
+		<Card.Root class={panel}>
+			<Card.Header>
+				<Card.Title class={panelTitle}>Aktivitas Pengajuan Saya</Card.Title>
+				<Card.Action class={seeAll} aria-disabled="true">
+					Lihat Semua <ArrowRightIcon class="size-3" strokeWidth={2.2} />
+				</Card.Action>
+			</Card.Header>
+			<Card.Content><ActivityList items={activities} /></Card.Content>
+		</Card.Root>
 
-					<Card.Root class="{panel} flex-1">
-						<Card.Header>
-							<Card.Title class={panelTitle}>INFORMASI &amp; PENGUMUMAN</Card.Title>
-							<Card.Action class={seeAll} aria-disabled="true">
-								Lihat Semua <ArrowRightIcon class="size-3" />
-							</Card.Action>
-						</Card.Header>
-						<Card.Content><InfoListPanel items={infoItems} /></Card.Content>
-					</Card.Root>
-				</div>
-			</div>
-		</div>
+		<Card.Root class={panel}>
+			<Card.Header>
+				<Card.Title class={panelTitle}>Pengumuman Resmi Disdikal</Card.Title>
+				<Card.Action class={seeAll} aria-disabled="true">
+					Lihat Semua <ArrowRightIcon class="size-3" strokeWidth={2.2} />
+				</Card.Action>
+			</Card.Header>
+			<Card.Content><AnnouncementList items={announcements} /></Card.Content>
+		</Card.Root>
 
-		<div class="flex flex-col">
-			<Card.Root class={panel}>
-				<Card.Header>
-					<Card.Title class={panelTitle}>ANALISIS SKOR ALCPT</Card.Title>
-				</Card.Header>
-				<Card.Content class="-mt-7">
-					<ScoreRadarPanel scores={alcptScores} summary={alcptSummary} />
-				</Card.Content>
-			</Card.Root>
-
-			<Card.Root class="{panel} flex-1">
-				<Card.Header>
-					<Card.Title class={panelTitle}>DOWNLOAD HASIL (PDF)</Card.Title>
-					<Card.Action class={seeAll} aria-disabled="true">
-						Lihat Semua <ArrowRightIcon class="size-3" />
-					</Card.Action>
-				</Card.Header>
-				<Card.Content><DownloadPanel items={downloadItems} /></Card.Content>
-			</Card.Root>
-		</div>
+		<Card.Root class="{panel} min-[1100px]:col-span-1">
+			<Card.Header>
+				<Card.Title class={panelTitle}>Skor ALCPT Terakhir</Card.Title>
+			</Card.Header>
+			<Card.Content><ScoreBars items={alcptSections} /></Card.Content>
+		</Card.Root>
 	</div>
 </div>

@@ -86,7 +86,7 @@
 <style>
 	/* Definisi token warna khas dashboard. Sengaja scoped ke .dashboard-shell,
 	   bukan :root, supaya tidak bocor ke tema shadcn global di layout.css. */
-	.dashboard-shell {
+	:global(.dashboard-shell) {
 		--navy-950: #0b1e4a;
 		--navy-900: #10285e;
 		--brand-50: #eaf1fb;
@@ -96,12 +96,21 @@
 		--dash-border: #e6e9f0;
 		--dash-text: #1e2433;
 		--dash-muted: #6b7688;
-		--accent-green: #2f9e5f;
+		--dash-track: #e9edf4;
+		--dash-accent: #ffa554;
+		--accent-blue: #1e6fe8;
+		--accent-blue-50: #e8f1fd;
+		--accent-green: #22b36b;
 		--accent-green-50: #e9f9ef;
 		--accent-yellow: #e0a11f;
-		--accent-teal: #1aab97;
-		--accent-orange: #e08a1f;
+		--accent-orange: #f0932b;
 		--accent-orange-50: #fdf1e4;
+		--accent-purple: #7c5ce6;
+		--accent-purple-50: #efeafc;
+		--accent-pink: #e04f9a;
 		--accent-red: #d43a3a;
+		--accent-red-50: #fde8e8;
+		--schedule-bg: #fff8f0;
+		--schedule-border: #f6ddc2;
 	}
 </style>

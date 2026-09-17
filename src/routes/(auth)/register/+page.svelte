@@ -17,12 +17,9 @@
 	const superform = superForm(defaults(adapter), {
 		SPA: true,
 		validators: zod4Client(registerSchema),
-		// Field yang error bisa berada di step yang sedang tidak dirender, jadi
-		// fokus otomatis dimatikan dan navigasinya diurus onUpdated di bawah.
 		autoFocusOnError: false,
 		onUpdate: async ({ form }) => {
 			if (!form.valid) return;
-			// confirmPassword hanya gate submit-time, bukan payload API.
 			const { confirmPassword: _cp, ...payload } = form.data;
 			try {
 				await register(payload);
@@ -36,7 +33,6 @@
 			const steps = Object.keys(form.errors)
 				.filter((key) => key in FIELD_STEP)
 				.map((key) => FIELD_STEP[key]);
-			// Step terendah dipilih supaya user memperbaiki dari yang paling awal.
 			if (steps.length) step = Math.min(...steps);
 		}
 	});
