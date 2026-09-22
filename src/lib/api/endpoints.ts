@@ -1,6 +1,12 @@
 import api from './axios-instance';
 import { AuthStore, type User } from '$lib/stores/AuthStore.svelte';
-import type { HttpResponse, LoginRequest, LoginResponse, RegisterRequest } from './types';
+import type {
+	ChangePasswordRequest,
+	HttpResponse,
+	LoginRequest,
+	LoginResponse,
+	RegisterRequest
+} from './types';
 
 // --- Auth ----------------------------------------------------------------
 
@@ -39,6 +45,10 @@ export async function logout(): Promise<void> {
 // BELUM DIKONFIRMASI ke tim backend: path, apakah foto dikirim multipart, dan
 // apakah respons langsung memberi token atau user harus login ulang. Sengaja
 // diisolasi di satu fungsi supaya gampang disesuaikan saat kontraknya jadi.
+export async function changePassword(req: ChangePasswordRequest): Promise<void> {
+	await api.post('/v1/auth/change-password', req);
+}
+
 export async function register(req: RegisterRequest): Promise<void> {
 	const hasFile = Object.values(req).some((v) => v instanceof File);
 	if (!hasFile) {

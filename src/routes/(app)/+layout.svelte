@@ -22,18 +22,15 @@
 
 	const home = resolve('/');
 	const profil = resolve('/profil');
-	const dokumen = resolve('/dokumen');
 	const tesBahasa = resolve('/tes-bahasa-inggris');
 	const tutorialKamera = resolve('/tes-bahasa-inggris/tutorial');
 	const tesListening = resolve('/tes-bahasa-inggris/tes');
 	const listeningQuiz = resolve('/tes-bahasa-inggris/tes/listening');
 	const structureQuiz = resolve('/tes-bahasa-inggris/tes/structure');
 	const readingQuiz = resolve('/tes-bahasa-inggris/tes/reading');
-	// /dokumen adalah sub-halaman Profil: tidak punya tab sendiri, tapi ikut
-	// menyalakan tab "Profil Saya" dan memakai judul yang sama.
 	const routedTabs: Partial<Record<NavTabId, string[]>> = {
 		home: [home],
-		profil: [profil, dokumen],
+		profil: [profil],
 		'tes-bahasa': [
 			tesBahasa,
 			tutorialKamera,
@@ -43,15 +40,17 @@
 			readingQuiz
 		]
 	};
+	const matches = (pathname: string, p: string) => pathname === p || pathname.startsWith(p + '/');
 	const tabs = $derived(
 		subNavTabs.map((tab) =>
-			routedTabs[tab.id] ? { ...tab, active: routedTabs[tab.id]!.includes(page.url.pathname) } : tab
+			routedTabs[tab.id]
+				? { ...tab, active: routedTabs[tab.id]!.some((p) => matches(page.url.pathname, p)) }
+				: tab
 		)
 	);
 	const pageTitles: Record<string, string> = {
 		[home]: 'Dashboard',
 		[profil]: 'Profil Saya',
-		[dokumen]: 'Profil Saya',
 		[tesBahasa]: 'Tes Bahasa Inggris',
 		[tutorialKamera]: 'Tes Bahasa Inggris',
 		[tesListening]: 'Listening Comprehension',
@@ -59,7 +58,10 @@
 		[structureQuiz]: 'Structure & Written Expression',
 		[readingQuiz]: 'Reading Comprehension'
 	};
-	const title = $derived(pageTitles[page.url.pathname] ?? 'Layanan');
+	const titleEntries = Object.entries(pageTitles).sort(([a], [b]) => b.length - a.length);
+	const title = $derived(
+		titleEntries.find(([p]) => matches(page.url.pathname, p))?.[1] ?? 'Layanan'
+	);
 </script>
 
 {#if !AuthStore.ready}
@@ -112,5 +114,15 @@
 		--accent-red-50: #fde8e8;
 		--schedule-bg: #fff8f0;
 		--schedule-border: #f6ddc2;
+		--dash-placeholder: #eef2f7;
+		--field-border: var(--dash-border);
+		--field-icon: var(--dash-muted);
+		--field-border-ok: #bfe6cd;
+		--field-bg-ok: #fafefb;
+		--auth-text: var(--dash-text);
+		--auth-muted: var(--dash-muted);
+		--auth-success: var(--accent-green);
+		--input-autofill-bg: #ffffff;
+		--input-autofill-text: var(--dash-text);
 	}
 </style>

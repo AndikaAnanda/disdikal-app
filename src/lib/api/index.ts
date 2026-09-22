@@ -2,12 +2,13 @@
 export { default, api } from './axios-instance';
 
 // Typed endpoint helpers.
-export { login, me, logout, register } from './endpoints';
+export { login, me, logout, register, changePassword } from './endpoints';
 
 // Error helper.
 export { getErrorMessage } from './error';
 
 export type {
+	ChangePasswordRequest,
 	HttpResponse,
 	LoginRequest,
 	LoginResponse,

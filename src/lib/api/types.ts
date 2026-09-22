@@ -31,6 +31,11 @@ export interface LoginResponse {
 	user: User;
 }
 
+export interface ChangePasswordRequest {
+	currentPassword: string;
+	newPassword: string;
+}
+
 // Mirrors registerSchema minus the submit-time-only field (confirmPassword).
 // File fields are sent as multipart when any of them is present.
 export interface RegisterRequest {

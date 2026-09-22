@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { strongPassword } from './password';
 import { KABUPATEN } from '$lib/wilayah-data';
 
 export const GENDERS = [
@@ -81,13 +82,7 @@ export const registerSchema = z
 			.trim()
 			.min(4, 'Nama pengguna minimal 4 karakter')
 			.regex(/^[a-z0-9._]+$/i, 'Nama pengguna hanya boleh huruf, angka, titik, dan garis bawah'),
-		password: z
-			.string()
-			.min(8, 'Kata sandi minimal 8 karakter')
-			.regex(/[0-9]/, 'Kata sandi harus mengandung angka')
-			.regex(/[a-z]/, 'Kata sandi harus mengandung huruf kecil')
-			.regex(/[A-Z]/, 'Kata sandi harus mengandung huruf besar')
-			.regex(/[^A-Za-z0-9]/, 'Kata sandi harus mengandung simbol'),
+		password: strongPassword,
 		confirmPassword: z.string(),
 
 		// Step 4: Verifikasi
