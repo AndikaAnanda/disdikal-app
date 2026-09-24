@@ -61,6 +61,8 @@
 					<a href={resolve('/')} class={linkClass}>{@render tabInner(tab)}</a>
 				{:else if tab.id === 'profil'}
 					<a href={resolve('/profil')} class={linkClass}>{@render tabInner(tab)}</a>
+				{:else if tab.id === 'pengajuan'}
+					<a href={resolve('/pengajuan-layanan')} class={linkClass}>{@render tabInner(tab)}</a>
 				{:else if tab.id === 'tes-bahasa'}
 					<a href={resolve('/tes-bahasa-inggris')} class={linkClass}>{@render tabInner(tab)}</a>
 				{:else}

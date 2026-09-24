@@ -22,6 +22,7 @@
 
 	const home = resolve('/');
 	const profil = resolve('/profil');
+	const pengajuan = resolve('/pengajuan-layanan');
 	const tesBahasa = resolve('/tes-bahasa-inggris');
 	const tutorialKamera = resolve('/tes-bahasa-inggris/tutorial');
 	const tesListening = resolve('/tes-bahasa-inggris/tes');
@@ -31,6 +32,7 @@
 	const routedTabs: Partial<Record<NavTabId, string[]>> = {
 		home: [home],
 		profil: [profil],
+		pengajuan: [pengajuan],
 		'tes-bahasa': [
 			tesBahasa,
 			tutorialKamera,
@@ -51,6 +53,7 @@
 	const pageTitles: Record<string, string> = {
 		[home]: 'Dashboard',
 		[profil]: 'Profil Saya',
+		[pengajuan]: 'Pengajuan Layanan',
 		[tesBahasa]: 'Tes Bahasa Inggris',
 		[tutorialKamera]: 'Tes Bahasa Inggris',
 		[tesListening]: 'Listening Comprehension',
