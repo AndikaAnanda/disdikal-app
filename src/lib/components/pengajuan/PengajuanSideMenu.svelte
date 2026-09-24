@@ -4,9 +4,13 @@
 	import { cn } from '$lib/utils';
 	import { layananItems } from '$lib/pengajuan-data';
 	import { layananIcon } from './assets';
+	import { layananHref } from './routes';
 
 	const semua = resolve('/pengajuan-layanan');
 	const isSemua = $derived(page.url.pathname === semua);
+
+	const matches = (path: string) =>
+		page.url.pathname === path || page.url.pathname.startsWith(path + '/');
 
 	const item =
 		'flex shrink-0 items-center gap-2.5 rounded-lg border-l-2 border-transparent px-3 py-2.5 text-[11.5px] font-medium whitespace-nowrap transition-colors';
@@ -31,9 +35,26 @@
 	</a>
 
 	{#each layananItems as layanan (layanan.id)}
-		<span class={cn(item, itemIdle, 'cursor-default')} aria-disabled="true">
-			<img src={layananIcon[layanan.id]} alt="" class="size-3.5 shrink-0 opacity-45" />
-			{layanan.menuLabel}
-		</span>
+		{@const href = layananHref[layanan.id]}
+		{#if href}
+			{@const isActive = matches(href)}
+			<a
+				{href}
+				class={cn(item, 'cursor-pointer', isActive ? itemActive : itemIdle)}
+				aria-current={isActive ? 'page' : undefined}
+			>
+				<img
+					src={layananIcon[layanan.id]}
+					alt=""
+					class={cn('size-3.5 shrink-0', isActive ? 'opacity-100' : 'opacity-45')}
+				/>
+				{layanan.menuLabel}
+			</a>
+		{:else}
+			<span class={cn(item, itemIdle, 'cursor-default')} aria-disabled="true">
+				<img src={layananIcon[layanan.id]} alt="" class="size-3.5 shrink-0 opacity-45" />
+				{layanan.menuLabel}
+			</span>
+		{/if}
 	{/each}
 </nav>

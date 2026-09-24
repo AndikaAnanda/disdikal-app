@@ -32,7 +32,7 @@
 		id: string;
 		name?: string;
 		label: string;
-		icon: LucideIcon;
+		icon?: LucideIcon;
 		type?: Exclude<HTMLInputTypeAttribute, 'file'>;
 		value?: string;
 		error?: string;
@@ -64,7 +64,9 @@
 				: 'border-(--field-border) bg-white'
 		)}
 	>
-		<Icon class="size-4.5 shrink-0 text-(--field-icon)" strokeWidth={1.8} />
+		{#if Icon}
+			<Icon class="size-4.5 shrink-0 text-(--field-icon)" strokeWidth={1.8} />
+		{/if}
 		<Input
 			{id}
 			{name}

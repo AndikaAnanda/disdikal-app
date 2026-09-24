@@ -2,13 +2,19 @@
 	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
 	import { Button } from '$lib/components/ui/button';
 	import { layananBg, layananIcon } from './assets';
+	import { layananHref } from './routes';
 	import type { LayananItem } from '$lib/pengajuan-data';
 
 	let { item }: { item: LayananItem } = $props();
 
+	const cta =
+		'mt-4 h-auto w-fit cursor-pointer gap-2 rounded-md border-(--accent-blue)/30 bg-white/80 px-3.5 py-1.5 text-[10.5px] font-semibold text-(--accent-blue) hover:bg-(--accent-blue-50) hover:text-(--accent-blue)';
+
 	const background = $derived(
 		`linear-gradient(rgba(255,255,255,0.68), rgba(255,255,255,0.68)), url(${layananBg[item.id]})`
 	);
+
+	const href = $derived(layananHref[item.id]);
 </script>
 
 <article
@@ -29,13 +35,15 @@
 		{item.description}
 	</p>
 
-	<Button
-		type="button"
-		variant="outline"
-		aria-disabled="true"
-		class="mt-4 h-auto w-fit cursor-pointer gap-2 rounded-md border-(--accent-blue)/30 bg-white/80 px-3.5 py-1.5 text-[10.5px] font-semibold text-(--accent-blue) hover:bg-(--accent-blue-50) hover:text-(--accent-blue)"
-	>
-		Lanjutkan Pengajuan
-		<ArrowRightIcon class="size-3.5" strokeWidth={2.2} />
-	</Button>
+	{#if href}
+		<Button {href} variant="outline" class={cta}>
+			Lanjutkan Pengajuan
+			<ArrowRightIcon class="size-3.5" strokeWidth={2.2} />
+		</Button>
+	{:else}
+		<Button type="button" variant="outline" aria-disabled="true" class={cta}>
+			Lanjutkan Pengajuan
+			<ArrowRightIcon class="size-3.5" strokeWidth={2.2} />
+		</Button>
+	{/if}
 </article>

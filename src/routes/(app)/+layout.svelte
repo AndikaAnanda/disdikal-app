@@ -23,6 +23,9 @@
 	const home = resolve('/');
 	const profil = resolve('/profil');
 	const pengajuan = resolve('/pengajuan-layanan');
+	const gunGelar = resolve('/pengajuan-layanan/gun-gelar');
+	const gunGelarDetail = `${gunGelar}/detail`;
+	const dataDik = resolve('/pengajuan-layanan/update-data-dik');
 	const tesBahasa = resolve('/tes-bahasa-inggris');
 	const tutorialKamera = resolve('/tes-bahasa-inggris/tutorial');
 	const tesListening = resolve('/tes-bahasa-inggris/tes');
@@ -50,10 +53,13 @@
 				: tab
 		)
 	);
-	const pageTitles: Record<string, string> = {
+	const pageTitles: Record<string, string | string[]> = {
 		[home]: 'Dashboard',
 		[profil]: 'Profil Saya',
 		[pengajuan]: 'Pengajuan Layanan',
+		[gunGelar]: ['Pengajuan Layanan', 'Gun Gelar'],
+		[gunGelarDetail]: 'Detail Pengajuan',
+		[dataDik]: ['Pengajuan Layanan', 'Update Data Dik'],
 		[tesBahasa]: 'Tes Bahasa Inggris',
 		[tutorialKamera]: 'Tes Bahasa Inggris',
 		[tesListening]: 'Listening Comprehension',

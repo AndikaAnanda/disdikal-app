@@ -3,8 +3,8 @@
 	import ActivityList from '$lib/components/dashboard/ActivityList.svelte';
 	import AnnouncementList from '$lib/components/dashboard/AnnouncementList.svelte';
 	import HeroCard from '$lib/components/dashboard/HeroCard.svelte';
-	import HistoryFilters from '$lib/components/dashboard/HistoryFilters.svelte';
 	import HistoryTable from '$lib/components/dashboard/HistoryTable.svelte';
+	import TableFilters from '$lib/components/shared/TableFilters.svelte';
 	import ScheduleCard from '$lib/components/dashboard/ScheduleCard.svelte';
 	import ScoreBars from '$lib/components/dashboard/ScoreBars.svelte';
 	import StatCard from '$lib/components/dashboard/StatCard.svelte';
@@ -16,8 +16,11 @@
 		currentUser,
 		historyRows,
 		schedules,
-		stats
+		stats,
+		HISTORY_STATUSES
 	} from '$lib/dashboard-data';
+
+	const layananOptions = [...new Set(historyRows.map((r) => r.jenisLayanan))];
 
 	const panel = 'rounded-[10px] border border-(--dash-border) bg-white shadow-none ring-0';
 	const panelTitle = 'text-[13.5px] font-bold text-(--dash-text)';
@@ -46,7 +49,12 @@
 			<Card.Title class={panelTitle}>Riwayat Pengajuan Terbaru</Card.Title>
 		</Card.Header>
 		<Card.Content class="flex flex-col gap-4">
-			<HistoryFilters />
+			<TableFilters
+				searchPlaceholder="Cari nama pengajuan nomor pengajuan ..."
+				statusOptions={HISTORY_STATUSES}
+				secondOptions={layananOptions}
+				secondLabel="Semua Layanan"
+			/>
 			<HistoryTable rows={historyRows} />
 		</Card.Content>
 	</Card.Root>

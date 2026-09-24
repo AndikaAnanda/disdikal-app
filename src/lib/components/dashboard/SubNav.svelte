@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 	import { resolve } from '$app/paths';
 	import iconDownload from '$lib/assets/subnav-logo/material-symbols_file-save-outline-rounded.png';
 	import iconHome from '$lib/assets/subnav-logo/majesticons_home-analytics.png';
@@ -10,7 +11,9 @@
 	import { cn } from '$lib/utils';
 	import type { NavTab, NavTabId } from '$lib/dashboard-data';
 
-	let { tabs, title }: { tabs: NavTab[]; title: string } = $props();
+	let { tabs, title }: { tabs: NavTab[]; title: string | string[] } = $props();
+
+	const segments = $derived(Array.isArray(title) ? title : [title]);
 
 	const icons: Record<NavTabId, string> = {
 		home: iconHome,
@@ -43,7 +46,16 @@
 	<div
 		class="mx-auto flex max-w-[1880px] flex-wrap items-center justify-between gap-3 sm:gap-4 lg:px-5"
 	>
-		<h1 class="text-[15px] font-bold text-(--navy-950)">{title}</h1>
+		<h1 class="flex items-center gap-1.5 text-[15px] font-bold">
+			{#each segments as segment, index (segment)}
+				{#if index > 0}
+					<ChevronRightIcon class="size-3.5 shrink-0 text-[#9aa2b1]" strokeWidth={2.4} />
+				{/if}
+				<span class={index === segments.length - 1 ? 'text-(--navy-950)' : 'text-[#55709E]'}>
+					{segment}
+				</span>
+			{/each}
+		</h1>
 		<!-- Di bawah lg tab di-scroll horizontal, bukan di-wrap: 7 tab nowrap akan
 		     menumpuk jadi beberapa baris dan chrome ini sticky, jadi memakan layar. -->
 		<nav
