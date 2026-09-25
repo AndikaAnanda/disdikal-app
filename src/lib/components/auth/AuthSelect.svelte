@@ -20,7 +20,9 @@
 		valid = false,
 		disabled = false,
 		onValueChange,
-		class: className
+		class: className,
+		labelClass,
+		triggerClass
 	}: {
 		id: string;
 		name?: string;
@@ -34,6 +36,8 @@
 		disabled?: boolean;
 		onValueChange?: (value: string) => void;
 		class?: string;
+		labelClass?: string;
+		triggerClass?: string;
 	} = $props();
 
 	const items = $derived(options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o)));
@@ -46,7 +50,9 @@
 
 <div class={className}>
 	<div class="mb-1.75 flex items-center justify-between gap-3">
-		<Label for={id} class="text-[12px] font-medium text-(--auth-text)">{label}</Label>
+		<Label for={id} class={cn('text-[12px] font-medium text-(--auth-text)', labelClass)}>
+			{label}
+		</Label>
 	</div>
 
 	<Select.Root type="single" {name} {disabled} bind:value {onValueChange}>
@@ -57,7 +63,10 @@
 				fieldBoxBase,
 				triggerBase,
 				'cursor-pointer disabled:cursor-not-allowed disabled:bg-(--auth-tile-idle) disabled:opacity-100',
-				valid ? 'border-(--field-border-ok) bg-(--field-bg-ok)' : 'border-(--field-border) bg-white'
+				valid
+					? 'border-(--field-border-ok) bg-(--field-bg-ok)'
+					: 'border-(--field-border) bg-white',
+				triggerClass
 			)}
 		>
 			{#if Icon}

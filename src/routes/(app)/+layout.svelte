@@ -33,7 +33,9 @@
 	const structureQuiz = resolve('/tes-bahasa-inggris/tes/structure');
 	const readingQuiz = resolve('/tes-bahasa-inggris/tes/reading');
 	const downloadHasil = resolve('/download-hasil');
+	const perpustakaan = resolve('/perpustakaan');
 	const routedTabs: Partial<Record<NavTabId, string[]>> = {
+		perpustakaan: [perpustakaan],
 		home: [home],
 		profil: [profil],
 		pengajuan: [pengajuan],
@@ -68,7 +70,8 @@
 		[listeningQuiz]: 'Listening Comprehension',
 		[structureQuiz]: 'Structure & Written Expression',
 		[readingQuiz]: 'Reading Comprehension',
-		[downloadHasil]: 'Download Hasil'
+		[downloadHasil]: 'Download Hasil',
+		[perpustakaan]: 'Perpustakaan'
 	};
 	const titleEntries = Object.entries(pageTitles).sort(([a], [b]) => b.length - a.length);
 	const title = $derived(
