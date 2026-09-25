@@ -60,7 +60,7 @@
 	]);
 </script>
 
-<div class="grid grid-cols-1 gap-3.5 min-[1100px]:grid-cols-4 sm:grid-cols-2">
+<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 xl:grid-cols-4">
 	{#each stats as stat (stat.id)}
 		{@const Icon = stat.icon}
 		<div class="flex items-center gap-3 rounded-[10px] border px-4 py-3.5 {stat.bg}">

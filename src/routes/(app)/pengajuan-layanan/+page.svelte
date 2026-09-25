@@ -16,7 +16,7 @@
 		icon={pengajuanIcon}
 	/>
 
-	<div class="grid grid-cols-1 items-stretch gap-3.5 min-[1100px]:grid-cols-3 sm:grid-cols-2">
+	<div class="grid grid-cols-1 items-stretch gap-3.5 sm:grid-cols-2 xl:grid-cols-3">
 		{#each layananItems as item (item.id)}
 			<LayananCard {item} />
 		{/each}
