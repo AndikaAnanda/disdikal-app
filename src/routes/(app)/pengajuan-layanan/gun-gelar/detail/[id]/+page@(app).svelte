@@ -5,9 +5,9 @@
 	import FileTextIcon from '@lucide/svelte/icons/file-text';
 	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
 	import { resolve } from '$app/paths';
-	import DataPairs from '$lib/components/gun-gelar/DataPairs.svelte';
-	import DetailDokumenTable from '$lib/components/gun-gelar/DetailDokumenTable.svelte';
 	import DetailProgress from '$lib/components/gun-gelar/DetailProgress.svelte';
+	import DataPairs from '$lib/components/shared/DataPairs.svelte';
+	import DetailDokumenTable from '$lib/components/shared/DetailDokumenTable.svelte';
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
 	import { detailPengajuan } from '$lib/gun-gelar-data';
@@ -93,7 +93,7 @@
 					{#snippet trailing(item)}
 						{#if record.withDownload && item.label === 'Keterangan'}
 							<a
-								href={resolve('/')}
+								href={resolve('/download-hasil')}
 								class="cursor-pointer font-semibold text-(--accent-blue) underline"
 							>
 								Download Hasil

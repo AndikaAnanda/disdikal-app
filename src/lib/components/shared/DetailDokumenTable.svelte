@@ -1,21 +1,16 @@
 <script lang="ts">
 	import EyeIcon from '@lucide/svelte/icons/eye';
 	import FileTextIcon from '@lucide/svelte/icons/file-text';
-	import DataTable, { tableCell } from '$lib/components/shared/DataTable.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import type { DetailDokumen, DetailDokumenStatus } from '$lib/gun-gelar-data';
+	import DataTable, { tableCell } from './DataTable.svelte';
+	import StatusBadge from './StatusBadge.svelte';
+	import type { DetailDokumen } from '$lib/pengajuan-shared';
 
-	let { rows }: { rows: DetailDokumen[] } = $props();
-
-	const statusBadge: Record<DetailDokumenStatus, string> = {
-		'Dalam Pemeriksaan': 'bg-(--accent-orange-50) text-(--accent-orange)',
-		Terverifikasi: 'bg-(--accent-green-50) text-(--accent-green)'
-	};
+	let { rows, minWidth = 'min-w-230' }: { rows: DetailDokumen[]; minWidth?: string } = $props();
 
 	const headers = ['No', 'Nama Dokumen', 'Keterangan', 'File', 'Tanggal Upload', 'Status', 'Aksi'];
 </script>
 
-<DataTable {headers} {rows} minWidth="min-w-230">
+<DataTable {headers} {rows} {minWidth}>
 	{#snippet row(item: DetailDokumen)}
 		<td class={tableCell}>{item.no}.</td>
 		<td class={tableCell}>{item.nama}</td>
@@ -34,13 +29,7 @@
 			<span class="block text-[10px] text-(--dash-muted)">{item.jam}</span>
 		</td>
 		<td class={tableCell}>
-			<Badge
-				class="rounded-md border-transparent px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap {statusBadge[
-					item.status
-				]}"
-			>
-				{item.status}
-			</Badge>
+			<StatusBadge status={item.status} />
 		</td>
 		<td class={tableCell}>
 			<span

@@ -77,6 +77,8 @@
 					<a href={resolve('/pengajuan-layanan')} class={linkClass}>{@render tabInner(tab)}</a>
 				{:else if tab.id === 'tes-bahasa'}
 					<a href={resolve('/tes-bahasa-inggris')} class={linkClass}>{@render tabInner(tab)}</a>
+				{:else if tab.id === 'download'}
+					<a href={resolve('/download-hasil')} class={linkClass}>{@render tabInner(tab)}</a>
 				{:else}
 					<!-- Route tujuan belum dibuat, jadi non-navigable. -->
 					<span class={cn(tabBase, tabIdle, 'cursor-default')} aria-disabled="true">

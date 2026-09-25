@@ -1,3 +1,11 @@
+<script lang="ts" module>
+	export const tabBar = 'flex gap-6 overflow-x-auto border-b border-(--dash-border)';
+	export const tabBase =
+		'flex shrink-0 items-center gap-2 border-b-2 pb-2.5 text-[12.5px] whitespace-nowrap transition-colors';
+	export const tabActive = 'border-(--accent-blue) font-semibold text-(--accent-blue)';
+	export const tabIdle = 'border-transparent text-[#9aa2b1] hover:text-(--navy-950)';
+</script>
+
 <script lang="ts">
 	import FileTextIcon from '@lucide/svelte/icons/file-text';
 	import HistoryIcon from '@lucide/svelte/icons/history';
@@ -10,13 +18,12 @@
 
 	const isRiwayat = $derived(page.url.pathname === riwayatHref);
 
-	const base =
-		'flex shrink-0 items-center gap-2 border-b-2 pb-2.5 text-[12.5px] whitespace-nowrap transition-colors';
-	const active = 'border-(--accent-blue) font-semibold text-(--accent-blue)';
-	const idle = 'border-transparent text-[#9aa2b1] hover:text-(--navy-950)';
+	const base = tabBase;
+	const active = tabActive;
+	const idle = tabIdle;
 </script>
 
-<nav class="flex gap-6 overflow-x-auto border-b border-(--dash-border)">
+<nav class={tabBar}>
 	<a
 		href={formHref}
 		class={cn(base, 'cursor-pointer', isRiwayat ? idle : active)}

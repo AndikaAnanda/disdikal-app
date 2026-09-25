@@ -2,7 +2,7 @@
 	import EyeIcon from '@lucide/svelte/icons/eye';
 	import FileTextIcon from '@lucide/svelte/icons/file-text';
 	import type { SuperForm } from 'sveltekit-superforms';
-	import DataPairs from './DataPairs.svelte';
+	import DataPairs from '$lib/components/shared/DataPairs.svelte';
 	import SectionCard from '$lib/components/shared/SectionCard.svelte';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { formatBytes } from '$lib/utils';
