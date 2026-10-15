@@ -1,6 +1,3 @@
-// Mock data untuk dashboard Disdikal. Sengaja bebas dari import Svelte/SvelteKit
-// supaya bisa dipakai layout maupun page tanpa efek samping.
-
 export interface UserProfile {
 	name: string;
 	shortName: string;
@@ -40,15 +37,11 @@ export interface NavTab {
 	active: boolean;
 }
 
-/**
- * Baru tab `home`, `profil`, dan `tes-bahasa` yang punya route asli; sisanya
- * dirender sebagai placeholder non-navigable di SubNav sampai halamannya dibuat.
- */
 export const subNavTabs: NavTab[] = [
 	{ id: 'home', label: 'Home', active: true },
 	{ id: 'profil', label: 'Profil Saya', active: false },
 	{ id: 'pengajuan', label: 'Pengajuan Layanan', active: false },
-	{ id: 'tes-bahasa', label: 'Tes Bahasa Inggris', active: false },
+	// { id: 'tes-bahasa', label: 'Tes Bahasa Inggris', active: false },
 	{ id: 'riwayat', label: 'Riwayat Pengajuan', active: false },
 	{ id: 'download', label: 'Download Hasil', active: false },
 	{ id: 'perpustakaan', label: 'Perpustakaan', active: false }

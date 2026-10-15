@@ -30,7 +30,6 @@
 	const tabActive = 'border-(--navy-950) font-semibold text-(--navy-950)';
 	const tabIdle = 'text-[#55709E]';
 
-	// PNG monokrom dipakai sebagai mask agar warnanya ikut currentColor.
 	const iconMask = 'size-3.75 shrink-0 bg-current mask-contain mask-center mask-no-repeat';
 </script>
 
@@ -56,8 +55,7 @@
 				</span>
 			{/each}
 		</h1>
-		<!-- Di bawah lg tab di-scroll horizontal, bukan di-wrap: 7 tab nowrap akan
-		     menumpuk jadi beberapa baris dan chrome ini sticky, jadi memakan layar. -->
+
 		<nav
 			class="flex w-full min-w-0 scrollbar-none items-center gap-5 overflow-x-auto pb-1 lg:w-auto lg:flex-wrap lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden"
 		>
@@ -66,9 +64,6 @@
 					tabBase,
 					tab.active ? tabActive : `${tabIdle} hover:text-(--navy-950)`
 				)}
-				<!-- resolve() harus muncul langsung di href (lint
-				     svelte/no-navigation-without-resolve), jadi tiap route dicabangkan
-				     eksplisit; isi tab dibagi lewat snippet supaya tidak terduplikasi. -->
 				{#if tab.id === 'home'}
 					<a href={resolve('/')} class={linkClass}>{@render tabInner(tab)}</a>
 				{:else if tab.id === 'profil'}
@@ -82,7 +77,6 @@
 				{:else if tab.id === 'perpustakaan'}
 					<a href={resolve('/perpustakaan')} class={linkClass}>{@render tabInner(tab)}</a>
 				{:else}
-					<!-- Route tujuan belum dibuat, jadi non-navigable. -->
 					<span class={cn(tabBase, tabIdle, 'cursor-default')} aria-disabled="true">
 						{@render tabInner(tab)}
 					</span>

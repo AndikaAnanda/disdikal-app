@@ -10,9 +10,6 @@
 
 	let { children } = $props();
 
-	// Gerbang dev: selama PUBLIC_BASE_API_URL kosong (backend belum ada) login
-	// mustahil, jadi dashboard dibiarkan terbuka supaya tetap bisa dikembangkan.
-	// Begitu env-nya diisi, guard asli aktif sendiri tanpa mengubah kode.
 	const allowed = $derived(!isBackendConfigured || AuthStore.isAuthenticated);
 
 	function redirectToLogin(): string {
