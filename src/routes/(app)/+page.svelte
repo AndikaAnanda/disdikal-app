@@ -6,12 +6,12 @@
 	import HistoryTable from '$lib/components/dashboard/HistoryTable.svelte';
 	import TableFilters from '$lib/components/shared/TableFilters.svelte';
 	import ScheduleCard from '$lib/components/dashboard/ScheduleCard.svelte';
-	import ScoreBars from '$lib/components/dashboard/ScoreBars.svelte';
+	// import ScoreBars from '$lib/components/dashboard/ScoreBars.svelte';
 	import StatCard from '$lib/components/dashboard/StatCard.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import {
 		activities,
-		alcptSections,
+		// alcptSections,
 		announcements,
 		currentUser,
 		historyRows,
@@ -38,7 +38,7 @@
 		<ScheduleCard items={schedules} />
 	</div>
 
-	<div class="grid grid-cols-2 gap-3.5 min-[1100px]:grid-cols-5 sm:grid-cols-5">
+	<div class="grid grid-cols-2 gap-3.5 sm:grid-cols-4">
 		{#each stats as stat (stat.id)}
 			<StatCard {stat} />
 		{/each}
@@ -59,7 +59,7 @@
 		</Card.Content>
 	</Card.Root>
 
-	<div class="grid grid-cols-1 gap-3.5 min-[1100px]:grid-cols-3 md:grid-cols-2 xl:grid-cols-3">
+	<div class="grid grid-cols-1 gap-3.5 md:grid-cols-2">
 		<Card.Root class={panel}>
 			<Card.Header>
 				<Card.Title class={panelTitle}>Aktivitas Pengajuan Saya</Card.Title>
@@ -80,11 +80,11 @@
 			<Card.Content><AnnouncementList items={announcements} /></Card.Content>
 		</Card.Root>
 
-		<Card.Root class="{panel} min-[1100px]:col-span-1">
+		<!-- <Card.Root class="{panel} min-[1100px]:col-span-1">
 			<Card.Header>
 				<Card.Title class={panelTitle}>Skor ALCPT Terakhir</Card.Title>
 			</Card.Header>
 			<Card.Content><ScoreBars items={alcptSections} /></Card.Content>
-		</Card.Root>
+		</Card.Root> -->
 	</div>
 </div>

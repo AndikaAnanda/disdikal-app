@@ -62,14 +62,14 @@ export const schedules: ScheduleItem[] = [
 		month: 'Apr',
 		title: 'Batas Unggah Dokumen Gelombang II',
 		detail: '23.59 WIB · Gun Gelar 2026'
-	},
-	{
-		id: 'alcpt',
-		day: '06',
-		month: 'Mei',
-		title: 'Tes Bahasa Inggris (ALCPT)',
-		detail: '08.00 WIB · Ujian Online Disdikal'
 	}
+	// {
+	// 	id: 'alcpt',
+	// 	day: '06',
+	// 	month: 'Mei',
+	// 	title: 'Tes Bahasa Inggris (ALCPT)',
+	// 	detail: '08.00 WIB · Ujian Online Disdikal'
+	// }
 ];
 
 export type StepStatus = 'done' | 'current' | 'pending';
@@ -106,13 +106,13 @@ export const stats: StatItem[] = [
 		subLabel: 'Oleh Admin Disdikal',
 		accent: 'orange'
 	},
-	{
-		id: 'jadwal',
-		label: 'Jadwal Tes',
-		value: '12 April 2026',
-		subLabel: 'Tes ALCPT Online',
-		accent: 'purple'
-	},
+	// {
+	// 	id: 'jadwal',
+	// 	label: 'Jadwal Tes',
+	// 	value: '12 April 2026',
+	// 	subLabel: 'Tes ALCPT Online',
+	// 	accent: 'purple'
+	// },
 	{
 		id: 'hasil',
 		label: 'Hasil Akhir',
@@ -266,14 +266,14 @@ export const announcements: AnnouncementItem[] = [
 		icon: 'document',
 		tone: 'purple'
 	},
-	{
-		id: 'alcpt',
-		title: 'Tes ALCPT Online (Mandiri)',
-		subtitle: 'Jadwal fleksibel sesuai akun peserta',
-		date: '02 Apr 2026',
-		icon: 'exam',
-		tone: 'blue'
-	},
+	// {
+	// 	id: 'alcpt',
+	// 	title: 'Tes ALCPT Online (Mandiri)',
+	// 	subtitle: 'Jadwal fleksibel sesuai akun peserta',
+	// 	date: '02 Apr 2026',
+	// 	icon: 'exam',
+	// 	tone: 'blue'
+	// },
 	{
 		id: 'scan',
 		title: 'Upload scan dokumen asli wajib PDF',
